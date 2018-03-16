@@ -88,13 +88,13 @@ indeximps <- c(indeximps, list(errors(punts[,2:23])));}
 
 group_head(classe, escola[1]);
 
-prova(lectura, curs);
-prova(mt, curs);
-prova(vp, curs);
-prova(fm, curs);
-prova(mlt, curs);
-prova(r, curs);
-if(curs[2] == 5 | curs[2] == 6){prova(c, curs);}}
+prova(lectura, curs, escola);
+prova(mt, curs, escola);
+prova(vp, curs, escola);
+prova(fm, curs, escola);
+prova(mlt, curs, escola);
+prova(r, curs, escola);
+if(curs[2] == 5 | curs[2] == 6){prova(c, curs, escola);}}
 
 
 intro_part_individual();

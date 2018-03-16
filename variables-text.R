@@ -149,7 +149,7 @@ prova <- function(prova, curs, escola){cat("
 %\\textbf{", prova[1], "}
 \\begin{figure}[H]
 \\centering
-\\includegraphics[width=13cm]{figures/",escola[2],"/", curs[1], "/", prova[3], "-", curs[2], "-norm}
+\\includegraphics[width=13cm]{../../figures/",escola[2],"/", curs[1], "/", prova[3], "-", curs[2], "-norm}
 \\end{figure}",
 
 if(1==0){cat(observacions-1)},
@@ -158,7 +158,7 @@ if(1==0){cat(observacions-1)},
 
 \\begin{figure}[H]
 \\centering
-\\includegraphics[width=13cm]{figures/",escola[2],"/", curs[1], "/", prova[3], "-", curs[2], "-norm_intra}
+\\includegraphics[width=13cm]{../../figures/",escola[2],"/", curs[1], "/", prova[3], "-", curs[2], "-norm_intra}
 \\end{figure}",
  
 sep = "")};
@@ -203,11 +203,11 @@ cat("
 \\captionsetup[subfigure]{labelformat=empty}
 \\begin{subfigure}{.5\\textwidth}
 \\centering
-\\includegraphics[width=7.5cm]{figures/",escola[2],"/", curs[1], "/", index, "-norm}
+\\includegraphics[width=7.5cm]{../../figures/",escola[2],"/", curs[1], "/", index, "-norm}
 \\end{subfigure}
 \\begin{subfigure}{.5\\textwidth}
 \\centering
-\\includegraphics[width=7.5cm]{figures/",escola[2],"/", curs[1], "/", index, "-comp}
+\\includegraphics[width=7.5cm]{../../figures/",escola[2],"/", curs[1], "/", index, "-comp}
 \\end{subfigure}
 \\caption{En el gràfic de l'esquerra veiem els resultats \\emph{mesurats} i a la dreta els \\emph{esperats}. Si hi ha resultats en vermell al gràfic de la dreta és perquè mesurem aquella habilitat més \\emph{baixa} que la predida, i per tant parlem d'una possible \\emph{dificultat específica}. En canvi, si estan en blau és perquè són més \\emph{alts} dels predits i per tant parlem d'un possible \\emph{talent}.}
 \\end{figure}", sep="")

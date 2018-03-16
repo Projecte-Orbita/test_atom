@@ -90,7 +90,7 @@ Un possible gràfic experimental és el següent: \\\\
 
 \\begin{figure}[H]
 \\centering
-\\includegraphics[width=8cm]{15-norm}
+\\includegraphics[width=8cm]{../../15-norm}
 \\end{figure}
 
 
@@ -102,7 +102,7 @@ Si mostrem el gràfic de les mesures predites:
 
 \\begin{figure}[H]
 \\centering
-\\includegraphics[width=8cm]{15-comp}
+\\includegraphics[width=8cm]{../../15-comp}
 \\end{figure}
 
 
