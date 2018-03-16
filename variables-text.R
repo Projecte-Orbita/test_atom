@@ -27,7 +27,7 @@ heading <- "\\documentclass[a4paper, 12pt, oneside]{book}%{article}
 
 \\pagestyle{fancy}
 \\fancyhf{}  
-\\lfoot{\\includegraphics[scale=0.3]{informe-atom-peu}}
+\\lfoot{\\includegraphics[scale=0.3]{../../informe-atom-peu}}
 \\rfoot{\\small \\thepage}
 
 \\setlength\\parindent{0pt}
