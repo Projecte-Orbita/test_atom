@@ -5,7 +5,6 @@ crear_informe_escola <- function(cursos, classes, escola){
 source('./f_informes_proves.R');
 source('./variables-text.R');
 source('./text-intro.R');
-source('./emocional.R');
 source('./tier_2.R');
 source('./informe_matrius.R');
 source('./taula-informe-matrius.R');
@@ -14,6 +13,7 @@ source('./emocional_petits.R');
 source('./barems-01.R');
 source('./errors.R');
 source('./compensacions.R');
+source('./grafics.R');
 
 # get current directory and create missing directories if needed:
 wd <- getwd();
@@ -55,12 +55,12 @@ dir.create(paste(getwd(), "/figures/", escola[2], "/", curs[1], sep ="" ));
 
 if(curs[2]==1)
 {prebarems <- read.csv('./barems/prebarems1.csv', header = FALSE);
-matrius <- c(matrius, list(informe1(punts[,1:13], curs[1], prebarems, escola)));
+matrius <- c(matrius, list(informe(punts[,1:13], curs[1], prebarems, escola)));
 indeximps <- c(indeximps, list(errors(punts[,2:13])));}
 
 if(curs[2]==2)
 {prebarems <- read.csv('./barems/prebarems2.csv', header = FALSE);
-matrius <- c(matrius, list(informe2(punts[,1:13], curs[1], prebarems, escola)));
+matrius <- c(matrius, list(informe(punts[,1:13], curs, prebarems, escola)));
 indeximps <- c(indeximps, list(errors(punts[,2:13])));}
 
 if(curs[2]==3)
