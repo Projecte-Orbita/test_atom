@@ -1,18 +1,17 @@
 
 crear_informe_escola <- function(cursos, classes, escola){
 
-
 source('./informes.R');           # fa els càlculs i els gràfics
+source('./inicialitzadors.R')     # funcions d'ajuda d'informes
+source('./barems.R');             # barems  
 source('./variables-text.R');     # fa el latex amb la info d'informes
 source('./text-intro.R');         # text de la introducció
-source('./inicialitzadors.R')     # funcions d'ajuda d'informes
 source('./tier_2.R');             # escriu la part de tier 2 de làtex
-source('./informe_matrius.R');   
-source('./emocional.R');
-source('./barems.R');
-source('./errors.R');
-source('./compensacions.R');
-source('./grafics.R');
+source('./informe_matrius.R');    # fa les matrius de l'informe (té integran l'antic taula-informe-matrius)
+source('./emocional.R');          # parts emocionals de petits i grans
+source('./errors.R');             # serveix per calcular l'índex d'impulsivitat
+source('./compensacions.R');      # implementa el "Model Òrbita" i aplica les prediccions per cada nen
+source('./grafics.R');            # gràfics
 
 # get current directory and create missing directories if needed:
 wd <- getwd();
@@ -52,8 +51,6 @@ intro(escola[1]);
 
 matrius <- NULL;
 indeximps <- NULL;
-
-
 intro_part_grup();
 
 for(cl in 1:length(cursos)){
@@ -89,7 +86,6 @@ indeximps <- c(indeximps, list(errors(punts[,2:23])));}
 if(curs[2]==6)
 {matrius <- c(matrius, list(informe(punts[,1:23], curs, barems_6, escola)));
 indeximps <- c(indeximps, list(errors(punts[,2:23])));}
-
 
 group_head(classe, escola[1]);
 
