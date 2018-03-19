@@ -139,8 +139,75 @@ predir_intra <- function(punts, bar, predreg){
   
 } 
 
-colorejar <- function(punts, prebarems){
-  bardif=bar_diferencies(prebarems);
+# matrius que treuen els resultats dels colors:
+
+matriu <- function(colnorm, colpred){
+  # colnorm i colexp es troben posant la línia   colnorm = punts[,-c(2:7)]; 
+  # just després de la punts_exp = punts[,c(1:7)]; i la línia
+  # colpred = difs[,-c(2:7)]; després de difs = colorejar(difs);
+  
+  tot_nens = cbind(colnorm,colpred[,-c(1)]);
+  tot_nens[is.na(tot_nens)==TRUE]=0;
+  
+  # inicialitzem la matriu: 
+  
+  matlist <- vector("list", length(rownames(tot_nens)));
+  names(matlist) = tot_nens[,1];
+  
+  mat = matrix(0, nrow=(ncol(colnorm)-1), ncol=(ncol(colnorm)-1));
+  
+  if (ncol(mat)==6){
+    colnames(mat) = c("L", "MT", "VP", "FM", "MLT", "R");
+    rownames(mat) = c("L", "MT", "VP", "FM", "MLT", "R");
+    num = 7;
+  }
+  else {
+    colnames(mat) = c("L", "MT", "VP", "FM", "MLT", "R", "C");
+    rownames(mat) = c("L", "MT", "VP", "FM", "MLT", "R", "C");
+    num = 8;
+  }
+  
+  # i la calculem
+  
+  for (i in 1:nrow(tot_nens)){
+    for (j in 1:(num-1)){
+      if (tot_nens[i,j+1]=='C'){
+        mat[j,j]=1;
+        if(tot_nens[i,j+num]=='L'){
+          mat[j,j]=mat[j,j]+0;
+        } else if (tot_nens[i,j+num]=='M'){
+          mat[j,j]=mat[j,j]+0.1;
+        } else {
+          mat[j,j]=mat[j,j]+0.2;
+        }
+      } else if (tot_nens[i,j+1]=='B'){
+        mat[j,j]=2;
+        if(tot_nens[i,j+num]=='L'){
+          mat[j,j]=mat[j,j]+0;
+        } else if (tot_nens[i,j+num]=='M'){
+          mat[j,j]=mat[j,j]+0.1;
+        } else {
+          mat[j,j]=mat[j,j]+0.2;
+        }
+      } else if (tot_nens[i,j+1]=='A'){
+        mat[j,j]=3;
+        if(tot_nens[i,j+7]=='L'){
+          mat[j,j]=mat[j,j]+0;
+        } else if (tot_nens[i,j+num]=='M'){
+          mat[j,j]=mat[j,j]+0.1;
+        } else {
+          mat[j,j]=mat[j,j]+0.2;
+        }}
+      else{mat[j,j]=0}
+    }
+    matlist[[i]]=mat;
+  }
+  return(matlist);
+}
+
+
+colorejar <- function(punts, barems){
+  bardif = bar_diferencies(barems);
   
   punts$lecg <- sapply(punts[["lec"]], 
                        function(x) ifelse(x < - bardif[1,2], "L", 
@@ -173,69 +240,4 @@ colorejar <- function(punts, prebarems){
   
 }
 
-inicialitzar_comp <- function(punts, prebarems){
-
-  punts <- afegir_errors(punts);
-  
-  if (ncol(punts) == 13){
-    cols = c(1,2,4,6,8,10,12)
-    nomcols = c("Noms", "L", "MT", "VP", "FM", "MLT", "R");
-  }
-  else {
-    cols = c(1,2,4,6,8,10,12,14)
-    nomcols = c("Noms", "L", "MT", "VP", "FM", "MLT", "R", "C");
-  }
-  
-  punts <- data.frame(punts[cols]);
-  colnames(punts) <- nomcols;
-  
-  #importem els barems
-  bar = baremar(prebarems);
-  predreg = regressions(prebarems);
-  
-  # demanem la funció de predir: 
-  
-  punts = predir(punts, bar, predreg);
-  
-  # colors dels grups
-  
-  punts = colorejar(punts, prebarems);
-  
-  return(punts);
-  
-}
-
-# La següent no es fa servir:
-inicialitzar_comp_intra <- function(punts, prebarems){
-  # netegem una mica les dades
-  
-  punts[punts == '-'] <- NA;
-  punts <- afegir_errors(punts);
-  
-  if (ncol(punts) == 13){
-    cols = c(1,2,4,6,8,10,12)
-    nomcols = c("Noms", "L", "MT", "VP", "FM", "MLT", "R");
-  }
-  else {
-    cols = c(1,2,4,6,8,10,12,14)
-    nomcols = c("Noms", "L", "MT", "VP", "FM", "MLT", "R", "C");
-  }
-  
-  
-  punts <- data.frame(punts[c(1,2,4,6,8,10,12)]);
-  colnames(punts) <- c("Noms", "L", "MT", "VP", "FM", "MLT", "R");
-  
-  bar = baremar_petits(prebarems);
-  predreg = regressions(prebarems);
-  
-  # demanem la funció de predir: 
-  
-  punts = predir_intra(punts, bar, predreg);
-  
-  # colors dels grups
-  
-  punts = colorejar(punts);
-  
-  return(punts);
-}
 

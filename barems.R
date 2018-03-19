@@ -69,10 +69,8 @@ preparar_barems <- function(prebarems){
   return(barems)
 }
 
-baremar <- function(prebarems){
-  #calculem els barems i els posem a la matriu bar1:
-  
-  barems = preparar_barems(prebarems);
+baremar <- function(barems){
+  #calculem els barems i els posem a la matriu bar1
   
   # petits i mitjans:
   if (ncol(barems) == 7){
@@ -104,8 +102,8 @@ baremar <- function(prebarems){
   }
 }
 
-regressions <- function(prebarems){
-  barems = preparar_barems(prebarems);
+regressions <- function(barems){
+  
   predreg=list();
   vec=list();
   
@@ -123,10 +121,10 @@ regressions <- function(prebarems){
   return(predreg);
 }
 
-diferencies <- function(prebarems){
-  barems = preparar_barems(prebarems);
-  bar = baremar(prebarems);
-  predreg = regressions(prebarems);
+diferencies <- function(barems){
+  
+  bar = baremar(barems);
+  predreg = regressions(barems);
   
   predit = predir(barems, bar, predreg);
   
@@ -151,9 +149,9 @@ diferencies <- function(prebarems){
   return(difs);
 }
 
-bar_diferencies <- function(prebarems){
-  difs = diferencies(prebarems);
+bar_diferencies <- function(barems){
   
+  difs = diferencies(barems);
   bardif = matrix(0,nrow=ncol(difs), ncol=2);
   
   if (ncol(difs) == 6){
@@ -174,6 +172,8 @@ bar_diferencies <- function(prebarems){
 
 
 ###### Funcions de baremació d'errors
+
+# no s'està fent servir (crec)
 
 bar_errors <- function(prebarems){
   prebarems[prebarems == '-'] <- NA;

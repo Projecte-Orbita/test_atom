@@ -1,5 +1,3 @@
-
-
 errors <- function(punts){
   
   for(i in 2:ncol(punts)){
