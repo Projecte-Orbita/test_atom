@@ -87,7 +87,6 @@ inicialitzar_intra <- function(punts, prebarems){
     
   }
   
-  
   punts <- data.frame(punts[cols]);
   colnames(punts) <- nomcols;
   
@@ -168,30 +167,32 @@ matriu <- function(colnorm, colpred){
   if (ncol(mat)==6){
     colnames(mat) = c("L", "MT", "VP", "FM", "MLT", "R");
     rownames(mat) = c("L", "MT", "VP", "FM", "MLT", "R");
+    num = 7;
   }
   else {
     colnames(mat) = c("L", "MT", "VP", "FM", "MLT", "R", "C");
     rownames(mat) = c("L", "MT", "VP", "FM", "MLT", "R", "C");
+    num = 8;
   }
   
   # i la calculem
   
   for (i in 1:nrow(tot_nens)){
-    for (j in 1:6){
+    for (j in 1:(num-1)){
       if (tot_nens[i,j+1]=='C'){
         mat[j,j]=1;
-        if(tot_nens[i,j+7]=='L'){
+        if(tot_nens[i,j+num]=='L'){
           mat[j,j]=mat[j,j]+0;
-        } else if (tot_nens[i,j+7]=='M'){
+        } else if (tot_nens[i,j+num]=='M'){
           mat[j,j]=mat[j,j]+0.1;
         } else {
           mat[j,j]=mat[j,j]+0.2;
         }
       } else if (tot_nens[i,j+1]=='B'){
         mat[j,j]=2;
-        if(tot_nens[i,j+7]=='L'){
+        if(tot_nens[i,j+num]=='L'){
           mat[j,j]=mat[j,j]+0;
-        } else if (tot_nens[i,j+7]=='M'){
+        } else if (tot_nens[i,j+num]=='M'){
           mat[j,j]=mat[j,j]+0.1;
         } else {
           mat[j,j]=mat[j,j]+0.2;
@@ -200,7 +201,7 @@ matriu <- function(colnorm, colpred){
         mat[j,j]=3;
         if(tot_nens[i,j+7]=='L'){
           mat[j,j]=mat[j,j]+0;
-        } else if (tot_nens[i,j+7]=='M'){
+        } else if (tot_nens[i,j+num]=='M'){
           mat[j,j]=mat[j,j]+0.1;
         } else {
           mat[j,j]=mat[j,j]+0.2;
@@ -212,115 +213,75 @@ matriu <- function(colnorm, colpred){
   return(matlist);
 }
 
-matriu_grans <- function(colnorm, colpred){
-  
-  # colnorm i colexp es troben posant la línia   colnorm = punts[,-c(2:8)]; 
-  # just després de la punts_exp = punts[,c(1:8)]; i la línia
-  # colpred = difs[,-c(2:8)]; després de difs = colorejar(difs);
-  
-  tot_nens = cbind(colnorm,colpred[,-c(1)]);
-  
-  tot_nens[is.na(tot_nens)==TRUE]=0;
-  # inicialitzem la matriu: 
-  
-  matlist <- vector("list", length(rownames(tot_nens)));
-  names(matlist) = tot_nens[,1];
-  
-  mat = matrix(0, nrow=7, ncol=7);
-  colnames(mat) = c("L", "MT", "VP", "FM", "MLT", "R", "C");
-  rownames(mat) = c("L", "MT", "VP", "FM", "MLT", "R", "C");
-  
-  # i la calculem
-  
-  for (i in 1:nrow(tot_nens)){
-    for (j in 1:7){
-      if (tot_nens[i,j+1]=='C'){
-        mat[j,j]=1;
-        if(tot_nens[i,j+8]=='L'){
-          mat[j,j]=mat[j,j]+0;
-        } else if (tot_nens[i,j+8]=='M'){
-          mat[j,j]=mat[j,j]+0.1;
-        } else {
-          mat[j,j]=mat[j,j]+0.2;
-        }
-      } else if (na.omit(tot_nens[i,j+1])=='B'){
-        mat[j,j]=2;
-        if(tot_nens[i,j+8]=='L'){
-          mat[j,j]=mat[j,j]+0;
-        } else if (tot_nens[i,j+8]=='M'){
-          mat[j,j]=mat[j,j]+0.1;
-        } else {
-          mat[j,j]=mat[j,j]+0.2;
-        }
-      } else if (tot_nens[i,j+1]=='A'){
-        mat[j,j]=3;
-        if(tot_nens[i,j+8]=='L'){
-          mat[j,j]=mat[j,j]+0;
-        } else if (tot_nens[i,j+8]=='M'){
-          mat[j,j]=mat[j,j]+0.1;
-        } else {
-          mat[j,j]=mat[j,j]+0.2;
-        }}
-     else{mat[j,j]=0} 
-    }
-    matlist[[i]]=mat;
-  }
-  return(matlist);
-}
-
-
-
 #####
-# Funcions que fan els informes
+# Funció que fa els informes
 #####
-
 
 informe <- function(puntso, curs, prebarems, escola){
+  
   for(i in 2:ncol(puntso)){
     puntso[,i]=as.numeric(as.character(puntso[,i]));
+  }
+  
+  # mirem si són els grans.
+  
+  num = 7;
+  colnames_punts = c("L", "MT", "VP", "FM", "MLT", "R")
+  melt_punts1 = c("Noms", "L", "MT", "VP", "FM", "MLT",  "R")
+  melt_punts2 = c("Noms","lecg","mtg", "vpg","fmg","mltg", "rg")
+  colnames_difs = c("Noms", "lec", "mt", "vp", "fm", "mlt", "r");
+  
+  if(curs[2] == 5 | curs[2] == 6){
+    num = 8;
+    colnames_punts = c(colnames_punts, "C")
+    melt_punts1 = c(melt_punts1, "C" )
+    melt_punts2 = c(melt_punts2, "cg")
+    colnames_difs = c(colnames_difs, "c")
   }
   
   # gràfics normals globals
   
   punts <- inicialitzar(puntso, prebarems);
+  
   length <- length(punts[,1]);
-  punts <- subset(punts, select = -c(2:7));
+  punts <- subset(punts, select = -c(2:num));
   
-  punts_exp = punts[,c(1:7)];
-  colnorm = punts[,-c(2:7)];
+  punts_exp = punts[,c(1:num)];
   
-  colnames(punts)[2:7] <- c("L", "MT", "VP", "FM", "MLT", "R");
-  punts1 <-  melt(punts[c("Noms", "L", "MT", "VP", "FM", "MLT",  "R")], id.var = "Noms");
-  punts2 <- melt(punts[c("Noms","lecg","mtg", "vpg","fmg","mltg", "rg")], id.var = "Noms");
+  colnorm = punts[,-c(2:num)];
+  
+  colnames(punts)[2:num] <- colnames_punts;
+  punts1 <- melt(punts[melt_punts1], id.var = "Noms");
+  punts2 <- melt(punts[melt_punts2], id.var = "Noms");
   punts <- data.frame(punts1, punts2[c("variable", "value")]);
-  grafics_classe(punts, curs[1], 'norm', escola, 1);
+  grafics_classe(punts, curs, 'norm', escola);
   grafics_nens(punts, curs[1], 'norm', escola);
   
   # gràfics compensats globals
   
   cpunts <- inicialitzar_comp(puntso, prebarems);
   length <- length(cpunts[,1]);
-  cpunts <- subset(cpunts, select = -c(2:7));
+  cpunts <- subset(cpunts, select = -c(2:num));
   
-  difs=matrix(nrow= nrow(punts_exp), ncol = 7);
+  difs=matrix(nrow= nrow(punts_exp), ncol = num);
   difs=data.frame(difs);
   
-  colnames(difs) <- c("Noms", "lec", "mt", "vp", "fm", "mlt", "r");
+  colnames(difs) <- colnames_difs;
   
   difs$Noms <- punts_exp$Noms;
   
-  for (i in 2:7){
+  for (i in 2:num){
     difs[,i]=punts_exp[,i]-cpunts[,i];  
   }
   
   difs = colorejar(difs, prebarems);
-  colpred = difs[,-c(2:7)];
+  colpred = difs[,-c(2:num)];
   
-  difs[,c(2:7)]=cpunts[,-1];
+  difs[,c(2:num)]=cpunts[,-1];
   
-  colnames(difs)[2:7] <- c("L", "MT", "VP", "FM", "MLT", "R")
-  cpunts1 <-  melt(difs[c("Noms","L", "MT", "VP", "FM", "MLT", "R")], id.var = "Noms");
-  cpunts2 <- melt(difs[c("Noms","lecg","mtg","vpg","fmg","mltg", "rg")], id.var = "Noms");
+  colnames(difs)[2:num] <- colnames_punts;
+  cpunts1 <- melt(difs[melt_punts1], id.var = "Noms");
+  cpunts2 <- melt(difs[melt_punts2], id.var = "Noms");
   cpunts <- data.frame(cpunts1, cpunts2[c("variable", "value")]);
   grafics_nens(cpunts, curs[1], 'comp', escola);
   
@@ -328,392 +289,16 @@ informe <- function(puntso, curs, prebarems, escola){
   
   ipunts <- inicialitzar_intra(puntso, prebarems);
   length <- length(ipunts[,1]);
-  ipunts <- subset(ipunts, select = -c(2:7));
+  ipunts <- subset(ipunts, select = -c(2:num));
   
-  punts_expi = ipunts[,c(1:7)];
+  punts_expi = ipunts[,c(1:num)];
   
-  colnames(ipunts)[2:7] <- c("L", "MT", "VP", "FM", "MLT", "R")
-  ipunts1 <-  melt(ipunts[c("Noms","L", "MT", "VP", "FM", "MLT", "R")], id.var = "Noms");
-  ipunts2 <- melt(ipunts[c("Noms","lecg","mtg","vpg","fmg","mltg", "rg")], id.var = "Noms");
+  colnames(ipunts)[2:num] <- colnames_punts
+  ipunts1 <- melt(ipunts[melt_punts1], id.var = "Noms");
+  ipunts2 <- melt(ipunts[melt_punts2], id.var = "Noms");
   ipunts <- data.frame(ipunts1, ipunts2[c("variable", "value")]);
-  grafics_classe(ipunts, curs[1],'norm_intra', escola, curs[2]);
+  grafics_classe(ipunts, curs,'norm_intra', escola);
   
   return(matriu(colnorm, colpred));
 }
-
-informe3 <- function(puntso, curs, prebarems, escola){
-  library(reshape2)
-  library(ggplot2)
-  
-  for(i in 2:ncol(puntso)){
-    puntso[,i]=as.numeric(as.character(puntso[,i]));
-  }
-  
-  # gràfics normals globals
-  
-  punts <- inicialitzar(puntso, prebarems);
-  length <- length(punts[,1]);
-  punts <- subset(punts, select = -c(2:7));
-  
-  punts_exp = punts[,c(1:7)];
-  colnorm = punts[,-c(2:7)];
-  
-  colnames(punts)[2:7] <- c("L", "MT", "VP", "FM", "MLT", "R");
-  punts1 <-  melt(punts[c("Noms", "L", "MT", "VP", "FM", "MLT",  "R")], id.var = "Noms");
-  punts2 <- melt(punts[c("Noms","lecg","mtg", "vpg","fmg","mltg", "rg")], id.var = "Noms");
-  punts <- data.frame(punts1, punts2[c("variable", "value")]);
-  grafics_classe(punts, curs, 'norm',escola, 3);
-  grafics_nens(punts, curs, 'norm', escola);
-  
-  # gràfics compensats globals
-  
-  cpunts <- inicialitzar_comp(puntso, prebarems);
-  length <- length(cpunts[,1]);
-  cpunts <- subset(cpunts, select = -c(2:7));
-  
-  difs=matrix(nrow= nrow(punts_exp), ncol = 7);
-  difs=data.frame(difs);
-  
-  colnames(difs) <- c("Noms", "lec", "mt", "vp", "fm", "mlt", "r");
-  
-  difs$Noms <- punts_exp$Noms;
-  
-  for (i in 2:7){
-    difs[,i]=punts_exp[,i]-cpunts[,i];  
-  }
-  
-  difs = colorejar(difs, prebarems);
-  colpred = difs[,-c(2:7)];
-  
-  difs[,c(2:7)]=cpunts[,-1];
-  
-  colnames(difs)[2:7] <- c("L", "MT", "VP", "FM", "MLT", "R")
-  cpunts1 <-  melt(difs[c("Noms","L", "MT", "VP", "FM", "MLT", "R")], id.var = "Noms");
-  cpunts2 <- melt(difs[c("Noms","lecg","mtg","vpg","fmg","mltg", "rg")], id.var = "Noms");
-  cpunts <- data.frame(cpunts1, cpunts2[c("variable", "value")]);
-  #grafics_classe(cpunts, curs,'comp', 3);
-  grafics_nens(cpunts, curs, 'comp', escola);
-  
-  #gràfics normals intraclasse:
-  
-  ipunts <- inicialitzar_intra(puntso, prebarems);
-  length <- length(ipunts[,1]);
-  ipunts <- subset(ipunts, select = -c(2:7));
-  
-  punts_expi = ipunts[,c(1:7)];
-  
-  colnames(ipunts)[2:7] <- c("L", "MT", "VP", "FM", "MLT", "R")
-  ipunts1 <-  melt(ipunts[c("Noms","L", "MT", "VP", "FM", "MLT", "R")], id.var = "Noms");
-  ipunts2 <- melt(ipunts[c("Noms","lecg","mtg","vpg","fmg","mltg", "rg")], id.var = "Noms");
-  ipunts <- data.frame(ipunts1, ipunts2[c("variable", "value")]);
-  grafics_classe(ipunts, curs,'norm_intra',escola, 3);
-  
-  return(matriu(colnorm, colpred));
-}
-
-informe4 <- function(puntso, curs, prebarems, escola){
-  library(reshape2)
-  library(ggplot2)
-  for(i in 2:ncol(puntso)){
-    puntso[,i]=as.numeric(as.character(puntso[,i]));
-  }
-  
-  # gràfics normals globals
-  
-  # gràfics normals globals
-  
-  punts <- inicialitzar(puntso, prebarems);
-  length <- length(punts[,1]);
-  punts <- subset(punts, select = -c(2:7));
-  
-  punts_exp = punts[,c(1:7)];
-  colnorm = punts[,-c(2:7)];
-  
-  colnames(punts)[2:7] <- c("L", "MT", "VP", "FM", "MLT", "R");
-  punts1 <-  melt(punts[c("Noms", "L", "MT", "VP", "FM", "MLT",  "R")], id.var = "Noms");
-  punts2 <- melt(punts[c("Noms","lecg","mtg", "vpg","fmg","mltg", "rg")], id.var = "Noms");
-  punts <- data.frame(punts1, punts2[c("variable", "value")]);
-  grafics_classe(punts, curs, 'norm',escola, 4);
-  grafics_nens(punts, curs, 'norm', escola);
-  
-  # gràfics compensats globals
-  
-  cpunts <- inicialitzar_comp(puntso, prebarems);
-
-  length <- length(cpunts[,1]);
-  cpunts <- subset(cpunts, select = -c(2:7));
-  
-  difs=matrix(0, nrow = nrow(punts_exp), ncol = 7);
-  difs=data.frame(difs);
-  
-  colnames(difs) <- c("Noms", "lec", "mt", "vp", "fm", "mlt", "r");
-  
-  difs$Noms <- punts_exp$Noms;
-  
-  for (i in 2:7){
-    difs[,i]=punts_exp[,i]-cpunts[,i];  
-  }
-  
-  difs = colorejar(difs, prebarems);
-  colpred = difs[,-c(2:7)];
-  
-  difs[,c(2:7)]=cpunts[,-1];
-  
-  colnames(difs)[2:7] <- c("L", "MT", "VP", "FM", "MLT", "R")
-  cpunts1 <-  melt(difs[c("Noms","L", "MT", "VP", "FM", "MLT", "R")], id.var = "Noms");
-  cpunts2 <- melt(difs[c("Noms","lecg","mtg","vpg","fmg","mltg", "rg")], id.var = "Noms");
-  cpunts <- data.frame(cpunts1, cpunts2[c("variable", "value")]);
-  #grafics_classe(cpunts, curs,'comp', 4);
-  grafics_nens(cpunts, curs, 'comp', escola);
-  
-  #gràfics normals intraclasse:
-  
-  ipunts <- inicialitzar_intra(puntso, prebarems);
-  length <- length(ipunts[,1]);
-  ipunts <- subset(ipunts, select = -c(2:7));
-  
-  punts_expi = ipunts[,c(1:7)];
-  
-  colnames(ipunts)[2:7] <- c("L", "MT", "VP", "FM", "MLT", "R")
-  ipunts1 <-  melt(ipunts[c("Noms","L", "MT", "VP", "FM", "MLT", "R")], id.var = "Noms");
-  ipunts2 <- melt(ipunts[c("Noms","lecg","mtg","vpg","fmg","mltg", "rg")], id.var = "Noms");
-  ipunts <- data.frame(ipunts1, ipunts2[c("variable", "value")]);
-  grafics_classe(ipunts, curs,'norm_intra',escola, 4);
-  #grafics_nens(ipunts, curs, 'norm_intra');
-  
-  # gràfics compensats intraclasse
-  # 
-  # cipunts <- inicialitzar_comp_intra(puntso, prebarems);
-  # length <- length(cipunts[,1]);
-  # cipunts <- subset(cipunts, select = -c(2:7));
-  # 
-  # idifs=matrix(nrow= nrow(punts_exp), ncol = 7);
-  # idifs=data.frame(difs);
-  # 
-  # colnames(idifs) <- c("Noms", "lec", "mt", "vp", "fm", "mlt", "r");
-  # 
-  # idifs$Noms <- punts_expi$Noms;
-  # 
-  # for (i in 2:7){
-  #   idifs[,i]=punts_expi[,i]-cipunts[,i];  
-  # }
-  # 
-  # idifs = colorejar(idifs);
-  # colpred = difs[,-c(2:7)];
-  # 
-  # idifs[,c(2:7)]=cipunts[,-1];
-  # 
-  # colnames(cipunts)[2:7] <- c("L", "MT", "VP", "FM", "MLT", "R")
-  # cipunts1 <-  melt(cipunts[c("Noms","L", "MT", "VP", "FM", "MLT", "R")], id.var = "Noms");
-  # cipunts2 <- melt(cipunts[c("Noms","lecg","mtg","vpg","fmg","mltg", "rg")], id.var = "Noms");
-  # cipunts <- data.frame(cipunts1, cipunts2[c("variable", "value")]);
-  # grafics_classe(cipunts, curs,'comp_intra', 4);
-  # grafics_nens(cipunts, curs, 'comp_intra');
-  # 
-  return(matriu(colnorm, colpred));
-  
-}
-
-informe5 <- function(puntso, curs, prebarems, escola){
-  library(reshape2)
-  library(ggplot2)
-
-  for(i in 2:ncol(puntso)){
-    puntso[,i]=as.numeric(as.character(puntso[,i]));
-  }
-  
-  # gràfics normals globals
-  
-  punts <- inicialitzar(puntso, prebarems);
-  length <- length(punts[,1]);
-  punts <- subset(punts, select = -c(2:8));
-  
-  punts_exp = punts[,c(1:8)];
-  colnorm = punts[,-c(2:8)];
-  
-  colnames(punts)[2:8] <- c("L", "MT", "VP", "FM", "MLT", "R", "C");
-  punts1 <-  melt(punts[c("Noms", "L", "MT", "VP", "FM", "MLT",  "R", "C")], id.var = "Noms");
-  punts2 <- melt(punts[c("Noms","lecg","mtg", "vpg","fmg","mltg", "rg", "cg")], id.var = "Noms");
-  punts <- data.frame(punts1, punts2[c("variable", "value")]);
-  grafics_classe(punts, curs, 'norm',escola, 5);
-  grafics_nens(punts, curs, 'norm', escola);
-  
-  # gràfics compensats globals
-  
-  cpunts <- inicialitzar_comp(puntso, prebarems);
-  length <- length(cpunts[,1]);
-  cpunts <- subset(cpunts, select = -c(2:8));
-  
-  difs=matrix(nrow = nrow(punts_exp), ncol = 8);
-  difs=data.frame(difs);
-  
-  colnames(difs) <- c("Noms", "lec", "mt", "vp", "fm", "mlt", "r", "c");
-  
-  difs$Noms <- punts_exp$Noms;
-  
-  for (i in 2:8){
-     difs[,i]=punts_exp[,i]-cpunts[,i];   
-  }
-  
-  difs = colorejar(difs, prebarems);
-  colpred = difs[,-c(2:8)];
-  
-  difs[,c(2:8)]=cpunts[,-1];
-
-  colnames(difs)[2:8] <- c("L", "MT", "VP", "FM", "MLT", "R",'C')
-  cpunts1 <-  melt(difs[c("Noms","L", "MT", "VP", "FM", "MLT", "R",'C')], id.var = "Noms");
-  cpunts2 <- melt(difs[c("Noms","lecg","mtg","vpg","fmg","mltg", "rg",'cg')], id.var = "Noms");
-  cpunts <- data.frame(cpunts1, cpunts2[c("variable", "value")]);
-  #grafics_classe(cpunts, curs,'comp', 5);
-  grafics_nens(cpunts, curs, 'comp', escola);
-  
-  #gràfics normals intraclasse:
-  
-  ipunts <- inicialitzar_intra(puntso, prebarems);
-  length <- length(ipunts[,1]);
-  ipunts <- subset(ipunts, select = -c(2:8));
-  
-  punts_expi = ipunts[,c(1:8)];
-  
-  colnames(ipunts)[2:8] <- c("L", "MT", "VP", "FM", "MLT", "R",'C')
-  ipunts1 <-  melt(ipunts[c("Noms","L", "MT", "VP", "FM", "MLT", "R",'C')], id.var = "Noms");
-  ipunts2 <- melt(ipunts[c("Noms","lecg","mtg","vpg","fmg","mltg", "rg",'cg')], id.var = "Noms");
-  ipunts <- data.frame(ipunts1, ipunts2[c("variable", "value")]);
-  grafics_classe(ipunts, curs,'norm_intra', escola,5);
-  #grafics_nens(ipunts, curs, 'norm_intra');
-  
-  # gràfics compensats intraclasse
-  
-  # cipunts <- inicialitzar_comp_intra(puntso, prebarems);
-  # length <- length(cipunts[,1]);
-  # cipunts <- subset(cipunts, select = -c(2:8));
-  # 
-  # idifs=matrix(nrow= nrow(punts_exp), ncol = 8);
-  # idifs=data.frame(difs);
-  # 
-  # colnames(idifs) <- c("Noms", "lec", "mt", "vp", "fm", "mlt", "r",'c');
-  # 
-  # idifs$Noms <- punts_expi$Noms;
-  # 
-  # for (i in 2:8){
-  #   idifs[,i]=punts_expi[,i]-cipunts[,i];  
-  # }
-  # 
-  # idifs = colorejar(idifs);
-  # 
-  # idifs[,c(2:8)]=cipunts[,-1];
-  # 
-  # colnames(cipunts)[2:8] <- c("L", "MT", "VP", "FM", "MLT", "R",'C')
-  # cipunts1 <-  melt(cipunts[c("Noms","L", "MT", "VP", "FM", "MLT", "R",'C')], id.var = "Noms");
-  # cipunts2 <- melt(cipunts[c("Noms","lecg","mtg","vpg","fmg","mltg", "rg",'cg')], id.var = "Noms");
-  # cipunts <- data.frame(cipunts1, cipunts2[c("variable", "value")]);
-  # grafics_classe(cipunts, curs,'comp_intra', 5);
-  # grafics_nens(cipunts, curs, 'comp_intra');
-  
-  return(matriu(colnorm, colpred));
-  
-  
-}
-
-informe6 <- function(puntso, curs, prebarems, escola){
-  library(reshape2)
-  library(ggplot2)
-  
-  for(i in 2:ncol(puntso)){
-    puntso[,i]=as.numeric(as.character(puntso[,i]));
-  }
-  
-  # gràfics normals globals
-  
-  punts <- inicialitzar(puntso, prebarems);
-  length <- length(punts[,1]);
-  punts <- subset(punts, select = -c(2:8));
-  
-  punts_exp = punts[,c(1:8)];
-  colnorm = punts[,-c(2:8)]
-  
-  colnames(punts)[2:8] <- c("L", "MT", "VP", "FM", "MLT", "R", "C");
-  punts1 <-  melt(punts[c("Noms", "L", "MT", "VP", "FM", "MLT",  "R", "C")], id.var = "Noms");
-  punts2 <- melt(punts[c("Noms","lecg","mtg", "vpg","fmg","mltg", "rg", "cg")], id.var = "Noms");
-  punts <- data.frame(punts1, punts2[c("variable", "value")]);
-  grafics_classe(punts, curs, 'norm',escola, 6);
-  grafics_nens(punts, curs, 'norm', escola);
-  
-  # gràfics compensats globals
-  
-  cpunts <- inicialitzar_comp(puntso, prebarems);
-  length <- length(cpunts[,1]);
-  cpunts <- subset(cpunts, select = -c(2:8));
-  
-  difs=matrix(nrow= nrow(punts_exp), ncol = 8);
-  difs=data.frame(difs);
-  
-  colnames(difs) <- c("Noms", "lec", "mt", "vp", "fm", "mlt", "r",'c');
-  
-  difs$Noms <- punts_exp$Noms;
-  
-  for (i in 2:8){
-    difs[,i]=punts_exp[,i]-cpunts[,i];  
-  }
-  
-  difs = colorejar(difs, prebarems);
-  colpred = difs[,-c(2:8)]
-  
-  difs[,c(2:8)]=cpunts[,-1];
-  
-  colnames(difs)[2:8] <- c("L", "MT", "VP", "FM", "MLT", "R",'C')
-  cpunts1 <-  melt(difs[c("Noms","L", "MT", "VP", "FM", "MLT", "R",'C')], id.var = "Noms");
-  cpunts2 <- melt(difs[c("Noms","lecg","mtg","vpg","fmg","mltg", "rg",'cg')], id.var = "Noms");
-  cpunts <- data.frame(cpunts1, cpunts2[c("variable", "value")]);
-#  grafics_classe(cpunts, curs,'comp', 6);
-  grafics_nens(cpunts, curs, 'comp', escola);
-  
-  #gràfics normals intraclasse:
-  
-  ipunts <- inicialitzar_intra(puntso, prebarems);
-  length <- length(ipunts[,1]);
-  ipunts <- subset(ipunts, select = -c(2:8));
-  
-  punts_expi = ipunts[,c(1:8)];
-  
-  colnames(ipunts)[2:8] <- c("L", "MT", "VP", "FM", "MLT", "R",'C')
-  ipunts1 <-  melt(ipunts[c("Noms","L", "MT", "VP", "FM", "MLT", "R",'C')], id.var = "Noms");
-  ipunts2 <- melt(ipunts[c("Noms","lecg","mtg","vpg","fmg","mltg", "rg",'cg')], id.var = "Noms");
-  ipunts <- data.frame(ipunts1, ipunts2[c("variable", "value")]);
-  grafics_classe(ipunts, curs,'norm_intra', escola,6);
-  #grafics_nens(ipunts, curs, 'norm_intra');
-  
-  # gràfics compensats intraclasse
-  
-  # cipunts <- inicialitzar_comp_intra(puntso, prebarems);
-  # length <- length(cipunts[,1]);
-  # cipunts <- subset(cipunts, select = -c(2:8));
-  # 
-  # idifs=matrix(nrow= nrow(punts_exp), ncol = 8);
-  # idifs=data.frame(difs);
-  # 
-  # colnames(idifs) <- c("Noms", "lec", "mt", "vp", "fm", "MLT", "r",'c');
-  # 
-  # idifs$Noms <- punts_expi$Noms;
-  # 
-  # for (i in 2:8){
-  #   idifs[,i]=punts_expi[,i]-cipunts[,i];  
-  # }
-  # 
-  # idifs = colorejar(idifs);
-  # colpred = difs[,-c(2:8)];
-  # 
-  # idifs[,c(2:8)]=cipunts[,-1];
-  # 
-  # colnames(cipunts)[2:8] <- c("L", "MT", "VP", "FM", "MLT", "R",'C')
-  # cipunts1 <-  melt(cipunts[c("Noms","L", "MT", "VP", "FM", "MLT", "R",'C')], id.var = "Noms");
-  # cipunts2 <- melt(cipunts[c("Noms","lecg","mtg","vpg","fmg","mltg", "rg",'cg')], id.var = "Noms");
-  # cipunts <- data.frame(cipunts1, cipunts2[c("variable", "value")]);
-  # grafics_classe(cipunts, curs,'comp_intra', 6);
-  # grafics_nens(cipunts, curs, 'comp_intra');
-  # 
-  return(matriu(colnorm, colpred));
-}
-
-
 

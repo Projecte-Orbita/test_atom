@@ -55,7 +55,7 @@ dir.create(paste(getwd(), "/figures/", escola[2], "/", curs[1], sep ="" ));
 
 if(curs[2]==1)
 {prebarems <- read.csv('./barems/prebarems1.csv', header = FALSE);
-matrius <- c(matrius, list(informe(punts[,1:13], curs[1], prebarems, escola)));
+matrius <- c(matrius, list(informe(punts[,1:13], curs, prebarems, escola)));
 indeximps <- c(indeximps, list(errors(punts[,2:13])));}
 
 if(curs[2]==2)
@@ -65,24 +65,24 @@ indeximps <- c(indeximps, list(errors(punts[,2:13])));}
 
 if(curs[2]==3)
 {prebarems <- read.csv('./barems/prebarems3.csv', header = FALSE);
-matrius <- c(matrius, list(informe3(punts[,1:17], curs[1], prebarems, escola)));
+matrius <- c(matrius, list(informe(punts[,1:17], curs, prebarems, escola)));
 indeximps <- c(indeximps, list(errors(punts[,2:17])));}
 
 if(curs[2]==4)
 {prebarems <- read.csv('./barems/prebarems4.csv', header = FALSE);
-matrius <- c(matrius, list(informe4(punts[,1:17], curs[1], prebarems, escola)));
+matrius <- c(matrius, list(informe(punts[,1:17], curs, prebarems, escola)));
 indeximps <- c(indeximps, list(errors(punts[,2:17])));}
 
 
 if(curs[2]==5)
 {prebarems <- read.csv('./barems/prebarems5.csv', header = FALSE);
-matrius <- c(matrius, list(informe5(punts[,1:23], curs[1], prebarems, escola)));
+matrius <- c(matrius, list(informe(punts[,1:23], curs, prebarems, escola)));
 indeximps <- c(indeximps, list(errors(punts[,2:23])));}
 
 
 if(curs[2]==6)
 {prebarems <- read.csv('./barems/prebarems6.csv', header = FALSE);
-matrius <- c(matrius, list(informe6(punts[,1:23], curs[1], prebarems, escola)));
+matrius <- c(matrius, list(informe(punts[,1:23], curs, prebarems, escola)));
 indeximps <- c(indeximps, list(errors(punts[,2:23])));}
 
 

@@ -87,22 +87,22 @@ ggpbar <- function(nens, pos, punts, curs, tipus, escola){
 grafics_nens <- function(punts, curs, tipus, escola){
   
   for(i in seq(1,length(levels(unique(punts$Noms))),1)){
-    ggpbar(i, i, punts, curs, tipus, escola);
+    ggpbar(i, i, punts, curs[1], tipus, escola);
   }
   
 }
   
 ## plots de les proves conjuntes per tota la classe
 
-grafics_classe <- function(punts, curs, tipus, escola, i){
+grafics_classe <- function(punts, curs, tipus, escola){
   
-  grafic_base(punts = punts, curs = curs, titol = "Lectura",tipus, nom_plot = paste("lectura-", i,"-",tipus, sep = ""), escola, 1);
-  grafic_base(punts = punts, curs = curs,  titol = "Memòria de Treball",tipus, nom_plot = paste("mtp-", i,"-",tipus, sep =""),escola, 2); 
-  grafic_base(punts = punts, curs = curs,  titol = "Velocitat de Processament",tipus, nom_plot = paste("vp-", i,"-",tipus, sep =""),escola,3);
-  grafic_base(punts = punts, curs = curs,  titol = "Fluïdesa Matemàtica",tipus, nom_plot = paste("fluidesa-", i,"-",tipus, sep =""),escola,4);
-  grafic_base(punts = punts, curs = curs, titol = "Memòria a Llarg Termini",tipus, nom_plot = paste("mltp-", i,"-",tipus, sep =""),escola,5);
-  grafic_base(punts = punts, curs = curs,  titol = "Raonament",tipus, nom_plot = paste("raonament-", i,"-",tipus, sep =""),escola,6);
-  if (curs == 5 | curs == 6){
-    grafic_base(punts = punts, curs = curs,  titol = "Càlcul",tipus, nom_plot = paste("calcul-", i,"-", tipus, sep =""), escola,7);
+  grafic_base(punts = punts, curs = curs[1], titol = "Lectura",tipus, nom_plot = paste("lectura-", curs[2],"-",tipus, sep = ""), escola, 1);
+  grafic_base(punts = punts, curs = curs[1],  titol = "Memòria de Treball",tipus, nom_plot = paste("mtp-", curs[2],"-",tipus, sep =""),escola, 2); 
+  grafic_base(punts = punts, curs = curs[1],  titol = "Velocitat de Processament",tipus, nom_plot = paste("vp-", curs[2],"-",tipus, sep =""),escola,3);
+  grafic_base(punts = punts, curs = curs[1],  titol = "Fluïdesa Matemàtica",tipus, nom_plot = paste("fluidesa-", curs[2],"-",tipus, sep =""),escola,4);
+  grafic_base(punts = punts, curs = curs[1], titol = "Memòria a Llarg Termini",tipus, nom_plot = paste("mltp-", curs[2],"-",tipus, sep =""),escola,5);
+  grafic_base(punts = punts, curs = curs[1],  titol = "Raonament",tipus, nom_plot = paste("raonament-", curs[2],"-",tipus, sep =""),escola,6);
+  if (curs[2] == 5 | curs[2] == 6){
+    grafic_base(punts = punts, curs = curs[1],  titol = "Càlcul",tipus, nom_plot = paste("calcul-", curs[2],"-", tipus, sep =""), escola,7);
   }
 }
