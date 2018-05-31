@@ -2,3 +2,5 @@
 Aquest codi crea els informes automàtics del Test Àtom
 
 Actualment en construcció
+
+(només funional en sistemes Unix)
