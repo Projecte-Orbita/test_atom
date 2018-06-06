@@ -24,7 +24,7 @@ heading <- "\\documentclass[a4paper, 12pt, oneside]{book}%{article}
 \\definecolor{orbita}{rgb}{0.0235, 0.8275, 0.5921}
 
 \\usepackage{fancyhdr}
-
+\\usepackage{graphicx}
 \\pagestyle{fancy}
 \\fancyhf{}  
 \\lfoot{\\includegraphics[scale=0.3]{../../informe-atom-peu}}
@@ -44,6 +44,70 @@ heading <- "\\documentclass[a4paper, 12pt, oneside]{book}%{article}
 \\tableofcontents
 ";
 
+
+heading_classes <- "\\documentclass[a4paper, 12pt, oneside]{book}%{article}
+\\usepackage{framed}
+\\usepackage[left=3cm,right=3cm,top=2cm]{geometry}
+\\usepackage[sfdefault]{cabin}
+\\usepackage{graphicx,longtable}
+%\\usepackage[latin1]{inputenc}
+\\usepackage{amsmath}
+\\usepackage{color}
+\\usepackage{multicol}
+\\usepackage{flushend}
+\\usepackage{balance}
+\\usepackage{float}
+%\\usepackage{subfig}
+\\usepackage{subcaption}
+\\usepackage{enumitem}
+\\usepackage{titlesec}
+\\usepackage[final]{pdfpages}
+\\usepackage[T1]{fontenc}
+\\usepackage[latin1]{inputenc}   %paquet que serveix per poder escriure
+%els accents de forma normal en Linux
+%en Windows canvieu-ho per: \\usepackage[ansinew]{inputenc}
+\\usepackage[catalan]{babel}
+
+\\definecolor{orbita}{rgb}{0.0235, 0.8275, 0.5921}
+
+\\usepackage{fancyhdr}
+\\usepackage{graphicx}
+\\pagestyle{fancy}
+\\fancyhf{}  
+\\lfoot{\\includegraphics[scale=0.3]{../../informe-atom-peu}}
+\\rfoot{\\small \\thepage}
+
+\\setlength\\parindent{0pt}
+\\captionsetup[subfigure]{labelformat=empty}
+\\fancyfootoffset[LO,LE]{2cm}
+
+\\titleformat{\\chapter}[display]
+{\\normalfont\\huge\\bfseries}{}{0pt}{\\Huge}
+\\titlespacing*{\\chapter}
+{0pt}{10pt}{40pt}
+";
+
+titol_classes <- function(escola, classe){
+  cat(paste0(
+  "\\begin{titlepage}
+  \\newcommand{\\HRule}{\\rule{\\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+  \\center % Center everything on the page
+  
+  \\vspace*{3cm}
+  
+  \\textsc{\\LARGE Informe Test Àtom}\\\\[1.5cm] % Name of your university/college
+  \\textsc{\\Large ", escola[1], "}\\\\[0.5cm] % Major heading such as course name
+  
+  \\HRule \\\\[0.4cm]
+  { \\huge \\bfseries ", classe, "}\\\\[0.4cm] % Title of your document
+  \\HRule \\\\[1.5cm]
+  
+  \\vspace{5cm}
+  \\includegraphics[scale=0.3]{logo_orbita.png} % Include a department/university logo - this will require the graphicx package
+  \\vfill % Fill the rest of the page with whitespace
+  
+  \\end{titlepage}"));
+}
 
 lectura <- c("Lectura", "La tasca de lectura pret\\'{e}n avaluar la flu\"{i}desa lectora dels alumnes, tant a nivell de descodificaci\\'{o} com de comprensi\\'{o}.", "lectura");
 
@@ -97,7 +161,7 @@ Aquests dos conjunts estan destacats ja que estan formats pels alumnes amb m\\'{
 
 
 
-intro_part_individual<-function(){cat("
+intro_part_individual <- function(){cat("
 
 \\newpage
 
@@ -132,8 +196,6 @@ Abreviatures: \\\\
 \\end{itemize}
 
 ", sep = "")};
-
-
 
 #nom_classe = 1r de Prim\\`{a}ria, classe A
 
@@ -178,6 +240,18 @@ cat("
 
 ", sep = "")}
 
+group_head_classes <- function(classe, escola){
+  cat("
+      \\vspace{1.1cm}
+      \\section*{Informes col·lectius}
+      
+      %\\begin{framed}
+      %\\centering
+      %\\textbf{Classe ", classe, "} \\\\
+      %\\textbf{", escola, "} \\\\
+      %\\end{framed}
+      
+      ", sep = "")}
 
 individual_head <- function(nom, classe, escola){
 cat("

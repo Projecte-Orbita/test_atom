@@ -1,4 +1,5 @@
 
+
 predir <- function(punts, bar, predreg){
 
   grans = FALSE
@@ -141,13 +142,18 @@ predir_intra <- function(punts, bar, predreg){
 # matrius que treuen els resultats dels colors:
 
 matriu <- function(colnorm, colpred){
-
+  # colnorm i colexp es troben posant la línia   colnorm = punts[,-c(2:7)]; 
+  # just després de la punts_exp = punts[,c(1:7)]; i la línia
+  # colpred = difs[,-c(2:7)]; després de difs = colorejar(difs);
+  
   tot_nens = cbind(colnorm,colpred[,-c(1)]);
   tot_nens[is.na(tot_nens)==TRUE]=0;
   
   # inicialitzem la matriu: 
+  
   matlist <- vector("list", length(rownames(tot_nens)));
   names(matlist) = tot_nens[,1];
+  
   mat = matrix(0, nrow=(ncol(colnorm)-1), ncol=(ncol(colnorm)-1));
   
   if (ncol(mat)==6){
@@ -185,7 +191,7 @@ matriu <- function(colnorm, colpred){
         }
       } else if (tot_nens[i,j+1]=='A'){
         mat[j,j]=3;
-        if(tot_nens[i,j+num]=='L'){
+        if(tot_nens[i,j+7]=='L'){
           mat[j,j]=mat[j,j]+0;
         } else if (tot_nens[i,j+num]=='M'){
           mat[j,j]=mat[j,j]+0.1;
@@ -229,5 +235,9 @@ colorejar <- function(punts, barems){
                        function(x) ifelse(x < - bardif[7,2], "L", 
                                           ifelse(x > bardif[7,2], "N", "M")))
   }
+  
   return(punts);
+  
 }
+
+

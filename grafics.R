@@ -77,7 +77,7 @@ ggpbar <- function(nens, punts, curs, tipus, escola){
           axis.text.y = element_text(size=20),
           title = element_text(size=20),
           legend.position="none", 
-          strip.text.x = element_text(size = 20, face = "bold")
+          strip.text.x = element_text(size = 22, face = "bold")
     ) +
     scale_fill_manual(name = 'value.1', values = colors) + 
     geom_hline(yintercept=0.5) + 
