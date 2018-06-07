@@ -87,6 +87,49 @@ heading_classes <- "\\documentclass[a4paper, 12pt, oneside]{book}%{article}
 {0pt}{10pt}{40pt}
 ";
 
+heading_alumnes <- "\\documentclass[a4paper, 12pt, oneside]{book}%{article}
+\\usepackage{framed}
+\\usepackage[left=3cm,right=3cm,top=2cm]{geometry}
+\\usepackage[sfdefault]{cabin}
+\\usepackage{graphicx,longtable}
+%\\usepackage[latin1]{inputenc}
+\\usepackage{amsmath}
+\\usepackage{color}
+\\usepackage{multicol}
+\\usepackage{flushend}
+\\usepackage{balance}
+\\usepackage{float}
+%\\usepackage{subfig}
+\\usepackage{subcaption}
+\\usepackage{enumitem}
+\\usepackage{titlesec}
+\\usepackage[final]{pdfpages}
+\\usepackage[T1]{fontenc}
+\\usepackage[latin1]{inputenc}   %paquet que serveix per poder escriure
+%els accents de forma normal en Linux
+%en Windows canvieu-ho per: \\usepackage[ansinew]{inputenc}
+\\usepackage[catalan]{babel}
+
+\\definecolor{orbita}{rgb}{0.0235, 0.8275, 0.5921}
+
+\\usepackage{fancyhdr}
+\\usepackage{graphicx}
+\\pagestyle{fancy}
+\\fancyhf{}  
+\\lfoot{\\includegraphics[scale=0.3]{../../informe-atom-peu}}
+\\rfoot{\\small \\thepage}
+
+\\setlength\\parindent{0pt}
+\\captionsetup[subfigure]{labelformat=empty}
+\\fancyfootoffset[LO,LE]{2cm}
+
+\\titleformat{\\chapter}[display]
+{\\normalfont\\huge\\bfseries}{}{0pt}{\\Huge}
+\\titlespacing*{\\chapter}
+{0pt}{10pt}{40pt}
+";
+
+
 titol_classes <- function(escola, classe){
   cat(paste0(
   "\\begin{titlepage}
@@ -265,6 +308,17 @@ cat("
 
 ", sep = "")}
 
+individual_sol_head <- function(nom, nom_curs){
+  cat("
+      \\newpage
+      
+      \\begin{framed}
+      \\textbf{", nom, "} \\\\
+      \\textbf{", nom_curs, "} \\\\
+      \\end{framed}
+      
+      ", sep = "")}
+
 
 individual <- function(index, curs, punts, matrius, indeximp, escola){
 
@@ -297,6 +351,7 @@ cat("
 \\Large{\\textbf{Valoració Cognitiva i de Rendiment}} \\\\ 
 \\end{center}
 ", sep = "");
+
 
 
 informe_matrius(matrius[[as.character(names(matrius)[index])]], names(matrius)[index]);
@@ -335,3 +390,145 @@ if(futur_tier == TRUE){cat("Els resultats obtinguts ens permeten determinar que 
 }
 
 }
+
+individual_alumnes <- function(index, curs, punts, matrius, indeximp, escola){
+  
+  
+  cat("
+      \\vspace{1.2cm}
+      
+      
+      \\begin{figure}[H]
+      \\captionsetup[subfigure]{labelformat=empty}
+      \\begin{subfigure}{.5\\textwidth}
+      \\centering
+      \\includegraphics[width=7.5cm]{../../../figures/",escola[2],"/", curs[1], "/", index, "-norm}
+      \\end{subfigure}
+      \\begin{subfigure}{.5\\textwidth}
+      \\centering
+      \\includegraphics[width=7.5cm]{../../../figures/",escola[2],"/", curs[1], "/", index, "-comp}
+      \\end{subfigure}
+      \\caption{En el gràfic de l'esquerra veiem els resultats \\emph{mesurats} i a la dreta els \\emph{esperats}. Si hi ha resultats en vermell al gràfic de la dreta és perquè mesurem aquella habilitat més \\emph{baixa} que la predida, i per tant parlem d'una possible \\emph{dificultat específica}. En canvi, si estan en blau és perquè són més \\emph{alts} dels predits i per tant parlem d'un possible \\emph{talent}.}
+      \\end{figure}", sep="")
+  
+  #punts[is.na(punts[,ncol(punts)])]<-"";
+  if(!is.na(punts[index,ncol(punts)]) && as.character(punts[index,ncol(punts)])!=""){
+    text = as.character(punts[index,ncol(punts)]);
+    cat("\\textbf{Nota:} durant l'administració o la correcció del test s'ha anotat que ", text, ", fet pot afectar els resultats que observem i les conclusions que en traiem.", sep="")
+  }
+  
+  cat("
+      \\begin{center}
+      \\Large{\\textbf{Valoració Cognitiva i de Rendiment}} \\\\ 
+      \\end{center}
+      ", sep = "");
+  
+  
+  
+  informe_matrius(matrius[[as.character(names(matrius)[index])]], names(matrius)[index]);
+  
+  if(!is.na(indeximp[index]) & indeximp[index]>0.18){cat("
+                                                         Es valora que l'estil de resposta fortament tendent a la \\emph{impulsivitat} pot haver interferit negativament en els resultats obtinguts, havent acumulat una quantitat d'errors superior a la seva capacitat real d'execució.")}
+  
+  if(!is.na(indeximp[index]) & indeximp[index]<0.09){cat("
+                                                         Es valora que l'estil de resposta fortament tendent a la \\emph{reflexivitat} pot haver interferit negativament en els resultats obtinguts, havent buscat minimitzar la quantitat d'errors i mostrant un rendiment inferior a la seva capacitat real d'execució.")}
+  
+  cat("
+      
+      \\begin{center}
+      \\Large{\\textbf{Valoraci\\'{o} Adaptativa}} \\\\
+      \\end{center}
+      
+      ");
+  
+  if(curs[2] > 2){futur_em <- informe_emocional(index, punts);}
+  else{futur_em <- informe_emocional_petits(index, punts)};
+  
+  cat("
+      
+      
+      
+      \\begin{center}
+      \\Large{\\textbf{Orientacions}} \\\\
+      \\end{center} 
+      
+      ");
+  futur_tier <- informe_tier2(matrius[[index]], names(matrius)[index]);
+  if(futur_em == TRUE){cat("Es constaten alteracions emocionals que poden haver interferit en l'execució cognitiva i de rendiment exposada anteriorment. Per tant recomanem que es procedeixi a aprofundir en les causes d'aquestes alteracions emocionals abans de continuar l'exploració del perfil cognitiu.\\\\ ") 
+  }else{cat("No es constata interferència de l'estat emocional en els resultats obtinguts. \\\\")};
+  
+  if(futur_tier == TRUE){cat("Els resultats obtinguts ens permeten determinar que ", names(matrius)[index], " pot beneficiar-se de mesures metodològiques destinades a abordar les àrees prèviament comentades. ");
+  }
+  
+      }
+
+individual_alumnes_sol <- function(index, curs, punts, matrius, indeximp, escola){
+  
+  
+  cat("
+      \\vspace{1.2cm}
+      
+      
+      \\begin{figure}[H]
+      \\captionsetup[subfigure]{labelformat=empty}
+      \\begin{subfigure}{.5\\textwidth}
+      \\centering
+      \\includegraphics[width=7.5cm]{./norm.pdf}
+      \\end{subfigure}
+      \\begin{subfigure}{.5\\textwidth}
+      \\centering
+      \\includegraphics[width=7.5cm]{./comp.pdf}
+      \\end{subfigure}
+      \\caption{En el gràfic de l'esquerra veiem els resultats \\emph{mesurats} i a la dreta els \\emph{esperats}. Si hi ha resultats en vermell al gràfic de la dreta és perquè mesurem aquella habilitat més \\emph{baixa} que la predida, i per tant parlem d'una possible \\emph{dificultat específica}. En canvi, si estan en blau és perquè són més \\emph{alts} dels predits i per tant parlem d'un possible \\emph{talent}.}
+      \\end{figure}", sep="")
+  
+  #punts[is.na(punts[,ncol(punts)])]<-"";
+  if(!is.na(punts[index,ncol(punts)]) && as.character(punts[index,ncol(punts)])!=""){
+    text = as.character(punts[index,ncol(punts)]);
+    cat("\\textbf{Nota:} durant l'administració o la correcció del test s'ha anotat que ", text, ", fet pot afectar els resultats que observem i les conclusions que en traiem.", sep="")
+  }
+  
+  cat("
+      \\begin{center}
+      \\Large{\\textbf{Valoració Cognitiva i de Rendiment}} \\\\ 
+      \\end{center}
+      ", sep = "");
+  
+  
+  
+  informe_matrius(matrius[[as.character(names(matrius)[index])]], names(matrius)[index]);
+  
+  if(!is.na(indeximp[index]) & indeximp[index]>0.18){cat("
+                                                         Es valora que l'estil de resposta fortament tendent a la \\emph{impulsivitat} pot haver interferit negativament en els resultats obtinguts, havent acumulat una quantitat d'errors superior a la seva capacitat real d'execució.")}
+  
+  if(!is.na(indeximp[index]) & indeximp[index]<0.09){cat("
+                                                         Es valora que l'estil de resposta fortament tendent a la \\emph{reflexivitat} pot haver interferit negativament en els resultats obtinguts, havent buscat minimitzar la quantitat d'errors i mostrant un rendiment inferior a la seva capacitat real d'execució.")}
+  
+  cat("
+      
+      \\begin{center}
+      \\Large{\\textbf{Valoraci\\'{o} Adaptativa}} \\\\
+      \\end{center}
+      
+      ");
+  
+  if(curs[2] > 2){futur_em <- informe_emocional(index, punts);}
+  else{futur_em <- informe_emocional_petits(index, punts)};
+  
+  cat("
+      
+      
+      
+      \\begin{center}
+      \\Large{\\textbf{Orientacions}} \\\\
+      \\end{center} 
+      
+      ");
+  futur_tier <- informe_tier2(matrius[[index]], names(matrius)[index]);
+  if(futur_em == TRUE){cat("Es constaten alteracions emocionals que poden haver interferit en l'execució cognitiva i de rendiment exposada anteriorment. Per tant recomanem que es procedeixi a aprofundir en les causes d'aquestes alteracions emocionals abans de continuar l'exploració del perfil cognitiu.\\\\ ") 
+  }else{cat("No es constata interferència de l'estat emocional en els resultats obtinguts. \\\\")};
+  
+  if(futur_tier == TRUE){cat("Els resultats obtinguts ens permeten determinar que ", names(matrius)[index], " pot beneficiar-se de mesures metodològiques destinades a abordar les àrees prèviament comentades. ");
+  }
+  
+      }

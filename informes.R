@@ -101,3 +101,74 @@ informe <- function(puntso, curs, barems, escola){
   return(matriu(colnorm, colpred));
 }
 
+informe_individual_intern <- function(puntso, curs, barems, escola){
+  
+  for(i in 2:ncol(puntso)){
+    puntso[,i]=as.numeric(as.character(puntso[,i]));
+  }
+  
+  # mirem si són els grans.
+  
+  num = 7;
+  colnames_punts = c("L", "MT", "VP", "FM", "MLT", "R")
+  melt_punts1 = c("Noms", "L", "MT", "VP", "FM", "MLT",  "R")
+  melt_punts2 = c("Noms","lecg","mtg", "vpg","fmg","mltg", "rg")
+  colnames_difs = c("Noms", "lec", "mt", "vp", "fm", "mlt", "r");
+  
+  if(curs[2] == 5 | curs[2] == 6){
+    num = 8;
+    colnames_punts = c(colnames_punts, "C")
+    melt_punts1 = c(melt_punts1, "C" )
+    melt_punts2 = c(melt_punts2, "cg")
+    colnames_difs = c(colnames_difs, "c")
+  }
+  
+  # gràfics normals globals
+  
+  punts <- inicialitzar(puntso, barems);
+  
+  length <- length(punts[,1]);
+  punts <- subset(punts, select = -c(2:num));
+  
+  punts_exp = punts[,c(1:num)];
+  
+  colnorm = punts[,-c(2:num)];
+  
+  colnames(punts)[2:num] <- colnames_punts;
+  punts1 <- melt(punts[melt_punts1], id.var = "Noms");
+  punts2 <- melt(punts[melt_punts2], id.var = "Noms");
+  punts <- data.frame(punts1, punts2[c("variable", "value")]);
+#  grafics_classe(punts, curs, 'norm', escola);
+  grafics_nens_individual(punts, curs[1], 'norm', escola);
+  
+  # gràfics compensats globals
+  
+  cpunts <- inicialitzar_comp(puntso, barems);
+  length <- length(cpunts[,1]);
+  cpunts <- subset(cpunts, select = -c(2:num));
+  
+  difs=matrix(nrow= nrow(punts_exp), ncol = num);
+  difs=data.frame(difs);
+  
+  colnames(difs) <- colnames_difs;
+  
+  difs$Noms <- punts_exp$Noms;
+  
+  for (i in 2:num){
+    difs[,i]=punts_exp[,i]-cpunts[,i];  
+  }
+  
+  difs = colorejar(difs, barems);
+  colpred = difs[,-c(2:num)];
+  
+  difs[,c(2:num)]=cpunts[,-1];
+  
+  colnames(difs)[2:num] <- colnames_punts;
+  cpunts1 <- melt(difs[melt_punts1], id.var = "Noms");
+  cpunts2 <- melt(difs[melt_punts2], id.var = "Noms");
+  cpunts <- data.frame(cpunts1, cpunts2[c("variable", "value")]);
+  grafics_nens_individual(cpunts, curs[1], 'comp', escola);
+  
+  return(matriu(colnorm, colpred));
+}
+

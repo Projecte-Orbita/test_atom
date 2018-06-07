@@ -86,6 +86,46 @@ ggpbar <- function(nens, punts, curs, tipus, escola){
            dpi = 600, width = 8, height = 9, units = "in");
 }
 
+ggpbar_individual <- function(nens, punts, curs, tipus, escola){
+  
+  myColors <- c("#56B4E9", "#009E73", "#E69F00");
+  otherColors <- c("#D55E00", "#999999", "#0072B2");
+  
+#  punts = transform(punts, Noms = factor(Noms, levels= unique(Noms)));
+  if (tipus=='norm'|tipus == 'norm_intra'){
+    colors <- myColors;
+  } else {
+    colors <- otherColors;
+  }
+  
+  punts[['value.1']] <- factor(punts[['value.1']]);
+  names(colors) <- levels(punts[['value.1']]);
+  
+  ggplot(punts[punts$Noms %in% levels(punts$Noms)[nens],]) + 
+    geom_bar(stat='identity', 
+             aes(x = variable, y = value, fill=value.1)) + 
+    facet_wrap( ~ Noms, ncol=1, scales="free") +  
+    labs(title = ifelse(tipus=='norm','Resultat experimental',
+                        ifelse(tipus== 'norm_intra', 'Resultat experimental intraclasse',
+                               ifelse(tipus == 'comp', 'Resultat predit',
+                                      'Resultat predit intraclasse'))))  +
+    theme_minimal() +
+    theme(axis.title.x=element_blank(), 
+          axis.title.y=element_blank(), 
+          axis.title = element_blank(),
+          axis.text.x = element_text(size=20),
+          axis.text.y = element_text(size=20),
+          title = element_text(size=20),
+          legend.position="none", 
+          strip.text.x = element_text(size = 22, face = "bold")
+    ) +
+    scale_fill_manual(name = 'value.1', values = colors) + 
+    geom_hline(yintercept=0.5) + 
+    ylim(0, 1) +
+    ggsave(file = paste( "/informes_individuals/", punts[nens,1],"/", tipus, ".pdf", sep = ""), 
+           dpi = 600, width = 8, height = 9, units = "in");
+}
+
 grafics_nens <- function(punts, curs, tipus, escola){
   
   for(i in seq(1,length(levels(unique(punts$Noms))),1)){
@@ -93,6 +133,48 @@ grafics_nens <- function(punts, curs, tipus, escola){
   }
   
 }
+
+grafics_nens_individual <- function(punts, curs, tipus, escola){
+  
+  myColors <- c("#56B4E9", "#009E73", "#E69F00");
+  otherColors <- c("#D55E00", "#999999", "#0072B2");
+  
+  #  punts = transform(punts, Noms = factor(Noms, levels= unique(Noms)));
+  if (tipus=='norm'|tipus == 'norm_intra'){
+    colors <- myColors;
+  } else {
+    colors <- otherColors;
+  }
+  
+  punts[['value.1']] <- factor(punts[['value.1']]);
+  names(colors) <- levels(punts[['value.1']]);
+  
+  ggplot(punts) + 
+    geom_bar(stat='identity', 
+             aes(x = variable, y = value, fill=value.1)) + 
+    facet_wrap( ~ Noms, ncol=1, scales="free") +  
+    labs(title = ifelse(tipus=='norm','Resultat experimental',
+                        ifelse(tipus== 'norm_intra', 'Resultat experimental intraclasse',
+                               ifelse(tipus == 'comp', 'Resultat predit',
+                                      'Resultat predit intraclasse'))))  +
+    theme_minimal() +
+    theme(axis.title.x=element_blank(), 
+          axis.title.y=element_blank(), 
+          axis.title = element_blank(),
+          axis.text.x = element_text(size=20),
+          axis.text.y = element_text(size=20),
+          title = element_text(size=20),
+          legend.position="none", 
+          strip.text.x = element_text(size = 22, face = "bold")
+    ) +
+    scale_fill_manual(name = 'value.1', values = colors) + 
+    geom_hline(yintercept=0.5) + 
+    ylim(0, 1) +
+    ggsave(file = paste( "informes_individuals/", punts[1,1],"/", tipus, ".pdf", sep = ""), 
+           dpi = 600, width = 8, height = 9, units = "in");
+  
+}
+
   
 ## plots de les proves conjuntes per tota la classe
 
