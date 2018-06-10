@@ -1,0 +1,58 @@
+---
+title: "grafic_emocional"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+require(fmsb)
+set.seed(99)
+```
+
+```{r}
+# Create data: note in High school for several students
+
+data=as.data.frame(matrix( sample(0:20, 8 , replace=F) , ncol=4))
+data=as.data.frame(matrix( sample(4, 8, replace=T) , ncol=4))
+colnames(data)=c("Social" , "Familiar" , "Escolar" , "Personal")
+rownames(data)=c("Lleu" , "Greu")
+ 
+# To use the fmsb package, I have to add 2 lines to the dataframe: the max and min of each topic to show on the plot!
+data=rbind(rep(4,4) , rep(0,4) , data)
+ 
+groc = col2rgb("yellow2")
+groc_bo = rgb(groc[1],groc[2],groc[3],alpha = 120, maxColorValue = 255)
+vermell = col2rgb("red2",alpha = 0.5)
+vermell_bo = rgb(vermell[1],vermell[2],vermell[3],alpha = 120, maxColorValue = 255)
+
+#==================
+# Plot 1: Default radar chart proposed by the library:
+radarchart(data, 
+           pcol = c(vermell_bo, groc_bo),
+           pfcol= c(vermell_bo, groc_bo),
+           plty = c(1,1),
+           title="Riscs emocionals")
+legend(x = "topright", legend = c("Risc lleu", "Risc greu"), col = c(groc_bo, vermell_bo), seg.len = 1, border = "transparent", pch = 16, lty = 1, cex = 0.75)
+
+```
+
+Barplot:
+
+```{r}
+library(reshape2)
+library(ggplot2)
+dat = data[3:4,]
+#dat$row <- seq_len(nrow(dat))
+dat$color = c("yellow3", "red3")
+dat2 <- melt(dat, id.vars = "color")
+
+ggplot(dat2, aes(x=variable, y=value)) + 
+  geom_bar(stat="identity", fill=dat2$color) +
+  xlab("\nÀmbit") +
+  ylab("Risc\n") +
+  guides(fill=FALSE) +
+  labs(title = "Riscs emocionals i socials") +
+  coord_flip() +
+  theme_bw()
+
+```
