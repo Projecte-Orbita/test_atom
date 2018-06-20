@@ -3,7 +3,7 @@ taula_prova <- function(matriu, proves){
   cat("\\begin{center}
       \\begin{tabular}{|l|c|c|}
       \\hline
-      Habilitat & Barems universals & Barems de prediccions \\\\
+      Habilitat & Barem universal & Comparativa amb el resultat esperat \\\\
       \\hline
       \\hline
       ")
@@ -43,9 +43,9 @@ proves_cap <- c("Lectura", "Memòria de treball", "Velocitat de processament vis
 
 taula_prova(matriu, proves_cap);
 
-proves <- c("lectura", "memòria de treball", "velocitat de processament visual", "fluïdesa matemàtica", "memòria a llarg termini", "raonament", "càlcul");
+proves <- c("Lectura", "Memòria de Treball", "Velocitat de Processament Visual", "Fluïdesa Matemàtica", "Memòria a Llarg Termini", "Raonament", "Càlcul");
 
-cat("Considerant els resultats del/de la", name, ":
+cat("Considerant els resultats del/la", name, ":
 \\begin{itemize}
 ");
     for (j in 1:nrow(matriu)){   

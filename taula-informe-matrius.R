@@ -3,7 +3,7 @@ taula_prova <- function(matriu, proves){
 cat("\\begin{center}
 \\begin{tabular}{|l|c|c|}
 \\hline
-Habilitat & Barems universals & Barems de prediccions \\\\
+Habilitat & Barem universal & Comparativa amb resultat esperat \\\\
  \\hline
  \\hline
  ")

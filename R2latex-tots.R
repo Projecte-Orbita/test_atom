@@ -298,7 +298,7 @@ crear_informe_escola2 <- function(pre_escola){
       cat("\\newpage");}
   }
   cat("\\end{document}");
-  sink();}
+  sink();} # s'ha de repassar!
 
 informe_per_classes = function(pre_escola){
   
@@ -446,13 +446,90 @@ informe_per_classes = function(pre_escola){
     cat("\\newpage
         
         \\section*{Informes individuals}");
+
+# creem els gràfics d'emocional (en algun moment s'ha de passar a un altre fitxer i netejar)
+  
+for(i in 1:length(punts[,1])){
+  
+  nom = as.character(punts[i,1])
+  
+  if(curs[2] == 1 | curs[2] == 2){
+      dades = unname(unlist(punts[i, c(14:18)]))
+      valors = c(max(0,3-dades[1]), 
+                 max(0,3-dades[2]),
+                 max(0,3-dades[3]), 
+                 ifelse(dades[4] == 1 | dades[5] == 1, 2, 
+                        ifelse(dades[4] == 2 | dades[5] == 2, 1, 0))
+                 )
+  }
+  
+  else if(curs[2] == 3 | curs[2] == 4){
+    dades = unname(unlist(punts[i, c(18:33)]))
     
-    #punts <- read.csv(paste0("./dades2/", escola[2], "/", nom_fitxer), header = FALSE);
-    #punts <- hog_punts;
+    pre_valors = c(max(3-dades[1],0),        # m'agrada com sóc
+                   max(dades[2]-2,0),        # estic trist
+                   max(2-dades[3],0),        # crec que sé fer moltes coses
+                   max(dades[4]-2,0),        # m'enfado i em barallo
+                   min(max(3-dades[5],0),1), # m'agrada anar a l'escola
+                   min(max(dades[6]-2,0),1), # m'avorreixo a classe
+                   max(2-dades[7],0),        # trec bones notes
+                   max(2-dades[8],0),        # estudio i m'esforço
+                   max(3-dades[9],0),        # em cauen bé els meus companys
+                   max(dades[10]-2,0),       # els altres em molesten
+                   max(3-dades[11],0),       # m'agrada jugar amb els altres
+                   max(dades[12]-2,0),       # em costa fer amics
+                   max(3-dades[13],0),       # estic a gust a casa
+                   max(dades[14]-2,0),       # hi ha crits i discussions a casa
+                   min(max(3-dades[15],0),1), # estic d'acord amb les normes de casa
+                   min(max(4-dades[16],0),2)  # estimo els meus pares
+    )
+    valors = c()
     
+    for (j in 1:4){
+      valors[j] = sum(pre_valors[((j-1)*4 + 1):(j*4)])
+    }
+    
+    }
+  else if(curs[2] == 5 | curs[2] == 6){
+    dades = unname(unlist(punts[i, c(24:39)]))
+      
+      pre_valors = c(max(3-dades[1],0),        # m'agrada com sóc
+                     max(dades[2]-2,0),        # estic trist
+                     max(2-dades[3],0),        # crec que sé fer moltes coses
+                     max(dades[4]-2,0),        # m'enfado i em barallo
+                     min(max(3-dades[5],0),1), # m'agrada anar a l'escola
+                     min(max(dades[6]-2,0),1), # m'avorreixo a classe
+                     max(2-dades[7],0),        # trec bones notes
+                     max(2-dades[8],0),        # estudio i m'esforço
+                     max(3-dades[9],0),        # em cauen bé els meus companys
+                     max(dades[10]-2,0),       # els altres em molesten
+                     max(3-dades[11],0),       # m'agrada jugar amb els altres
+                     max(dades[12]-2,0),       # em costa fer amics
+                     max(3-dades[13],0),       # estic a gust a casa
+                     max(dades[14]-2,0),       # hi ha crits i discussions a casa
+                     min(max(3-dades[15],0),1), # estic d'acord amb les normes de casa
+                     min(max(4-dades[16],0),2)  # estimo els meus pares
+      )
+      valors = c()
+      
+      for (j in 1:4){
+        valors[j] = sum(pre_valors[((j-1)*4 + 1):(j*4)])
+      }
+  }
+      
+      arees = c("Personal", "Escolar", "Social", "Familiar")
+      df_emocional = as.data.frame(cbind(arees, valors))
+      
+      if (sum(valors)==0) next
+      
+      grafic_emocional(i, curs, df_emocional, escola, nom)
+      
+    }
+
     for(i in 1:length(punts[,1]))
     {
-      individual_head(names(matriu[[i]]), classe, escola[1][1]);
+      nom = as.character(names(matriu[i]))
+      individual_head(nom, classe, escola[1][1]);
       
       if(curs[2] == 1 | curs[2] == 2){
         individual(i, curs, punts[c(1,14:18,19)], matriu, indeximp[i], escola);}

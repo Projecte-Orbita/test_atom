@@ -10,7 +10,7 @@ informe_emocional_petits <- function(index, emocional){
   for (i in 2:(ncol(emocional))){
     par = 0;
     if (!is.na(emocional[index,i]) && emocional[index,i]==1){
-      cat("En/na ", as.character(emocional[index,1]), " mostra un \\emph{risc greu} de desadaptació en l'\\textbf{àmbit} ", ambit[i], " ja que ha marcat que ", frase[i], " molt trist.
+      cat("En/na ", as.character(emocional[index,1]), " mostra un \\emph{risc greu} de desadaptació en l'\\textbf{àmbit} ", ambit[i], " ja que ha indicat que ", frase[i], " molt trist.
           ", sep="")
       par=par+1;
       futur=TRUE;
@@ -20,12 +20,12 @@ informe_emocional_petits <- function(index, emocional){
   for (i in 2:(ncol(emocional))){
     if (par > 1){
       if (!is.na(emocional[index,i]) && emocional[index,i]==2){
-        cat("A més, també mostra un \\emph{risc moderat} de desadaptació en l'\\textbf{àmbit} ", ambit[i], " ja que ha marcat que ", frase[i], " trist.", sep="");
+        cat("A més, també mostra un \\emph{risc moderat} de desadaptació en l'\\textbf{àmbit} ", ambit[i], " ja que ha indicat que ", frase[i], " trist.", sep="");
         futur=TRUE;
       }
     }
     else {if (!is.na(emocional[index,i]) && emocional[index,i]==2){
-      cat("En/na ", as.character(emocional[index,1]), " mostra un \\emph{risc moderat} de desadaptació en l'\\textbf{àmbit} ", ambit[i], " ja que ha marcat que ", frase[i], " trist.", sep="");
+      cat("En/na ", as.character(emocional[index,1]), " mostra un \\emph{risc moderat} de desadaptació en l'\\textbf{àmbit} ", ambit[i], " ja que ha indicat que ", frase[i], " trist.", sep="");
       futur=TRUE;
     }
     }
@@ -103,7 +103,7 @@ informe_emocional <- function(index, emocional){
       afectat <- afectat + 1}
     
     if(length(greu) != 0){cat("\\item Factors de \\emph{risc greu}: El/la ", 
-                              as.character(emocional_nou[1]), " ha marcat que ", sep = "");               
+                              as.character(emocional_nou[1]), " ha indicat que ", sep = "");               
       if(length(greu) != 2){sapply(1:(floor(length(greu)/2)-1), 
                                    function (x) cat(greu[[2*x-1]], 
                           ambits[[(i-1)/4+1]][[2]][as.numeric(greu[[2*x]])], ", ", sep = ""));}
@@ -115,7 +115,7 @@ informe_emocional <- function(index, emocional){
     
     
     if(length(lleu) != 0){cat("\\item Factors de \\emph{risc lleu}: El/la ", 
-                              as.character(emocional_nou[1]), " ha marcat que ", sep = "");               
+                              as.character(emocional_nou[1]), " ha indicat que ", sep = "");               
       if(length(lleu) != 2){sapply(1:(floor(length(lleu)/2)-1), 
                                    function (x) cat(lleu[[2*x-1]], 
                           ambits[[(i-1)/4+1]][[2]][as.numeric(lleu[[2*x]])], ", ", sep = ""));}

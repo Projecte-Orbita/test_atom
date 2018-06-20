@@ -6,13 +6,13 @@ futur=FALSE;
 
   proves <- c("\\textbf{Lectura}", "\\textbf{Memòria de treball}", "\\textbf{Velocitat de processament visual}", "\\textbf{Fluïdesa matemàtica}", "\\textbf{Memòria a llarg termini}", "\\textbf{Raonament}", "\\textbf{Càlcul}");
   paraules <- list()
-  paraules[[1]] = c('\\textbf{lectura}', 'descodificació, de comprensió oral i escrita i de coneixement general de la llengua', 'descodificació, de comprensió oral i escrita i de coneixement general de la llengua, així com d\'hàbits lectors', 'a la lectura');
-  paraules[[2]] = c('\\textbf{memòria de treball}', 'capacitat atencional, memòria a curt termini, i més proves específiques de memòria de treball','capacitat atencional, memòria a curt termini, i més proves específiques de memòria de treball', 'a la memòria de treball');
-  paraules[[3]] = c('\\textbf{velocitat de processament visual}', 'percepció visual i de velocitat de processament però que no requereixin estímuls visuals','percepció visual i de velocitat de processament però que no requereixin estímuls visuals', ' a la velocitat de preocessament visual');
-  paraules[[4]] = c('\\textbf{fluïdesa matemàtica}', "de coneixement i automatització de les operacions aritmètiques bàsiques, percepció de magnituds i comparacions","  de raonament matemàtic i abstracte i habilitats matemàtiques avançades", 'a la fluïdesa matemàtica');
-  paraules[[5]] = c('\\textbf{memòria a llarg termini}', 'capacitat atencional, memòria a curt termini, i més proves específiques de memòria a llarg termini','capacitat atencional, memòria a curt termini, i més proves específiques de memòria a llarg termini', 'a la memòria a llarg termini');
-  paraules[[6]] = c('\\textbf{raonament}', 'resolució de problemes i de raonament en diferents formes: verbal, matemàtic i abstracte','resolució de problemes i de raonament en diferents formes: verbal, matemàtic i abstracte', 'al raonament');
-  paraules[[7]] = c('\\textbf{càlcul}', 'fluïdesa matemàtica i raonament matemàtic i abstracte','fluïdesa matemàtica, raonament matemàtic i abstracte i habilitats matemàtiques avançades', 'al càlcul');
+  paraules[[1]] = c('\\textbf{Lectura}', 'descodificació, de comprensió oral i escrita i de coneixement general de la llengua', 'descodificació, de comprensió oral i escrita i de coneixement general de la llengua, així com d\'hàbits lectors', 'a la Lectura');
+  paraules[[2]] = c('\\textbf{Memòria de Treball}', 'capacitat atencional, memòria a curt termini, i més proves específiques de memòria de treball','capacitat atencional, memòria a curt termini, i més proves específiques de memòria de treball', 'a la Memòria de Treball');
+  paraules[[3]] = c('\\textbf{Velocitat de Processament Visual}', 'percepció visual i de velocitat de processament però que no requereixin estímuls visuals','percepció visual i de velocitat de processament però que no requereixin estímuls visuals', ' a la Velocitat de Preocessament Visual');
+  paraules[[4]] = c('\\textbf{Fluïdesa Matemàtica}', "de coneixement i automatització de les operacions aritmètiques bàsiques, percepció de magnituds i comparacions","  de raonament matemàtic i abstracte i habilitats matemàtiques avançades", 'a la Fluïdesa Matemàtica');
+  paraules[[5]] = c('\\textbf{Memòria a Llarg Termini}', 'capacitat atencional, memòria a curt termini, i més proves específiques de memòria a llarg termini','capacitat atencional, memòria a curt termini, i més proves específiques de memòria a llarg termini', 'a la Memòria a Llarg Termini');
+  paraules[[6]] = c('\\textbf{Raonament}', 'resolució de problemes i de raonament en diferents formes: verbal, matemàtic i abstracte','resolució de problemes i de raonament en diferents formes: verbal, matemàtic i abstracte', 'al Raonament');
+  paraules[[7]] = c('\\textbf{Càlcul}', 'fluïdesa matemàtica i raonament matemàtic i abstracte','fluïdesa matemàtica, raonament matemàtic i abstracte i habilitats matemàtiques avançades', 'al càlcul');
   
   
 
@@ -21,7 +21,7 @@ if(prod(diag(matriu))==2.1**nrow(matriu)){
   cat("Tots els paràmetres entren dins la normalitat i per tant no és necessari continuar avaluant a nivell cognitiu. \\\\
       ", sep="")
 } else {
-    cat("Aquests resultats ens donen una idea general del perfil cognitiu i emocional del/de la:", name ," però per tal de tenir un coneixement més acurat de les seves necessitats educatives necessitem aprofundir en el dibuix d'aquest perfil. Els reusultats del/de la ", name ," indiquen doncs que les àrees a avaluar més profundament són les següents: 
+    cat("Aquests resultats ens donen una idea general del perfil cognitiu i emocional del/de la ", name ," però per tal de tenir un coneixement més acurat de les seves necessitats educatives necessitem aprofundir en el seu perfil. Els resultats del/de la ", name ," indiquen doncs que les àrees a avaluar més profundament són les següents: 
         
         \\begin{itemize}
         
@@ -60,7 +60,7 @@ if(prod(diag(matriu))==2.1**nrow(matriu)){
     cat("\\item Observem que els resultats en la \\textbf{memòria de treball} són \\textbf{alts}, així que podem estar parlant d'un talent específic en aquesta àrea. Per tant, des del Projecte Òrbita recomanem l'administració de proves de memòria a curt termini, així com més proves específiques de memòria de treball i també a llarg termini per acabar de confirmar aquest talent i tornar a comprovar si s'estén també a memòria a llarg termini.
         ", sep="")}
   else if(round(matriu[5,5])==3){
-    cat("\\item Observem que els resultats en la \\textbf{memòria a llarg temrini} són \\textbf{alts}, així que podem estar parlant d'un talent específic en aquesta àrea. Per tant, des del Projecte Òrbita recomanem l'administració de proves de memòria a curt termini, així com més proves específiques de memòria de treball i també a llarg termini per acabar de confirmar aquest talent i tornar a comprovar si s'estén també a memòria de treball.
+    cat("\\item Observem que els resultats en la \\textbf{memòria a llarg termini} són \\textbf{alts}, així que podem estar parlant d'un talent específic en aquesta àrea. Per tant, des del Projecte Òrbita recomanem l'administració de proves de memòria a curt termini, així com més proves específiques de memòria de treball i també a llarg termini per acabar de confirmar aquest talent i tornar a comprovar si s'estén també a memòria de treball.
         ", sep="") }
     
   nums = 1:nrow(matriu)

@@ -208,7 +208,8 @@ intro_part_individual <- function(){cat("
 
 \\newpage
 
-\\section{PART II: Resultats individuals} 
+%\\section{PART II: Resultats individuals} 
+\\section*{Resultats individuals} 
 
 En aquest apartat presentem els resultats individuals, presentant els resultats de cada alumne comparat amb un barem de refer\\`{e}ncia i els resultats compensats explicats anteriorment.
 
@@ -337,7 +338,9 @@ cat("
 \\centering
 \\includegraphics[width=7.5cm]{../../figures/",escola[2],"/", curs[1], "/", index, "-comp}
 \\end{subfigure}
-\\caption{En el gràfic de l'esquerra veiem els resultats \\emph{mesurats} i a la dreta els \\emph{esperats}. Si hi ha resultats en vermell al gràfic de la dreta és perquè mesurem aquella habilitat més \\emph{baixa} que la predida, i per tant parlem d'una possible \\emph{dificultat específica}. En canvi, si estan en blau és perquè són més \\emph{alts} dels predits i per tant parlem d'un possible \\emph{talent}.}
+%\\caption*{En el gràfic de l'esquerra veiem els resultats \\emph{mesurats} i a la dreta els \\emph{esperats}. Si hi ha resultats en vermell al gràfic de la dreta és perquè mesurem aquella habilitat més \\emph{baixa} que la predida, i per tant parlem d'una possible \\emph{dificultat específica}. En canvi, si estan en blau és perquè són més \\emph{alts} dels predits i per tant parlem d'un possible \\emph{talent}.}
+\\caption*{Al Gràfic 1 veiem els resultats obtinguts per l'alumne en comparació amb el barem universal de referència. El color verd indica que l'alumne es troba dins la mitjana estadística, mentre que el taronja indica que es troba significativament per sota d'aquesta (indicant una possible dificultat específica) i el blau que es troba a la franja superior (informant d'un possible talent). Al Gràfic 2 observem els resultats esperats per l'alumne segons la seva velocitat de processament, segons els resultats obtinguts a partir de l'Índex de Rapidesa mitjançant el Mètode Òrbita d'anàlisi estadístic. El color gris indica que no hi ha discrepància entre la puntuació obtinguda i la esperada, mentre que el vermell significa que el rendiment en aquesta habilitat és inferior a l'esperat (i per tant parlem d'un punt feble en el seu perfil intern) mentre que el blau informa d'una habilitat superior a la predita (i parlaríem d'un punt fort en el seu perfil intern).}
+    
 \\end{figure}", sep="")
 
   #punts[is.na(punts[,ncol(punts)])]<-"";
@@ -369,6 +372,22 @@ cat("
 \\end{center}
 
 ");
+
+########
+
+# aquí hi ha d'anar el gràfic d'emocional (si cal)
+destfile = paste0(getwd(),"/figures/",escola[2],"/", curs[1],  "/emocional-", index, ".pdf")
+if (file.exists(destfile)){
+
+cat("
+    \\begin{figure}[H]
+    \\centering
+    \\includegraphics[width=7.5cm]{../../figures/",escola[2],"/", curs[1], "/emocional-", index, ".pdf}
+    \\end{figure}", sep = ""
+    )
+}
+
+#######
 
 if(curs[2] > 2){futur_em <- informe_emocional(index, punts);}
 else{futur_em <- informe_emocional_petits(index, punts)};
