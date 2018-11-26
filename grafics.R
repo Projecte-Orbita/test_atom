@@ -26,8 +26,8 @@ grafic_base <- function(punts, curs, titol, tipus, nom_plot, escola, i){
     labs(title = titol, 
          subtitle= ifelse(tipus=='norm','Comparació barem universal',
                           ifelse(tipus== 'norm_intra','Comparació intra-classe',
-                                 ifelse(tipus == 'comp','Resultat predit',
-                                        'Resultat predit intraclasse')))) +
+                                 ifelse(tipus == 'comp','Resultat esperat',
+                                        'Resultat esperat intraclasse')))) +
     theme_minimal() +
     theme(axis.title.x=element_blank(), 
           axis.title.y=element_blank(),
@@ -65,10 +65,10 @@ ggpbar <- function(nens, punts, curs, tipus, escola){
     geom_bar(stat='identity', 
              aes(x = variable, y = value, fill=value.1)) + 
     facet_wrap( ~ Noms, ncol=1, scales="free") +  
-    labs(title = ifelse(tipus=='norm','Resultat experimental',
-                        ifelse(tipus== 'norm_intra', 'Resultat experimental intraclasse',
-                               ifelse(tipus == 'comp', 'Resultat predit',
-                                      'Resultat predit intraclasse'))))  +
+    labs(title = ifelse(tipus=='norm','Resultat observat',
+                        ifelse(tipus== 'norm_intra', 'Resultat observat intraclasse',
+                               ifelse(tipus == 'comp', 'Resultat esperat',
+                                      'Resultat esperat intraclasse'))))  +
     theme_minimal() +
     theme(axis.title.x=element_blank(), 
           axis.title.y=element_blank(), 
@@ -86,6 +86,46 @@ ggpbar <- function(nens, punts, curs, tipus, escola){
            dpi = 600, width = 8, height = 9, units = "in");
 }
 
+ggpbar_individual <- function(nens, punts, curs, tipus, escola){
+  
+  myColors <- c("#56B4E9", "#009E73", "#E69F00");
+  otherColors <- c("#D55E00", "#999999", "#0072B2");
+  
+#  punts = transform(punts, Noms = factor(Noms, levels= unique(Noms)));
+  if (tipus=='norm'|tipus == 'norm_intra'){
+    colors <- myColors;
+  } else {
+    colors <- otherColors;
+  }
+  
+  punts[['value.1']] <- factor(punts[['value.1']]);
+  names(colors) <- levels(punts[['value.1']]);
+  
+  ggplot(punts[punts$Noms %in% levels(punts$Noms)[nens],]) + 
+    geom_bar(stat='identity', 
+             aes(x = variable, y = value, fill=value.1)) + 
+    facet_wrap( ~ Noms, ncol=1, scales="free") +  
+    labs(title = ifelse(tipus=='norm','Resultat obtingut',
+                        ifelse(tipus== 'norm_intra', 'Resultat obtingut intraclasse',
+                               ifelse(tipus == 'comp', 'Resultat esperat',
+                                      'Resultat esperat intraclasse'))))  +
+    theme_minimal() +
+    theme(axis.title.x=element_blank(), 
+          axis.title.y=element_blank(), 
+          axis.title = element_blank(),
+          axis.text.x = element_text(size=20),
+          axis.text.y = element_text(size=20),
+          title = element_text(size=20),
+          legend.position="none", 
+          strip.text.x = element_text(size = 22, face = "bold")
+    ) +
+    scale_fill_manual(name = 'value.1', values = colors) + 
+    geom_hline(yintercept=0.5) + 
+    ylim(0, 1) +
+    ggsave(file = paste( "/informes_individuals/", punts[nens,1],"/", tipus, ".pdf", sep = ""), 
+           dpi = 600, width = 8, height = 9, units = "in");
+}
+
 grafics_nens <- function(punts, curs, tipus, escola){
   
   for(i in seq(1,length(levels(unique(punts$Noms))),1)){
@@ -93,6 +133,48 @@ grafics_nens <- function(punts, curs, tipus, escola){
   }
   
 }
+
+grafics_nens_individual <- function(punts, curs, tipus, escola){
+  
+  myColors <- c("#56B4E9", "#009E73", "#E69F00");
+  otherColors <- c("#D55E00", "#999999", "#0072B2");
+  
+  #  punts = transform(punts, Noms = factor(Noms, levels= unique(Noms)));
+  if (tipus=='norm'|tipus == 'norm_intra'){
+    colors <- myColors;
+  } else {
+    colors <- otherColors;
+  }
+  
+  punts[['value.1']] <- factor(punts[['value.1']]);
+  names(colors) <- levels(punts[['value.1']]);
+  
+  ggplot(punts) + 
+    geom_bar(stat='identity', 
+             aes(x = variable, y = value, fill=value.1)) + 
+    facet_wrap( ~ Noms, ncol=1, scales="free") +  
+    labs(title = ifelse(tipus=='norm','Resultat observat',
+                        ifelse(tipus== 'norm_intra', 'Resultat observat intraclasse',
+                               ifelse(tipus == 'comp', 'Resultat esperat',
+                                      'Resultat esperat intraclasse'))))  +
+    theme_minimal() +
+    theme(axis.title.x=element_blank(), 
+          axis.title.y=element_blank(), 
+          axis.title = element_blank(),
+          axis.text.x = element_text(size=20),
+          axis.text.y = element_text(size=20),
+          title = element_text(size=20),
+          legend.position="none", 
+          strip.text.x = element_text(size = 22, face = "bold")
+    ) +
+    scale_fill_manual(name = 'value.1', values = colors) + 
+    geom_hline(yintercept=0.5) + 
+    ylim(0, 1) +
+    ggsave(file = paste( "informes_individuals/", punts[1,1],"/", tipus, ".pdf", sep = ""), 
+           dpi = 600, width = 8, height = 9, units = "in");
+  
+}
+
   
 ## plots de les proves conjuntes per tota la classe
 
@@ -108,3 +190,46 @@ grafics_classe <- function(punts, curs, tipus, escola){
     grafic_base(punts = punts, curs = curs[1],  titol = "Càlcul",tipus, nom_plot = paste0("calcul-", curs[2],"-", tipus), escola,7);
   }
 }
+
+## gràfics per la part emocional
+
+grafic_emocional = function(index, curs, df_emocional, escola, nom){
+  # emocional és una matriu amb 7 columes: noms dels nens, les 5 pregunes d'emocional i 
+  # una altra columna buida al final que no sé què hi fa, suposo que ve amb les dades
+
+  paleta_personalitzada = c("#FFFFCC", "#FFEDA0", "#FEB24C", "#FEB24C", "#E31A1C", "#E31A1C", "#E31A1C", "#BD0026", "#800026")
+  
+  if (curs[2] == 1 | curs[2] == 2){
+    limy = c(0,2)
+    paleta = brewer.pal(2, "YlOrRd")
+    names(paleta) = seq(0,2) 
+  }
+  else {limy = c(0,9)
+  
+  paleta = paleta_personalitzada
+  names(paleta) = seq(1,9) 
+  }
+  
+  ggplot(df_emocional, aes(x = factor(arees, levels = arees[c(4,3,2,1)]), 
+                           y = as.numeric(as.character(valors)))) + 
+    geom_bar(stat="identity", aes(fill = df_emocional$valors)) + 
+ #   scale_fill_gradientn(colours = paleta[]) + 
+    scale_fill_manual(values = paleta) + 
+    theme_bw() +
+    theme(legend.position="none", 
+          axis.text.x=element_blank(),
+          axis.ticks.x=element_blank(),
+          title = element_text(size=20),
+          plot.subtitle=element_text(size=18),
+          axis.text.y = element_text(size = 18)) +
+    coord_flip() +
+    ylab("") +
+    ylim(limy) +
+    xlab("Àrea") +
+    labs(title = "Riscs emocionals", 
+         subtitle = nom) +
+    ggsave(file = paste("figures/", escola[2], "/", curs[1], "/emocional-", index, ".pdf", sep = ""), 
+           dpi = 600, width = 8, height = 6, units = "in") 
+}
+
+
