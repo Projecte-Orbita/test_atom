@@ -1,3 +1,5 @@
+Sys.setlocale(category="LC_ALL", locale = "Catalan")
+
 informe_tier2 <- function(matriu, name){
 
   require(psych);

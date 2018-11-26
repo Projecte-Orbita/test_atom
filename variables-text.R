@@ -1,3 +1,6 @@
+Sys.setlocale(category="LC_ALL", locale = "Catalan")
+
+
 heading <- "\\documentclass[a4paper, 12pt, oneside]{book}%{article}
 \\usepackage{framed}
 \\usepackage[left=3cm,right=3cm,top=2cm]{geometry}

@@ -1,3 +1,6 @@
+Sys.setlocale(category="LC_ALL", locale = "Catalan")
+
+
 taula_prova <- function(matriu, proves){
   
   cat("\\begin{center}

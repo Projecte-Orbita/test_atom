@@ -1,3 +1,6 @@
+Sys.setlocale(category="LC_ALL", locale = "Catalan")
+
+
 # an\`{a}lisi emocional cicles mitj\`{a} i superior
 
 # assumim que estem rebent una matriu de N_nensx17 amb totes les respostes d'emocional

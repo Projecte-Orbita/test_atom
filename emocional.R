@@ -1,3 +1,6 @@
+Sys.setlocale(category="LC_ALL", locale = "Catalan")
+
+
 # petits:
 
 informe_emocional_petits <- function(index, emocional){  
