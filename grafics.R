@@ -2,7 +2,20 @@ library(reshape2)
 library(ggplot2)
 
 
-# Aquest és el plot mare per tal de fer els plots de barres
+## Gràfics de classes:
+
+grafics_classe <- function(punts, curs, tipus, escola){
+  
+  grafic_base(punts = punts, curs = curs[1], titol = "Lectura",tipus, nom_plot = paste0("lectura-", curs[2],"-",tipus), escola, 1);
+  grafic_base(punts = punts, curs = curs[1],  titol = "Memòria de Treball",tipus, nom_plot = paste0("mtp-", curs[2],"-",tipus),escola, 2); 
+  grafic_base(punts = punts, curs = curs[1],  titol = "Velocitat de Processament",tipus, nom_plot = paste0("vp-", curs[2],"-",tipus),escola,3);
+  grafic_base(punts = punts, curs = curs[1],  titol = "Fluïdesa Matemàtica",tipus, nom_plot = paste0("fluidesa-", curs[2],"-",tipus),escola,4);
+  grafic_base(punts = punts, curs = curs[1], titol = "Memòria a Llarg Termini",tipus, nom_plot = paste0("mltp-", curs[2],"-",tipus),escola,5);
+  grafic_base(punts = punts, curs = curs[1],  titol = "Raonament",tipus, nom_plot = paste0("raonament-", curs[2],"-",tipus),escola,6);
+  if (curs[2] == 5 | curs[2] == 6){
+    grafic_base(punts = punts, curs = curs[1],  titol = "Càlcul",tipus, nom_plot = paste0("calcul-", curs[2],"-", tipus), escola,7);
+  }
+}
 
 grafic_base <- function(punts, curs, titol, tipus, nom_plot, escola, i){
   
@@ -36,7 +49,8 @@ grafic_base <- function(punts, curs, titol, tipus, nom_plot, escola, i){
           title=element_text(size = 20),
           #subtitle = element_text(size=15),
           #text = element_text(size=20), 
-          plot.title = element_text(lineheight=.8, face="bold"), 
+          #plot.title = element_text(lineheight=.8, face="bold"),
+          plot.title = element_blank(),
           legend.position="none") + 
     #ggtitle(titol) + 
     scale_fill_manual(name='value.1', values=colors) + 
@@ -45,6 +59,8 @@ grafic_base <- function(punts, curs, titol, tipus, nom_plot, escola, i){
     ggsave(file = paste("figures/", escola[2], "/", curs, "/", nom_plot, ".pdf", sep = ""), 
            dpi = 600, width = 8, height = 6, units = "in") 
 }
+
+## Gràfics helpers d'individuals
 
 ggpbar <- function(nens, punts, curs, tipus, escola){
   
@@ -77,7 +93,9 @@ ggpbar <- function(nens, punts, curs, tipus, escola){
           axis.text.y = element_text(size=20),
           title = element_text(size=20),
           legend.position="none", 
-          strip.text.x = element_text(size = 22, face = "bold")
+          strip.background = element_blank(),
+          strip.text.x = element_blank()
+          #strip.text.x = element_text(size = 22, face = "bold")
     ) +
     scale_fill_manual(name = 'value.1', values = colors) + 
     geom_hline(yintercept=0.5) + 
@@ -125,6 +143,8 @@ ggpbar_individual <- function(nens, punts, curs, tipus, escola){
     ggsave(file = paste( "/informes_individuals/", punts[nens,1],"/", tipus, ".pdf", sep = ""), 
            dpi = 600, width = 8, height = 9, units = "in");
 }
+
+## Gràfics d'individuals
 
 grafics_nens <- function(punts, curs, tipus, escola){
   
@@ -175,22 +195,6 @@ grafics_nens_individual <- function(punts, curs, tipus, escola){
   
 }
 
-  
-## plots de les proves conjuntes per tota la classe
-
-grafics_classe <- function(punts, curs, tipus, escola){
-  
-  grafic_base(punts = punts, curs = curs[1], titol = "Lectura",tipus, nom_plot = paste0("lectura-", curs[2],"-",tipus), escola, 1);
-  grafic_base(punts = punts, curs = curs[1],  titol = "Memòria de Treball",tipus, nom_plot = paste0("mtp-", curs[2],"-",tipus),escola, 2); 
-  grafic_base(punts = punts, curs = curs[1],  titol = "Velocitat de Processament",tipus, nom_plot = paste0("vp-", curs[2],"-",tipus),escola,3);
-  grafic_base(punts = punts, curs = curs[1],  titol = "Fluïdesa Matemàtica",tipus, nom_plot = paste0("fluidesa-", curs[2],"-",tipus),escola,4);
-  grafic_base(punts = punts, curs = curs[1], titol = "Memòria a Llarg Termini",tipus, nom_plot = paste0("mltp-", curs[2],"-",tipus),escola,5);
-  grafic_base(punts = punts, curs = curs[1],  titol = "Raonament",tipus, nom_plot = paste0("raonament-", curs[2],"-",tipus),escola,6);
-  if (curs[2] == 5 | curs[2] == 6){
-    grafic_base(punts = punts, curs = curs[1],  titol = "Càlcul",tipus, nom_plot = paste0("calcul-", curs[2],"-", tipus), escola,7);
-  }
-}
-
 ## gràfics per la part emocional
 
 grafic_emocional = function(index, curs, df_emocional, escola, nom){
@@ -226,8 +230,8 @@ grafic_emocional = function(index, curs, df_emocional, escola, nom){
     ylab("") +
     ylim(limy) +
     xlab("Àrea") +
-    labs(title = "Riscs emocionals", 
-         subtitle = nom) +
+    labs(title = "Riscs emocionals") 
+ #        subtitle = nom) +
     ggsave(file = paste("figures/", escola[2], "/", curs[1], "/emocional-", index, ".pdf", sep = ""), 
            dpi = 600, width = 8, height = 6, units = "in") 
 }

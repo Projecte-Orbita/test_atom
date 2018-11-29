@@ -14,13 +14,14 @@ taula_prova <- function(matriu, proves){
   for (j in 1:nrow(matriu)){
     cat("\\textbf{", proves[j], "} & ");   
     if (round(matriu[j,j])==0){cat("no l'ha fet & no l'ha fet \\\\")}
+    
     if (round(matriu[j,j]) == 1){cat("\\textbf{valors baixos} & ")};
     
     if (matriu[j,j] == 1.0){cat("\\textbf{valors baixos} \\\\ ")};
     if (matriu[j,j] == 1.1){cat("valors esperats \\\\")};
     if (matriu[j,j] == 1.2){cat("\\textbf{valors alts} \\\\ ")};
     
-    if (round(matriu[j,j]) == 2){cat("valors esperats & ")};
+    if (round(matriu[j,j]) == 2){cat("valors mitjans & ")};
     
     if (matriu[j,j] == 2.0){cat("\\textbf{valors baixos} \\\\ ")};
     if (matriu[j,j] == 2.1){cat("valors esperats \\\\")};
@@ -40,11 +41,6 @@ taula_prova <- function(matriu, proves){
   }
 
 informe_matrius <- function(matriu, name){
-
-proves_cap <- c("Lectura", "Memòria de treball", "Velocitat de processament visual", "Fluïdesa matemàtica", "Memòria a llarg termini", "Raonament", "Càlcul");
-
-
-taula_prova(matriu, proves_cap);
 
 proves <- c("Lectura", "Memòria de Treball", "Velocitat de Processament Visual", "Fluïdesa Matemàtica", "Memòria a Llarg Termini", "Raonament", "Càlcul");
 
@@ -66,7 +62,7 @@ cat("Considerant els resultats del/la", name, ":
 
         if (round(matriu[j,j]) == 3){cat("
 \\item S'observen valors \\textbf{alts} respecte la mitjana en l'àrea de \\textbf{", proves[j], "}; ",  sep = "")};
-         if (matriu[j,j] == 3.0){cat("tenint en compte l'anàlisi Òrbita, s'evidencien certes dificultats respecte els resultats esperats, però no són rellevants. ")};
+         if (matriu[j,j] == 3.0){cat("tenint en compte l'anàlisi Òrbita, s'evidencien certes dificultats respecte els resultats esperats, però no els considerem significatius. ")};
         #if (matriu[j,j] == 3.1){cat("tenint en compte l'anàlisi Òrbita, els resultats són dins els valors esperats. ")};
         if (matriu[j,j] == 3.2){cat("tenint en compte l'anàlisi Òrbita, s'evidencia un \\textbf{talent} respecte els valors esperats. ")};}
 

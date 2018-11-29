@@ -192,7 +192,7 @@ matriu <- function(colnorm, colpred){
         }
       } else if (tot_nens[i,j+1]=='A'){
         mat[j,j]=3;
-        if(tot_nens[i,j+7]=='L'){
+        if(tot_nens[i,j+num]=='L'){
           mat[j,j]=mat[j,j]+0;
         } else if (tot_nens[i,j+num]=='M'){
           mat[j,j]=mat[j,j]+0.1;

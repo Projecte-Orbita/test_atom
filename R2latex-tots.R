@@ -500,12 +500,10 @@ informe_per_classes = function(pre_escola){
     cat("\\newpage
         
         \\section*{Informes individuals}");
-<<<<<<< HEAD
-    
+
     punts <- read.csv(paste0("./dades/", escola[2], "/", nom_fitxer), header = FALSE, encoding = "UTF-8");
     #punts <- hog_punts;
     
-=======
 
 # creem els gràfics d'emocional (en algun moment s'ha de passar a un altre fitxer i netejar)
   
@@ -586,7 +584,6 @@ for(i in 1:length(punts[,1])){
       
     }
 
->>>>>>> b7d868067b228e0a26d36505697b9eced6110ad7
     for(i in 1:length(punts[,1]))
     {
       nom = as.character(names(matriu[i]))
