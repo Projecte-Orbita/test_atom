@@ -52,7 +52,6 @@ pretractar_excels <-function(path, nom_carpeta){
 }
 
 
-
 crear_informe_escola <- function(cursos, classes, escola){
 
 source('./informes.R', encoding = "UTF-8");           # fa els càlculs i els gràfics

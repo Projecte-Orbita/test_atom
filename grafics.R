@@ -49,8 +49,8 @@ grafic_base <- function(punts, curs, titol, tipus, nom_plot, escola, i){
           title=element_text(size = 20),
           #subtitle = element_text(size=15),
           #text = element_text(size=20), 
-          #plot.title = element_text(lineheight=.8, face="bold"),
-          plot.title = element_blank(),
+          plot.title = element_text(lineheight=.8, face="bold"),
+          #plot.title = element_blank(),
           legend.position="none") + 
     #ggtitle(titol) + 
     scale_fill_manual(name='value.1', values=colors) + 
