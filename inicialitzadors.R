@@ -23,6 +23,7 @@ afegir_errors <- function(punts){
   #traiem els errors:
   
   for (i in 1:((ncol(punts)-1)/2) ){
+    punts[2*i+1][is.na(punts[2*i+1])]=0 # posem 0 als errors si la columna és buida
     punts[2*i] <- punts[2*i]-coef[i]*punts[2*i+1];
   }
   return(punts);

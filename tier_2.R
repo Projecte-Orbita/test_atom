@@ -33,7 +33,7 @@ if(prod(diag(matriu))==2.1**nrow(matriu)){
       # tota la resta: 
       
       if(round(matriu[3,3])==1 & round(matriu[4,4])==1){
-        cat("\\item Hem observat que l' \\textbf{Índex de Rapidesa} és \\textbf{baix} en el cas del/de la ", name, " i per tant això ens condiciona els altres resultats. Així doncs, l'acció més immediata a prendre és determinar-ne les causes. Per tant, des del Projecte Òrbita recomanem l'administració de proves específiques de funcions executives, en concret de proves atencionals per tal de detectar possibles afectacions de la capacitat de concentració i de la memòria a curt termini. A més a més, també recomanem l'administració de proves d'estat emocional i adaptatiu i de funció motora per tal de descartar que hi hagi factors externs als purament cognitius que ens puguin estar afectant el resultat.
+        cat("\\item Hem observat que la \\textbf{velocitat de processament intrínseca} és \\textbf{baixa} en el cas del/de la ", name, " i per tant això ens condiciona els altres resultats. Així doncs, l'acció més immediata a prendre és determinar-ne les causes. Per tant, des del Projecte Òrbita recomanem l'administració de proves específiques de funcions executives, en concret de proves atencionals per tal de detectar possibles afectacions de la capacitat de concentració i de la memòria a curt termini. A més a més, també recomanem l'administració de proves d'estat emocional i adaptatiu i de funció motora per tal de descartar que hi hagi factors externs als purament cognitius que ens puguin estar afectant el resultat.
             ", sep="")
         future = TRUE
       }
@@ -80,8 +80,8 @@ if(prod(diag(matriu))==2.1**nrow(matriu)){
                                   ",sep="");
 futur=TRUE;
 };
-      if (matriu[j,j] == 1.1){cat(" els resultats són \\textbf{baixos}, però l'anàlisi del perfil ens indica que probablement no estem parlant d'una dificultat específica, i per tant, tot i que sí que necessita una atenció personalitzada en aquest àmbit, no creiem que l'acció més immediata en aquest punt sigui continuar aprofundint en les habilitats subjacents ", paraules[[j]][4],". 
-                                  ",sep="")};
+      if (matriu[j,j] == 1.1){cat(" el rendiment és \\textbf{baix}. L'anàlisi Òrbita indica que aquest resultat concorda amb el perfil general i per tant probablement no estem parlant d'una dificultat específica. De totes maneres, es poden administrar més proves de ", paraules[[j]][2]," per conèixer les causes amb més profunditat. A banda, concloem que es necessita una atenció personalitzada en aquest àmbit ja que no pot seguir amb normalitat el ritme de classe. 
+                                 ",sep="")};
       if (matriu[j,j] == 1.2){cat(" tot i que aquest valor és superior a l'esperat, no es necessita un aprofundiment en el coneixement de les habilitats subjacents, però sí una atenció individualitzada a l'aula.
                                   ",sep="")};
       
@@ -95,9 +95,9 @@ futur=TRUE;};
       if (round(matriu[j,j]) == 3){cat("\\item En ", paraules[[j]][1]," hem vist que s'observen resultats molt \\textbf{alts}. ", sep="")};
       if (matriu[j,j] == 3.0){cat("Aquests són significativament inferiors als predits per l'anàlisi Òrbita; tot i així aquest fet no és significatiu i no requereix de més acció.
                                   ",sep="")};
-      if (matriu[j,j] == 3.1){cat("Aquests són els esperats per l'anàlisi Òrbita, però tot i així podríem estar parlant de rendiment molt alt, i pot ser convenient l'administració de proves de ", paraules[[j]][1],". És per això que reconamen l'administració de proves de ", paraules[[j]][3], " per tal d'aprofundir en les habilitats relacionades amb ", paraules[[j]][4], ".
+      if (matriu[j,j] == 3.1){cat("Aquests són els esperats per l'anàlisi Òrbita, però tot i així estem observant un rendiment molt alt, i pot ser convenient l'administració de proves de ", paraules[[j]][1],". És per això que reconamen l'administració de proves de ", paraules[[j]][3], " per tal d'aprofundir en les habilitats relacionades amb ", paraules[[j]][4], ". A banda, concloem que es necessita una atenció personalitzada en aquest àmbit ja que supera amb escreix el nivell mitjà de classe i per tant es podria avorrir.
                                   ",sep="")};
-      if (matriu[j,j] == 3.2){cat("A més a més, sospitem un talent en la ", paraules[[j]][1],". És per això que reconamen l'administració de proves de ", paraules[[j]][3], " per tal de confirmar o descartar aquest talent.
+      if (matriu[j,j] == 3.2){cat("A més a més, sospitem un talent en la ", paraules[[j]][1],". És per això que reconamen l'administració de proves de ", paraules[[j]][3], " per tal de confirmar o descartar aquest talent. A banda, concloem que es necessita una atenció personalitzada en aquest àmbit ja que supera amb escreix el nivell mitjà de classe i per tant es podria avorrir.
                                   ",sep="")};
   }
   

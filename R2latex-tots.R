@@ -1,14 +1,15 @@
 Sys.setlocale(category="LC_ALL", locale = "Catalan")
 
 pretractar_excels <-function(path, nom_carpeta){
+  require(readxl)
   noms = excel_sheets(path = path)
-  classes = lapply(excel_sheets(path), as.data.frame(read_excel), path = path)
+  classes = lapply(excel_sheets(path), read_excel, path = path)
   cursos = sapply(strsplit(noms, ""), head, 1)
   numeros_classe = sapply(strsplit(noms, ""), tail, 1)
   noms_fitxers = paste0(cursos, numeros_classe)
-  
+  classes = sapply(classes, as.data.frame)
   # mirem quins tenen dades:  
-  numero_nens_per_classe = sapply(classes, function(x) length(x$value.Nom))
+  numero_nens_per_classe = sapply(classes, function(x) length(x$Nom))
   
   # posem un filtre pels valors que no tenen dades o en tenen poques, perquè aniran a part:
   
@@ -577,7 +578,10 @@ for(i in 1:length(punts[,1])){
       arees = c("Personal", "Escolar", "Social", "Familiar")
       df_emocional = as.data.frame(cbind(arees, valors))
       
-      if (sum(valors)==0) next
+      valors_nets = valors
+      valors_nets[is.na(valors)]=0 # Aquesta línia i l'anterior són per tractar missings
+      # TODO: arreglar-ho més amunt i millor
+      if (sum(valors_nets)==0) next
       
       grafic_emocional(i, curs, df_emocional, escola, nom)
       

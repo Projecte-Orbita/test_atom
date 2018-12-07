@@ -1,5 +1,6 @@
-library(reshape2)
-library(ggplot2)
+require(reshape2)
+require(ggplot2)
+require( RColorBrewer)
 
 
 ## Gràfics de classes:
