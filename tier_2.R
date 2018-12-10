@@ -95,9 +95,9 @@ futur=TRUE;};
       if (round(matriu[j,j]) == 3){cat("\\item En ", paraules[[j]][1]," hem vist que s'observen resultats molt \\textbf{alts}. ", sep="")};
       if (matriu[j,j] == 3.0){cat("Aquests són significativament inferiors als predits per l'anàlisi Òrbita; tot i així aquest fet no és significatiu i no requereix de més acció.
                                   ",sep="")};
-      if (matriu[j,j] == 3.1){cat("Aquests són els esperats per l'anàlisi Òrbita, però tot i així estem observant un rendiment molt alt, i pot ser convenient l'administració de proves de ", paraules[[j]][1],". És per això que reconamen l'administració de proves de ", paraules[[j]][3], " per tal d'aprofundir en les habilitats relacionades amb ", paraules[[j]][4], ". A banda, concloem que es necessita una atenció personalitzada en aquest àmbit ja que supera amb escreix el nivell mitjà de classe i per tant es podria avorrir.
+      if (matriu[j,j] == 3.1){cat("Aquests són els esperats per l'anàlisi Òrbita, però tot i així estem observant un rendiment molt alt, i pot ser convenient l'administració de proves de ", paraules[[j]][1],". És per això que recomanem l'administració de proves de ", paraules[[j]][3], " per tal d'aprofundir en les habilitats relacionades amb ", paraules[[j]][4], ". A banda, concloem que es necessita una atenció personalitzada en aquest àmbit ja que supera amb escreix el nivell mitjà de classe i per tant pot necessitar estratègies addicionals que s'adaptin al seu ritme d'aprenentatge.
                                   ",sep="")};
-      if (matriu[j,j] == 3.2){cat("A més a més, sospitem un talent en la ", paraules[[j]][1],". És per això que reconamen l'administració de proves de ", paraules[[j]][3], " per tal de confirmar o descartar aquest talent. A banda, concloem que es necessita una atenció personalitzada en aquest àmbit ja que supera amb escreix el nivell mitjà de classe i per tant es podria avorrir.
+      if (matriu[j,j] == 3.2){cat("A més a més, sospitem un talent en la ", paraules[[j]][1],". És per això que recomanem l'administració de proves de ", paraules[[j]][3], " per tal de confirmar aquest talent. A banda, concloem que es necessita una atenció personalitzada en aquest àmbit ja que supera amb escreix el nivell mitjà de classe i per tant pot necessitar estratègies addicionals que s'adaptin al seu ritme d'aprenentatge.
                                   ",sep="")};
   }
   
@@ -119,7 +119,7 @@ futur=TRUE;};
        
   # if(tr(matriu) <= 5+(nrow(matriu)-3)*2){
        if (length(dm[dm<2]==TRUE) >  3 && length(dm[dm >= 3]==TRUE)==0 ){       
-    cat("Observem que els resultats del/de la ", name, " són \\textbf{baixos} en diverses habilitats, fet que ens porta a pensar que podríem trobar-nos davant de dificultats generalitzades en l'aprenentatge. Recomanem doncs que es realitzi una avaluació psicopedagògica global per tal d'aprofundir en les causes d'aquestes dificultats in entendre les seves necessitats específiques.\\\\", sep="")
+    cat("Observem que els resultats del/de la ", name, " són \\textbf{baixos} en diverses habilitats, fet que ens porta a pensar que podríem trobar-nos davant de dificultats generalitzades en l'aprenentatge. Recomanem doncs que es realitzi una avaluació psicopedagògica global per tal d'aprofundir en les causes d'aquestes dificultats i entendre les seves necessitats específiques.\\\\", sep="")
        }  
       # si TRUE s'han de posar frases al final
        return(futur); 

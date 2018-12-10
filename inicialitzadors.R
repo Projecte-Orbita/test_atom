@@ -1,4 +1,4 @@
-
+Sys.setlocale(category="LC_ALL", locale = "Catalan")
 # Funció per tenir en compte els errors
 
 afegir_errors <- function(punts){

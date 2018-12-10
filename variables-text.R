@@ -177,10 +177,6 @@ titol_barem <- function(nom_escola){cat("
 {\\Huge{RESULTATS TIER 1 \\\\ ", nom_escola, "}}
 \\end{center}", sep = "")};
 
-
-#nom_escola inclou l'article l'\textbf{Escola Tecnos}
-#cursos \\'{e}s de la forma  "(cursos 1r A, 3r A i 5\\`{e} A de prim\\`{a}ria)"
-
 intro <- function(nom_escola){cat("\\chapter{Informe Test Àtom \\\\", nom_escola, "}
 
 
@@ -193,7 +189,6 @@ Els resultats exposats a continuació poden haver estat interferits per diversos
 
 ", sep = "")};
 
-
 intro_part_grup<-function(){cat("
 
 \\newpage
@@ -203,9 +198,6 @@ intro_part_grup<-function(){cat("
 En aquest apartat presentem els resultats de les diverses proves de forma conjunta, presentant tant els resultats de cada alumne comparat amb un barem de refer\\`{e}ncia com els del grup-classe avaluat internament, \\'{e}s a dir, amb comparacions fetes dins la pr\\`{o}pia classe. En ambd\\'{o}s casos, els resultats estan presentats de tal manera que els alumnes amb resultats inferiors al \\textbf{30\\%} estan marcats en \\textbf{taronja} i els que pertanyen al \\textbf{85\\%} superior en \\textbf{blau}.  \\\\
 
 Aquests dos conjunts estan destacats ja que estan formats pels alumnes amb m\\'{e}s risc potencial de desadaptaci\\'{o} educativa a causa de la seva desviaci\\'{o} respecte a la mitjana del grup de refer\\`{e}ncia (el barem de refer\\`{e}ncia o el grup-classe). \\newpage", sep = "")};
-
-
-
 
 intro_part_individual <- function(){cat("
 
@@ -244,15 +236,11 @@ Abreviatures: \\\\
 
 ", sep = "")};
 
-#nom_classe = 1r de Prim\\`{a}ria, classe A
-
 classe_grup_head <- function(nom_classe){cat("
 
 \\textbf{", nom_classe, "} \\\\
 Nota: a tots els gr\\`{a}fics la mitjana corresponent est\\`{a} indicada amb una ratlla horitzontal. \\\\",
  sep = "")};
-
-
 
 prova <- function(prova, curs, escola){cat("
 %\\textbf{", prova[1], "}
@@ -271,8 +259,6 @@ if(1==0){cat(observacions-1)},
 \\end{figure}",
  
 sep = "")};
-
-
 
 group_head <- function(classe, escola){
 cat("
@@ -320,7 +306,6 @@ individual_sol_head <- function(nom, nom_curs){
       \\end{framed}
       
       ", sep = "")}
-
 
 individual_antic <- function(index, curs, punts, matrius, indeximp, escola){
 

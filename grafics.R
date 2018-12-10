@@ -1,3 +1,4 @@
+Sys.setlocale(category="LC_ALL", locale = "Catalan")
 require(reshape2)
 require(ggplot2)
 require( RColorBrewer)

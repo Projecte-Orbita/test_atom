@@ -446,7 +446,7 @@ informe_per_classes = function(pre_escola){
     classe <- classes[cl];
     nom_fitxer <- noms_fitxers[cl];
     
-    punts <- read.csv(paste("dades/", escola[2],"/", nom_fitxer, sep = ""), header = FALSE, encoding = "UTF-8");
+    punts <- read.csv(paste("dades/", escola[2],"/", nom_fitxer, sep = ""), header = FALSE, encoding = "latin1");
 
     dir.create(paste(getwd(), "/figures/", escola[2], "/", curs[1], sep ="" ));
     
@@ -486,7 +486,7 @@ informe_per_classes = function(pre_escola){
     if(curs[2] == 5 | curs[2] == 6){prova(c, curs, escola);}
     #}
   
-  intro_part_individual();
+  #intro_part_individual();
   
  # for(cl in 1:length(cursos)){
     
