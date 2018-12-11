@@ -238,4 +238,38 @@ grafic_emocional = function(index, curs, df_emocional, escola, nom){
            dpi = 600, width = 8, height = 6, units = "in") 
 }
 
+### Altres
 
+# gràfic gaussiana, per tenir-lo en algun lloc
+
+grafic_gaussiana_pintada = function(limit_inferior, limit_superior){
+limitRange <- function(fun, min, max) {
+  function(x) {
+    y <- fun(x)
+    y[x < min  |  x > max] <- NA
+    return(y)
+  }
+}
+
+dlimit <- limitRange(dnorm, -3.5, qnorm(limit_inferior))
+ulimit <- limitRange(dnorm, qnorm(limit_superior), 3.5)
+tlimit = limitRange(dnorm, qnorm(limit_inferior), qnorm(limit_superior))
+
+pp = ggplot(data.frame(x=c(-3.5, 3.5)), aes(x=x)) +
+  stat_function(fun = dnorm,
+                geom="area", fill="#009E73", alpha=1) +
+  stat_function(fun = dlimit,
+                geom="area", fill="#E69F00", alpha=1) + 
+  stat_function(fun = ulimit,
+                geom="area", fill="#56B4E9", alpha=1) + 
+  theme_void() + 
+  labs(title = "Distribució normal",
+       subtitle = "En taronja marquem baix rendiment i en blau alt rendiment") +
+  annotate(geom="text", x = qnorm(limit_inferior), y = -0.01, label = "30%", colour = "azure4") +
+  annotate(geom="text", x = qnorm(limit_superior), y = -0.01, label = "85%", colour = "azure4") +
+  ggsave(file = "gaussiana.pdf", dpi = 600, width = 10, height = 6, units = "in")
+
+  #return(pp)
+}
+
+grafic_gaussiana_pintada(.3, .85)
