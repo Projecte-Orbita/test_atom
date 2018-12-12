@@ -210,7 +210,7 @@ grafic_emocional = function(index, curs, df_emocional, escola, nom){
     paleta = brewer.pal(2, "YlOrRd")
     names(paleta) = seq(0,2) 
   }
-  else {limy = c(0,9)
+  else {limy = c(0,7)
   
   paleta = paleta_personalitzada
   names(paleta) = seq(1,9) 
