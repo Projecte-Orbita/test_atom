@@ -1,12 +1,15 @@
 Sys.setlocale(category="LC_ALL", locale = "Catalan")
 require(reshape2)
 require(ggplot2)
-require( RColorBrewer)
+require(RColorBrewer)
+require(stringr)
 
 
 ## Gràfics de classes:
 
 grafics_classe <- function(punts, curs, tipus, escola){
+  
+  punts$Noms = factor(punts$Noms, levels= unique(punts$Noms))
   
   grafic_base(punts = punts, curs = curs[1], titol = "Lectura",tipus, nom_plot = paste0("lectura-", curs[2],"-",tipus), escola, 1);
   grafic_base(punts = punts, curs = curs[1],  titol = "Memòria de Treball",tipus, nom_plot = paste0("mtp-", curs[2],"-",tipus),escola, 2); 
@@ -23,8 +26,8 @@ grafic_base <- function(punts, curs, titol, tipus, nom_plot, escola, i){
   
   myColors <- c("#56B4E9", "#009E73", "#E69F00");
   otherColors <- c("#D55E00", "#999999", "#0072B2");
+
   
-  punts = transform(punts, Noms = factor(Noms, levels= unique(Noms)));
   
   if (tipus=='norm'| tipus == 'norm_intra'){
     colors <- myColors;
@@ -69,7 +72,8 @@ ggpbar <- function(nens, punts, curs, tipus, escola){
   myColors <- c("#56B4E9", "#009E73", "#E69F00");
   otherColors <- c("#D55E00", "#999999", "#0072B2");
   
-  punts = transform(punts, Noms = factor(Noms, levels= unique(Noms)));
+  punts$Noms = factor(punts$Noms, levels= unique(punts$Noms))
+  
   if (tipus=='norm'|tipus == 'norm_intra'){
     colors <- myColors;
   } else {
@@ -150,7 +154,7 @@ ggpbar_individual <- function(nens, punts, curs, tipus, escola){
 
 grafics_nens <- function(punts, curs, tipus, escola){
   
-  for(i in seq(1,length(levels(unique(punts$Noms))),1)){
+  for(i in seq(1,length(unique(punts$Noms)),1)){
     ggpbar(i, punts, curs[1], tipus, escola);
   }
   
@@ -272,4 +276,4 @@ pp = ggplot(data.frame(x=c(-3.5, 3.5)), aes(x=x)) +
   #return(pp)
 }
 
-grafic_gaussiana_pintada(.3, .85)
+#grafic_gaussiana_pintada(.3, .85)

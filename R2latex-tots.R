@@ -1,58 +1,5 @@
 Sys.setlocale(category="LC_ALL", locale = "Catalan")
 
-pretractar_excels <-function(path, nom_carpeta){
-  require(readxl)
-  noms = excel_sheets(path = path)
-  classes = lapply(excel_sheets(path), read_excel, path = path)
-  cursos = sapply(strsplit(noms, ""), head, 1)
-  numeros_classe = sapply(strsplit(noms, ""), tail, 1)
-  noms_fitxers = paste0(cursos, numeros_classe)
-  classes = sapply(classes, as.data.frame)
-  # mirem quins tenen dades:  
-  numero_nens_per_classe = sapply(classes, function(x) length(x$Nom))
-  
-  # posem un filtre pels valors que no tenen dades o en tenen poques, perquè aniran a part:
-  
-  classes_bones = which(numero_nens_per_classe>4)
-  
-  # Formategem els sheets per tenir-los de la nostra manera:
-  
-  # Hem d'agafar els noms i la primera lletra del cognom de tots els nens
-  formatejar_noms = function(tres_columnes_noms){
-    noms_nens = paste0(tres_columnes_noms[,1]," ", substr(tres_columnes_noms[,2],1,1),".")
-    
-    #en cas de que hi hagi nens amb el mateix nom i la mateixa inicial del cognom agafem la inicial del segon cognom:
-    noms_nens[which(duplicated(noms_nens))] = paste0(noms_nens[noms_nens]," ", substr(tres_columnes_noms[noms_nens,3],1,1),".")
-    return(noms_nens)
-  }
-  
-  # s'han de triar les columnes, que no són les mateixes per tots els cursos
-  
-  
-  columnes = list(c(9:25),c(9:25),c(9:40),c(9:40),c(9:46),c(9:46))
-  names(columnes) = c(1,2,3,4,5,6)
-  
-  directori = getwd()
-  
-  dir.create(file.path(directori, "dades/", nom_carpeta), showWarnings = FALSE)
-  # s'han de crear els fitxers
-  
-  for (i in classes_bones){
-    fitxer = classes[[i]]
-    fitxer = fitxer[-1,]
-    cols = unlist(columnes[cursos[i]], use.names = F)
-    cols = c(cols, 8) # afegim els comentaris, que els posem al final
-    df = cbind.data.frame(formatejar_noms(as.data.frame(fitxer[,4:6])), fitxer[,cols])
-    write.table(df, paste0("dades/",nom_carpeta, "/", noms_fitxers[i],".csv"), 
-                sep = ",",
-              row.names=F, 
-              col.names = F,
-              quote = 1)
-  }
-  
-}
-
-
 crear_informe_escola <- function(cursos, classes, escola){
 
 source('./informes.R', encoding = "UTF-8");           # fa els càlculs i els gràfics
@@ -66,6 +13,7 @@ source('./barems.R', encoding = "UTF-8");
 source('./errors.R', encoding = "UTF-8");
 source('./compensacions.R', encoding = "UTF-8");
 source('./grafics.R', encoding = "UTF-8");
+source('./manipulacions_dades.R', encoding = "UTF-8")
 
 # get current directory and create missing directories if needed:
 wd <- getwd();

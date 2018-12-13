@@ -47,8 +47,12 @@ informe <- function(puntso, curs, barems, escola){
   punts <- subset(punts, select = -c(2:num));
   
   punts_exp = punts[,c(1:num)];
-  
   colnorm = punts[,-c(2:num)];
+  
+  # Aquí hem de modificar els noms perquè quedin bé en els gràfics globals:
+  # TODO: fer-ho en algun altre lloc...
+  punts$Noms = formatejar_noms(punts$Noms)
+  
   
   colnames(punts)[2:num] <- colnames_punts;
   punts1 <- melt(punts[melt_punts1], id.var = "Noms");
@@ -60,6 +64,9 @@ informe <- function(puntso, curs, barems, escola){
   # gràfics compensats globals
   
   cpunts <- inicialitzar_comp(puntso, barems);
+  
+  cpunts$Noms = formatejar_noms(cpunts$Noms)
+  
   length <- length(cpunts[,1]);
   cpunts <- subset(cpunts, select = -c(2:num));
   
@@ -77,6 +84,8 @@ informe <- function(puntso, curs, barems, escola){
   difs = colorejar(difs, barems);
   colpred = difs[,-c(2:num)];
   
+  cpunts$Noms = formatejar_noms(cpunts$Noms)
+  
   difs[,c(2:num)]=cpunts[,-1];
   
   colnames(difs)[2:num] <- colnames_punts;
@@ -88,6 +97,9 @@ informe <- function(puntso, curs, barems, escola){
   #gràfics normals intraclasse:
   
   ipunts <- inicialitzar_intra(puntso);
+  
+  ipunts$Noms = formatejar_noms(ipunts$Noms)
+  
   length <- length(ipunts[,1]);
   ipunts <- subset(ipunts, select = -c(2:num));
   
