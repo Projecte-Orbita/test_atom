@@ -304,7 +304,7 @@ crear_informe_escola2 <- function(pre_escola){
 
 informe_per_classes = function(pre_escola){
   
-  print("> Inicialitzant")
+  print("> Carregant llibreries")
   
   source('./informes.R', encoding = "UTF-8");           # fa els càlculs i els gràfics
   source('./variables-text.R', encoding = "UTF-8");     # fa el latex amb la info d'informes
@@ -317,6 +317,15 @@ informe_per_classes = function(pre_escola){
   source('./errors.R', encoding = "UTF-8");
   source('./compensacions.R', encoding = "UTF-8");
   source('./grafics.R', encoding = "UTF-8");
+  source('./manipulacions_dades.R', encoding = "UTF-8")
+  
+  
+  #############################
+  ##### Inicialització: preparem dades, carreguem fitxers, etc.
+  ############################
+  
+  print("> Inicialitzant")
+  
   
   # get current directory and create missing directories if needed:
   wd <- getwd();
@@ -353,6 +362,10 @@ informe_per_classes = function(pre_escola){
   dir.create(paste(getwd(), "/figures/", escola[2], sep ="" ));
   dir.create(paste(getwd(), "/informes/", escola[2], sep ="" ));
   
+  ######################
+  #### Preparem els barems
+  ######################
+  
   print("> Preparant barems");
   
   # importem els barems i els netegem
@@ -369,21 +382,29 @@ informe_per_classes = function(pre_escola){
   prebarems_6 = read.csv('./barems/prebarems6.csv', header = FALSE, encoding = "UTF-8");
   barems_6 = preparar_barems(prebarems_6)
   
+  
+  #################
+  #### Loop per tots els cursos
+  ################
+  
+  # Aquí comença el loop que crea tots els gràfics per cada curs, així com matrius de resultats que 
+  # s'utilitzaran més endavant. 
+  
   for (cl in 1:length(curs_classe)){
     
-  print(paste0("> Creant informe per la classe ", classes[cl]))
+    ### Preparació de les carpetes
     
-  #LATEX
- # sink(paste(getwd(), "/informes/", escola[2],"/informe_", curs_classe[cl], sep =""));
-  sink(file(paste(getwd(), "/informes/", escola[2],"/informe_", curs_classe[cl], ".tex", sep =""), 
+    print(paste0("> Creant informe per la classe ", classes[cl]))
+    
+    sink(file(paste(getwd(), "/informes/", escola[2],"/informe_", curs_classe[cl], ".tex", sep =""), 
             open = "wt", encoding = "latin1"));#-", #escola[2], sep = ""));
   
-  cat(heading_classes);
-  cat("\\begin{document}")
-  titol_classes(escola, classes[cl])
+    cat(heading_classes);
+    cat("\\begin{document}")
+    titol_classes(escola, classes[cl])
 
-  matrius <- NULL;
-  indeximps <- NULL;
+    matrius <- NULL;
+    indeximps <- NULL;
   
   
   #intro_part_grup();
@@ -397,6 +418,9 @@ informe_per_classes = function(pre_escola){
     punts <- read.csv(paste("dades/", escola[2],"/", nom_fitxer, sep = ""), header = FALSE, encoding = "latin1");
 
     dir.create(paste(getwd(), "/figures/", escola[2], "/", curs[1], sep ="" ));
+    
+    ### Inici de l'elaboració dels informes, separat per cursos (ja que els barems són diferents)
+    ### En algun moment es podrien ajuntar
     
     if(curs[2]==1)
     {matrius <- c(matrius, list(informe(punts[,1:13], curs, barems_1, escola)));
@@ -422,132 +446,64 @@ informe_per_classes = function(pre_escola){
     {matrius <- c(matrius, list(informe(punts[,1:23], curs, barems_6, escola)));
     indeximps <- c(indeximps, list(errors(punts[,2:23])));}
     
+    #### Aquí s'acaba el loop de generació de gràfics i material per fer els informes
+    
+    
+    ################
+    ### Comencem a imprimir l'informe
+    ################
+    
     
     group_head_classes(classe, escola[1]);
     
-    prova(lectura, curs, escola);
-    prova(mt, curs, escola);
-    prova(vp, curs, escola);
-    prova(fm, curs, escola);
-    prova(mlt, curs, escola);
-    prova(r, curs, escola);
-    if(curs[2] == 5 | curs[2] == 6){prova(c, curs, escola);}
+    # Aquí introduïm els gràfics col·lectius, cada funció escriu a latex el gràfic universal
+    # i intra-classe de cada matèria
+    
+    grafics_collectius_per_materia(lectura, curs, escola);
+    grafics_collectius_per_materia(mt, curs, escola);
+    grafics_collectius_per_materia(vp, curs, escola);
+    grafics_collectius_per_materia(fm, curs, escola);
+    grafics_collectius_per_materia(mlt, curs, escola);
+    grafics_collectius_per_materia(r, curs, escola);
+    if(curs[2] == 5 | curs[2] == 6){grafics_collectius_per_materia(c, curs, escola);}
     #}
   
   #intro_part_individual();
-  
- # for(cl in 1:length(cursos)){
     
-    indeximp <- indeximps[[1]];
-    matriu <- matrius[[1]];
+    ################
+    ##### Informes individuals
+    ###############
   
-#    curs <- cursos[[cl]];
-#    classe <- classes[cl]
-#    nom_fitxer <- noms_fitxers[cl];
-    
+
     cat("\\newpage
         
         \\section*{Informes individuals}");
+    
+    # Llegim les dades:
+    punts <- read.csv(paste0("./dades/", escola[2], "/", nom_fitxer), header = FALSE, encoding = "latin1");
 
-    punts <- read.csv(paste0("./dades/", escola[2], "/", nom_fitxer), header = FALSE, encoding = "UTF-8");
-    #punts <- hog_punts;
-    
+    # Creem els gràfics d'emocional 
 
-# creem els gràfics d'emocional (en algun moment s'ha de passar a un altre fitxer i netejar)
-  
-for(i in 1:length(punts[,1])){
-  
-  nom = as.character(punts[i,1])
-  
-  if(curs[2] == 1 | curs[2] == 2){
-      dades = unname(unlist(punts[i, c(14:18)]))
-      valors = c(max(0,3-dades[1]), 
-                 max(0,3-dades[2]),
-                 max(0,3-dades[3]), 
-                 ifelse(dades[4] == 1 | dades[5] == 1, 2, 
-                        ifelse(dades[4] == 2 | dades[5] == 2, 1, 0))
-                 )
-  }
-  
-  else if(curs[2] == 3 | curs[2] == 4){
-    dades = unname(unlist(punts[i, c(18:33)]))
+    creacio_grafics_emocional(punts, curs, escola)
     
-    pre_valors = c(max(3-dades[1],0),        # m'agrada com sóc
-                   max(dades[2]-2,0),        # estic trist
-                   max(2-dades[3],0),        # crec que sé fer moltes coses
-                   max(dades[4]-2,0),        # m'enfado i em barallo
-                   min(max(3-dades[5],0),1), # m'agrada anar a l'escola
-                   min(max(dades[6]-2,0),1), # m'avorreixo a classe
-                   max(2-dades[7],0),        # trec bones notes
-                   max(2-dades[8],0),        # estudio i m'esforço
-                   max(3-dades[9],0),        # em cauen bé els meus companys
-                   max(dades[10]-2,0),       # els altres em molesten
-                   max(3-dades[11],0),       # m'agrada jugar amb els altres
-                   max(dades[12]-2,0),       # em costa fer amics
-                   max(3-dades[13],0),       # estic a gust a casa
-                   max(dades[14]-2,0),       # hi ha crits i discussions a casa
-                   min(max(3-dades[15],0),1), # estic d'acord amb les normes de casa
-                   min(max(4-dades[16],0),2)  # estimo els meus pares
-    )
-    valors = c()
     
-    for (j in 1:4){
-      valors[j] = sum(pre_valors[((j-1)*4 + 1):(j*4)])
-    }
-    
-    }
-  else if(curs[2] == 5 | curs[2] == 6){
-    dades = unname(unlist(punts[i, c(24:39)]))
-      
-      pre_valors = c(if(dades[1]==1) 3 else {if(dades[1]==2) 1 else 0},        # m'agrada com sóc
-                     if(dades[2]==4) 3 else {if(dades[2]==3) 1 else 0},        # estic trist
-                     if(dades[3]==1) 1 else 0,        # crec que sé fer moltes coses
-                     if(dades[4]==4) 3 else {if(dades[4]==3) 1 else 0},        # m'enfado i em barallo
-                     if(dades[5]==1) 1 else {if(dades[5]==2) 1 else 0}, # m'agrada anar a l'escola
-                     if(dades[6]==3) 1 else {if(dades[6]==4) 1 else 0}, # m'avorreixo a classe
-                     if(dades[7]==1) 1 else 0,        # trec bones notes
-                     if(dades[8]==1) 1 else 0,        # estudio i m'esforço
-                     if(dades[9]==1) 3 else {if(dades[9]==2) 1 else 0},        # em cauen bé els meus companys
-                     if(dades[10]==4) 3 else {if(dades[10]==3) 1 else 0},       # els altres em molesten
-                     if(dades[11]==1) 3 else {if(dades[11]==2) 1 else 0},       # m'agrada jugar amb els altres
-                     if(dades[12]==4) 3 else {if(dades[12]==3) 1 else 0},       # em costa fer amics
-                     if(dades[13]==1) 3 else {if(dades[13]==2) 1 else 0},       # estic a gust a casa
-                     if(dades[14]==4) 3 else {if(dades[14]==3) 1 else 0},       # hi ha crits i discussions a casa
-                     if(dades[15]==1) 1 else {if(dades[15]==2) 1 else 0}, # estic d'acord amb les normes de casa
-                     if(dades[16]==1 | dades[16]==2) 3 else {if(dades[16]==3) 1 else 0}  # estimo els meus pares
-      )
-      valors = c()
-      
-      for (j in 1:4){
-        valors[j] = sum(pre_valors[((j-1)*4 + 1):(j*4)])
-      }
-  }
-      
-      arees = c("Personal", "Escolar", "Social", "Familiar")
-      df_emocional = as.data.frame(cbind(arees, valors))
-      
-      valors_nets = valors
-      valors_nets[is.na(valors)]=0 # Aquesta línia i l'anterior són per tractar missings
-      # TODO: arreglar-ho més amunt i millor
-      if (sum(valors_nets)==0) next
-      
-      grafic_emocional(i, curs, df_emocional, escola, nom)
-      
-    }
+    # Creem els gràfics i els informes individuals
 
+    indeximp <- indeximps[[1]];
+    matriu <- matrius[[1]];
     for(i in 1:length(punts[,1]))
     {
       nom = as.character(names(matriu[i]))
       individual_head(nom, classe, escola[1][1]);
       
       if(curs[2] == 1 | curs[2] == 2){
-        individual(i, curs, punts[c(1,14:18,19)], matriu, indeximp[i], escola);}
+        informe_individual(i, curs, punts[c(1,14:18,19)], matriu, indeximp[i], escola);}
       
       if(curs[2] == 3 | curs[2] == 4){
-        individual(i, curs, punts[c(1,18:33,34)], matriu, indeximp[i], escola);}
+        informe_individual(i, curs, punts[c(1,18:33,34)], matriu, indeximp[i], escola);}
       
       if(curs[2] == 5 | curs[2] == 6){
-        individual(i, curs, punts[c(1,24:39,40)], matriu, indeximp[i], escola);}
+        informe_individual(i, curs, punts[c(1,24:39,40)], matriu, indeximp[i], escola);}
       
       cat("\\newpage");}
   
@@ -561,17 +517,18 @@ informe_per_alumnes = function(pre_escola){
   
   print("> Inicialitzant")
   
-  source('./informes.R');           # fa els càlculs i els gràfics
-  source('./variables-text.R');     # fa el latex amb la info d'informes
-  source('./text-intro.R');         # text de la introducció
-  source('./inicialitzadors.R')     # funcions d'ajuda d'informes
-  source('./tier_2.R');             # escriu la part de tier 2 de làtex
-  source('./informe_matrius.R');   
-  source('./emocional.R');
-  source('./barems.R');
-  source('./errors.R');
-  source('./compensacions.R');
-  source('./grafics.R');
+  source('./informes.R', encoding = "UTF-8");           # fa els càlculs i els gràfics
+  source('./variables-text.R', encoding = "UTF-8");     # fa el latex amb la info d'informes
+  source('./text-intro.R', encoding = "UTF-8");         # text de la introducció
+  source('./inicialitzadors.R', encoding = "UTF-8")     # funcions d'ajuda d'informes
+  source('./tier_2.R', encoding = "UTF-8");             # escriu la part de tier 2 de làtex
+  source('./informe_matrius.R', encoding = "UTF-8");   
+  source('./emocional.R', encoding = "UTF-8");
+  source('./barems.R', encoding = "UTF-8");
+  source('./errors.R', encoding = "UTF-8");
+  source('./compensacions.R', encoding = "UTF-8");
+  source('./grafics.R', encoding = "UTF-8");
+  source('./manipulacions_dades.R', encoding = "UTF-8")
   
   # creem el vector d'escola, amb una entrada pel nom i l'altra per les carpetes
   escola = c(pre_escola, gsub(" ", "_", pre_escola))
@@ -580,7 +537,7 @@ informe_per_alumnes = function(pre_escola){
   # agafem la info de la carpeta d'on treurem les dades (i que abans es passava dins la funció)
   #####
   
-  noms_fitxers = as.vector(list.files(paste0('dades2/', escola[2])))
+  noms_fitxers = as.vector(list.files(paste0('dades/', escola[2])))
   num_curs = substr(noms_fitxers, 1, 1)
   curs_classe = substr(noms_fitxers, 1, 2)
   noms_classes = substr(noms_fitxers, 2, 2)
@@ -617,17 +574,17 @@ informe_per_alumnes = function(pre_escola){
   
   # importem els barems i els netegem
   
-  prebarems_1 = read.csv('./barems/prebarems1.csv', header = FALSE);
+  prebarems_1 = read.csv('./barems/prebarems1.csv', header = FALSE, encoding = "UTF-8");
   barems_1 = preparar_barems(prebarems_1)
-  prebarems_2 = read.csv('./barems/prebarems2.csv', header = FALSE);
+  prebarems_2 = read.csv('./barems/prebarems2.csv', header = FALSE, encoding = "UTF-8");
   barems_2 = preparar_barems(prebarems_2)
-  prebarems_3 = read.csv('./barems/prebarems3.csv', header = FALSE);
+  prebarems_3 = read.csv('./barems/prebarems3.csv', header = FALSE, encoding = "UTF-8");
   barems_3 = preparar_barems(prebarems_3)
-  prebarems_4 = read.csv('./barems/prebarems4.csv', header = FALSE);
+  prebarems_4 = read.csv('./barems/prebarems4.csv', header = FALSE, encoding = "UTF-8");
   barems_4 = preparar_barems(prebarems_4)
-  prebarems_5 = read.csv('./barems/prebarems5.csv', header = FALSE);
+  prebarems_5 = read.csv('./barems/prebarems5.csv', header = FALSE, encoding = "UTF-8");
   barems_5 = preparar_barems(prebarems_5)
-  prebarems_6 = read.csv('./barems/prebarems6.csv', header = FALSE);
+  prebarems_6 = read.csv('./barems/prebarems6.csv', header = FALSE, encoding = "UTF-8");
   barems_6 = preparar_barems(prebarems_6)
   
   #####
@@ -648,7 +605,7 @@ informe_per_alumnes = function(pre_escola){
     
     # Importem les dades de la classe on siguem:
     
-    punts <- read.csv(paste("dades2/", escola[2],"/", nom_fitxer, sep = ""), header = FALSE);
+    punts <- read.csv(paste("dades/", escola[2],"/", nom_fitxer, sep = ""), header = FALSE, encoding = "latin1");
     
     # Creem els directoris on posarem les figures i els informes d'aquella classe:
     
@@ -685,7 +642,13 @@ informe_per_alumnes = function(pre_escola){
     
     indeximp <- indeximps[[1]]; # això segurament s'hauria de netejar en algun moment
     matriu <- matrius[[1]];
-    noms = gsub(" ", "_", punts[,1]); # trec els espais entre noms perquè no doni problemes amb el latex
+    noms_fitxers_tex = gsub(" ", "_", punts[,1]); # trec els espais entre noms perquè no doni problemes amb el latex
+                                      # només en el nom del fitxer, que si no segueix donant problemes
+    
+    
+    # creem els gràfics emocionals
+    
+    creacio_grafics_emocional(punts, curs, escola)
     
     #####
     # Aquí comença el loop que va alumne per alumne:
@@ -696,22 +659,31 @@ informe_per_alumnes = function(pre_escola){
       # Creem les subcarpetes 
       
       
-      sink(file(paste(getwd(), "/informes/", escola[2],"/", curs_classe[cl],"/",noms[i],".tex", sep =""), 
+      sink(file(paste(getwd(), "/informes/", escola[2],"/", curs_classe[cl],"/",noms_fitxers_tex[i],".tex", sep =""), 
                 open = "wt", encoding = "latin1"));
+      
+      
+      ################
+      ### Aquí segurament s'hi haurà d'afegir la introducció i tapa i tot això
+      ################
       
       cat(heading_alumnes);
       cat("\\begin{document}")
       
-      individual_head(noms[i], classe, escola[1][1]);
+      nom_alumne = as.character(punts[i,1])
+      
+      individual_head(nom_alumne, # <- això són els noms
+                      classe, 
+                      escola[1][1]);
       
       if(curs[2] == 1 | curs[2] == 2){
-        individual_alumnes(i, curs, punts[c(1,14:18,19)], matriu, indeximp[i], escola);}
+        informe_individual_alumnes(i, curs, punts[c(1,14:18,19)], matriu, indeximp[i], escola);}
       
       if(curs[2] == 3 | curs[2] == 4){
-        individual_alumnes(i, curs, punts[c(1,18:33,34)], matriu, indeximp[i], escola);}
+        informe_individual_alumnes(i, curs, punts[c(1,18:33,34)], matriu, indeximp[i], escola);}
       
       if(curs[2] == 5 | curs[2] == 6){
-        individual_alumnes(i, curs, punts[c(1,24:39,40)], matriu, indeximp[i], escola);}
+        informe_individual_alumnes(i, curs, punts[c(1,24:39,40)], matriu, indeximp[i], escola);}
       
       cat("\n\n\\end{document}");
       sink();
@@ -720,7 +692,7 @@ informe_per_alumnes = function(pre_escola){
   print("> Finalitzant");
 }
 
-informe_individual = function(dades, curs = 1){
+informe_per_un_nen = function(dades, curs = 1){
   nom = dades[,1]
   
   print("> Inicialitzant")
@@ -823,13 +795,13 @@ informe_individual = function(dades, curs = 1){
       individual_sol_head(nom, nom_curs);
       
       if(curs[2] == 1 | curs[2] == 2){
-        individual_alumnes_sol(1, curs, punts[c(1,14:18,19)], matriu, indeximp[1], escola);}
+        informe_individual_alumnes_sol(1, curs, punts[c(1,14:18,19)], matriu, indeximp[1], escola);}
       
       if(curs[2] == 3 | curs[2] == 4){
-        individual_alumnes_sol(1, curs, punts[c(1,18:33,34)], matriu, indeximp[1], escola);}
+        informe_individual_alumnes_sol(1, curs, punts[c(1,18:33,34)], matriu, indeximp[1], escola);}
       
       if(curs[2] == 5 | curs[2] == 6){
-        individual_alumnes_sol(1, curs, punts[c(1,24:39,40)], matriu, indeximp[1], escola);}
+        informe_individual_alumnes_sol(1, curs, punts[c(1,24:39,40)], matriu, indeximp[1], escola);}
       
       cat("\n\n\\end{document}");
       sink();

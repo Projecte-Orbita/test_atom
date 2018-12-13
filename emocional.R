@@ -37,20 +37,6 @@ informe_emocional_petits <- function(index, emocional){
   return(futur);
 }
 
-# an\`{a}lisi emocional cicles mitj\`{a} i superior
-
-# assumim que estem rebent una matriu de N_nensx17 amb totes les respostes d'emocional
-
-# emocional = read.csv('emocional.csv', headers=FALSE)
-
-# creem una matriu per cada nen, amb les coses que diu greus i lleus i en quin 
-# \`{a}mbit ho ha dit: 
-
-# definim les coses greus i lleus
-
-# per cada nen: 
-
-#emocional <- read.csv('emocional.csv', header=FALSE, fileEncoding = "UTF-8");
 
 informe_emocional <- function(index, emocional){  
   #
@@ -145,3 +131,85 @@ paraula <- function(num){
   if(num == 3){return("moltes vegades ")};
   if(num == 4){return("sempre ")}
   if(num == 5){return("moltes vegades (i no sempre) ")}}
+
+creacio_grafics_emocional = function(punts, curs, escola){
+  for(i in 1:length(punts[,1])){
+    
+    nom = as.character(punts[i,1])
+    
+    if(curs[2] == 1 | curs[2] == 2){
+      dades = unname(unlist(punts[i, c(14:18)]))
+      valors = c(max(0,3-dades[1]), 
+                 max(0,3-dades[2]),
+                 max(0,3-dades[3]), 
+                 ifelse(dades[4] == 1 | dades[5] == 1, 2, 
+                        ifelse(dades[4] == 2 | dades[5] == 2, 1, 0))
+      )
+    }
+    
+    else if(curs[2] == 3 | curs[2] == 4){
+      dades = unname(unlist(punts[i, c(18:33)]))
+      
+      pre_valors = c(max(3-dades[1],0),        # m'agrada com sóc
+                     max(dades[2]-2,0),        # estic trist
+                     max(2-dades[3],0),        # crec que sé fer moltes coses
+                     max(dades[4]-2,0),        # m'enfado i em barallo
+                     min(max(3-dades[5],0),1), # m'agrada anar a l'escola
+                     min(max(dades[6]-2,0),1), # m'avorreixo a classe
+                     max(2-dades[7],0),        # trec bones notes
+                     max(2-dades[8],0),        # estudio i m'esforço
+                     max(3-dades[9],0),        # em cauen bé els meus companys
+                     max(dades[10]-2,0),       # els altres em molesten
+                     max(3-dades[11],0),       # m'agrada jugar amb els altres
+                     max(dades[12]-2,0),       # em costa fer amics
+                     max(3-dades[13],0),       # estic a gust a casa
+                     max(dades[14]-2,0),       # hi ha crits i discussions a casa
+                     min(max(3-dades[15],0),1), # estic d'acord amb les normes de casa
+                     min(max(4-dades[16],0),2)  # estimo els meus pares
+      )
+      valors = c()
+      
+      for (j in 1:4){
+        valors[j] = sum(pre_valors[((j-1)*4 + 1):(j*4)])
+      }
+      
+    }
+    else if(curs[2] == 5 | curs[2] == 6){
+      dades = unname(unlist(punts[i, c(24:39)]))
+      
+      pre_valors = c(if(dades[1]==1) 3 else {if(dades[1]==2) 1 else 0},        # m'agrada com sóc
+                     if(dades[2]==4) 3 else {if(dades[2]==3) 1 else 0},        # estic trist
+                     if(dades[3]==1) 1 else 0,        # crec que sé fer moltes coses
+                     if(dades[4]==4) 3 else {if(dades[4]==3) 1 else 0},        # m'enfado i em barallo
+                     if(dades[5]==1) 1 else {if(dades[5]==2) 1 else 0}, # m'agrada anar a l'escola
+                     if(dades[6]==3) 1 else {if(dades[6]==4) 1 else 0}, # m'avorreixo a classe
+                     if(dades[7]==1) 1 else 0,        # trec bones notes
+                     if(dades[8]==1) 1 else 0,        # estudio i m'esforço
+                     if(dades[9]==1) 3 else {if(dades[9]==2) 1 else 0},        # em cauen bé els meus companys
+                     if(dades[10]==4) 3 else {if(dades[10]==3) 1 else 0},       # els altres em molesten
+                     if(dades[11]==1) 3 else {if(dades[11]==2) 1 else 0},       # m'agrada jugar amb els altres
+                     if(dades[12]==4) 3 else {if(dades[12]==3) 1 else 0},       # em costa fer amics
+                     if(dades[13]==1) 3 else {if(dades[13]==2) 1 else 0},       # estic a gust a casa
+                     if(dades[14]==4) 3 else {if(dades[14]==3) 1 else 0},       # hi ha crits i discussions a casa
+                     if(dades[15]==1) 1 else {if(dades[15]==2) 1 else 0}, # estic d'acord amb les normes de casa
+                     if(dades[16]==1 | dades[16]==2) 3 else {if(dades[16]==3) 1 else 0}  # estimo els meus pares
+      )
+      valors = c()
+      
+      for (j in 1:4){
+        valors[j] = sum(pre_valors[((j-1)*4 + 1):(j*4)])
+      }
+    }
+    
+    arees = c("Personal", "Escolar", "Social", "Familiar")
+    df_emocional = as.data.frame(cbind(arees, valors))
+    
+    valors_nets = valors
+    valors_nets[is.na(valors)]=0 # Aquesta línia i l'anterior són per tractar missings
+    # TODO: arreglar-ho més amunt i millor
+    if (sum(valors_nets)==0) next
+    
+    grafic_emocional(i, curs, df_emocional, escola, nom)
+    
+  }
+}
