@@ -70,3 +70,30 @@ cat("
 \\end{itemize}
 ");
 }
+
+inpulsivitat_reflectivitat <- function(indeximp, index){
+  if(!is.na(indeximp[index]) & indeximp[index]>0.18){
+    cat("
+      
+      \\begin{center}
+      \\Large{Índex de reflectivitat - compulsivitat} \\\\ 
+      \\end{center}
+      
+      ");
+    
+    cat("Es valora que l'estil de resposta fortament tendent a la \\textbf{impulsivitat} pot haver interferit 
+        negativament en els resultats obtinguts, havent acumulat una quantitat d'errors que no permet saber 
+        la seva capacitat real d'execució.")}
+  
+  if(!is.na(indeximp[index]) & indeximp[index]<0.09){
+    cat("
+      
+      \\begin{center}
+      \\Large{Índex de reflectivitat - compulsivitat} \\\\ 
+      \\end{center}
+      
+      ");
+    cat("Es valora que l'estil de resposta fortament tendent a la \\textbf{reflexivitat} pot haver interferit 
+        negativament en els resultats obtinguts, havent buscat minimitzar la quantitat d'errors de forma 
+        forçada i per tant mostrant un rendiment inferior a la seva capacitat real d'execució.")}
+}

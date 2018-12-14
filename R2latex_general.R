@@ -50,8 +50,7 @@ informe_general = function(nom_carpeta_escola, tipus = "classe"){
   # aquí acaba la reconstrucció dels arguments que abans es passaven a mà
   #####
   
-  # agafem el directori on som i creem les carpetes pertintents on posarem les imatges
-  # i els informes
+  # agafem el directori on som i creem les carpetes pertintents on posarem les imatges i els informes
   
   wd <- getwd();
   dir.create(paste(getwd(), "/figures/", escola[2], sep ="" ));
@@ -61,18 +60,15 @@ informe_general = function(nom_carpeta_escola, tipus = "classe"){
   
   # importem els barems i els netegem
   
-  prebarems_1 = read.csv('./barems/prebarems1.csv', header = FALSE, encoding = "UTF-8");
-  barems_1 = preparar_barems(prebarems_1)
-  prebarems_2 = read.csv('./barems/prebarems2.csv', header = FALSE, encoding = "UTF-8");
-  barems_2 = preparar_barems(prebarems_2)
-  prebarems_3 = read.csv('./barems/prebarems3.csv', header = FALSE, encoding = "UTF-8");
-  barems_3 = preparar_barems(prebarems_3)
-  prebarems_4 = read.csv('./barems/prebarems4.csv', header = FALSE, encoding = "UTF-8");
-  barems_4 = preparar_barems(prebarems_4)
-  prebarems_5 = read.csv('./barems/prebarems5.csv', header = FALSE, encoding = "UTF-8");
-  barems_5 = preparar_barems(prebarems_5)
-  prebarems_6 = read.csv('./barems/prebarems6.csv', header = FALSE, encoding = "UTF-8");
-  barems_6 = preparar_barems(prebarems_6)
+  barems = list()
+  for (i in 1:6){
+    prebarems = read.csv(paste0('./barems/prebarems',i,'.csv'), header = FALSE, encoding = "UTF-8")
+    barems[[i]] = preparar_barems(prebarems)
+  }
+  
+  # definim les columnes que voldrem importar
+  columnes = list(1:13,1:13,1:17,1:17,1:23,1:23)
+  names(columnes) = c(1:6)
   
   #####
   # Aquí comença el loop que va classe per classe:
@@ -81,8 +77,6 @@ informe_general = function(nom_carpeta_escola, tipus = "classe"){
   for (cl in 1:length(curs_classe)){
     
     print(paste0("> Creant els informes per la classe ", classes[cl]))
-    
-    # Definim algunes variables
     
     if (tipus == "classe"){
       sink(file(paste(getwd(), "/informes/", escola[2],"/informe_", curs_classe[cl], ".tex", sep =""), 
@@ -93,6 +87,7 @@ informe_general = function(nom_carpeta_escola, tipus = "classe"){
       titol_classes(escola, classes[cl])
     }
     
+    # Definim algunes variables
     matrius <- NULL;
     indeximps <- NULL;
     curs <- cursos[[cl]];
@@ -100,48 +95,35 @@ informe_general = function(nom_carpeta_escola, tipus = "classe"){
     nom_fitxer <- noms_fitxers[cl];
     
     # Importem les dades de la classe on siguem:
-    
     punts <- read.csv(paste("dades/", escola[2],"/", nom_fitxer, sep = ""), header = FALSE, encoding = "latin1");
     
     # Creem els directoris on posarem les figures i els informes d'aquella classe:
-    
     dir.create(paste(getwd(), "/figures/", escola[2], "/", curs[1], sep ="" ));
     
     if (tipus == "individual"){
     dir.create(paste(getwd(), "/informes/", escola[2],"/", curs_classe[cl], sep ="" ));
     }
-    # Calculem:
     
-    if(curs[2]==1)
-    {matrius <- c(matrius, list(informe(punts[,1:13], curs, barems_1, escola)));
-    indeximps <- c(indeximps, list(errors(punts[,2:13])));}
+    #####
+    ### Aquí hi van els càlculs grans de l'informe:
+    ####
+    curs_num = as.numeric(curs[[2]])
+    matrius <- c(matrius, list(informe(punts[,columnes[[curs_num]]], curs, barems[[curs_num]], escola)))
+    indeximps <- c(indeximps, list(errors(punts[,columnes[[curs_num]][-1]])))
     
-    if(curs[2]==2)
-    {matrius <- c(matrius, list(informe(punts[,1:13], curs, barems_2, escola)));
-    indeximps <- c(indeximps, list(errors(punts[,2:13])));}
+    # Definim algunes variables:
+    indeximp <- indeximps[[1]]; # això segurament s'hauria de netejar en algun moment
+    matriu <- matrius[[1]];
+    llista_columnes = list(c(1,14:18,19), c(1,14:18,19), 
+                           c(1,18:33,34), c(1,18:33,34),
+                           c(1,24:39,40), c(1,24:39,40))
+    names(llista_columnes) = c(1,2,3,4,5,6)
     
-    if(curs[2]==3)
-    {matrius <- c(matrius, list(informe(punts[,1:17], curs, barems_3, escola)));
-    indeximps <- c(indeximps, list(errors(punts[,2:17])));}
-    
-    if(curs[2]==4)
-    {matrius <- c(matrius, list(informe(punts[,1:17], curs, barems_4, escola)));
-    indeximps <- c(indeximps, list(errors(punts[,2:17])));}
-    
-    if(curs[2]==5)
-    {matrius <- c(matrius, list(informe(punts[,1:23], curs, barems_5, escola)));
-    indeximps <- c(indeximps, list(errors(punts[,2:23])));}
-    
-    if(curs[2]==6)
-    {matrius <- c(matrius, list(informe(punts[,1:23], curs, barems_6, escola)));
-    indeximps <- c(indeximps, list(errors(punts[,2:23])));}
-    
+    ################
+    ### Comencem a imprimir l'informe
+    ################
     
     if(tipus == "classe"){
-      
-      ################
-      ### Comencem a imprimir l'informe
-      ################
       
       group_head_classes(classe, escola[1]);
       
@@ -161,78 +143,43 @@ informe_general = function(nom_carpeta_escola, tipus = "classe"){
     # creem els gràfics emocionals
     creacio_grafics_emocional(punts, curs, escola)
     
-    
-    # Definim algunes variables:
-    indeximp <- indeximps[[1]]; # això segurament s'hauria de netejar en algun moment
-    matriu <- matrius[[1]];
-    
-    if (tipus =="classe"){
-      for(i in 1:length(punts[,1]))
-      {
-        nom = as.character(names(matriu[i]))
-        individual_head(nom, classe, escola[1][1]);
-        
-        if(curs[2] == 1 | curs[2] == 2){
-          informe_individual(i, curs, punts[c(1,14:18,19)], matriu, indeximp[i], escola);}
-        
-        if(curs[2] == 3 | curs[2] == 4){
-          informe_individual(i, curs, punts[c(1,18:33,34)], matriu, indeximp[i], escola);}
-        
-        if(curs[2] == 5 | curs[2] == 6){
-          informe_individual(i, curs, punts[c(1,24:39,40)], matriu, indeximp[i], escola);}
-        
-        cat("\\newpage");
-
-      }
-      cat("\n\n\\end{document}")
-      sink()
-    }
-    
-    else if (tipus == "individual"){
+    if (tipus == "individual"){
       noms_fitxers_tex = gsub(" ", "_", punts[,1]); # trec els espais entre noms perquè no doni problemes amb el latex
       # només en el nom del fitxer, que si no segueix donant problemes
-
-      #####
-      # Aquí comença el loop que va alumne per alumne:
-      #####
-    
-      for(i in 1:length(punts[,1])){
-        # Creem les subcarpetes 
-      
-        sink(file(paste(getwd(), "/informes/", escola[2],"/", curs_classe[cl],"/",noms_fitxers_tex[i],".tex", sep =""), 
-                open = "wt", encoding = "latin1"));
-      
-      
-        ################
-        ### Aquí segurament s'hi haurà d'afegir la introducció i tapa i tot això
-        ################
-      
-        cat(heading_alumnes);
-        cat("\\begin{document}")
-      
-        nom_alumne = as.character(punts[i,1])
-      
-        individual_head(nom_alumne, # <- això són els noms
-                        classe, 
-                        escola[1][1]);
-      
-        if(curs[2] == 1 | curs[2] == 2){
-        informe_individual_alumnes(i, curs, punts[c(1,14:18,19)], matriu, indeximp[i], escola);}
-      
-        if(curs[2] == 3 | curs[2] == 4){
-        informe_individual_alumnes(i, curs, punts[c(1,18:33,34)], matriu, indeximp[i], escola);}
-      
-        if(curs[2] == 5 | curs[2] == 6){
-        informe_individual_alumnes(i, curs, punts[c(1,24:39,40)], matriu, indeximp[i], escola);}
-        
-        cat("\n\n\\end{document}");
-        sink();
-      }
-    
-
     }
+    
+      
+    for(i in 1:length(punts[,1]))
+      {
+        if (tipus == "individual"){
+          sink(file(paste(getwd(), "/informes/", escola[2],"/", curs_classe[cl],"/",noms_fitxers_tex[i],".tex", sep =""), 
+                    open = "wt", encoding = "latin1"));
+          cat(heading_alumnes);
+          cat("\\begin{document}")
+          
+          ################
+          ### Aquí s'hi haurà d'afegir la introducció i tapa i tot això
+          ################
+        }
+      
+        nom = as.character(names(matriu[i]))
+        individual_head(nom, classe, escola[1][1]);
+        informe_individual(i, curs, punts[llista_columnes[[curs[2]]]], matriu, indeximp[i], escola, tipus)
+        
+        if (tipus == "classe"){
+        cat("\\newpage");
+        }
+        
+        else if (tipus == "individual"){
+          cat("\n\n\\end{document}");
+          sink();
+        }
+    }
+    
+    if (tipus == "classe"){
+      cat("\n\n\\end{document}")
+      sink()
+      }
   }
-
-  print("> Finalitzant");
 }
 
