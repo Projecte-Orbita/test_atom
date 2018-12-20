@@ -34,7 +34,10 @@ ajuntar_noms = function(tres_columnes_noms){
 }
 
 
-pretractar_excels <-function(path, nom_carpeta){
+pretractar_excels <-function(path, nom_carpeta,limit){
+  
+  # TODO: capitalitzar els noms quan estan tots en majúscules
+  
   require(readxl)
   noms = excel_sheets(path = path)
   classes = lapply(excel_sheets(path), read_excel, path = path)
@@ -47,7 +50,7 @@ pretractar_excels <-function(path, nom_carpeta){
   
   # posem un filtre pels valors que no tenen dades o en tenen poques, perquè aniran a part:
   
-  classes_bones = which(numero_nens_per_classe>4)
+  classes_bones = which(numero_nens_per_classe>limit+1)
   
   # Formategem els sheets per tenir-los de la nostra manera:
 
