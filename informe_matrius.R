@@ -50,21 +50,21 @@ cat("Considerant els resultats del/la", name, ":
     for (j in 1:nrow(matriu)){   
         if (round(matriu[j,j]) == 1){cat("
 \\item S'observen valors \\textbf{baixos} respecte la mitjana en l'àrea de \\textbf{", proves[j], "}; ", sep = "")};
-        if (matriu[j,j] == 1.0){cat("tenint en compte l'anàlisi Òrbita, s'evidencien \\textbf{dificultats} significatives respecte els resultats esperats. ")};
+        if (matriu[j,j] == 1.0){cat("tenint en compte l'anàlisi Òrbita, s'evidencien \\textbf{febleses} significatives respecte els resultats esperats. ")};
         #if (matriu[j,j] == 1.1){cat("tenint en compte l'anàlisi Òrbita, els resultats són dins els valors esperats. ")};
         if (matriu[j,j] == 1.2){cat("tenint en compte l'anàlisi Òrbita, s'evidencia un resultat superior respecte els valors esperats. ")};
 
         if (round(matriu[j,j]) == 2)
 {cat("\\item S'observen valors dins la normalitat en l'àrea de \\textbf{", proves[j], "}; ",  sep = "")};
-         if (matriu[j,j] == 2.0){cat("tenint en compte l'anàlisi Òrbita, s'evidencien \\textbf{dificultats} significatives respecte els resultats esperats. ")};
+         if (matriu[j,j] == 2.0){cat("tenint en compte l'anàlisi Òrbita, s'evidencien \\textbf{febleses} significatives respecte els resultats esperats. ")};
         #if (matriu[j,j] == 2.1){cat("tenint en compte l'anàlisi Òrbita, els resultats són dins els valors esperats. ")};
-        if (matriu[j,j] == 2.2){cat("tenint en compte l'anàlisi Òrbita, s'evidencia un \\textbf{talent} respecte els valors esperats. ")};
+        if (matriu[j,j] == 2.2){cat("tenint en compte l'anàlisi Òrbita, s'evidencia una \\textbf{fortalesa} respecte els valors esperats. ")};
 
         if (round(matriu[j,j]) == 3){cat("
 \\item S'observen valors \\textbf{alts} respecte la mitjana en l'àrea de \\textbf{", proves[j], "}; ",  sep = "")};
-         if (matriu[j,j] == 3.0){cat("tenint en compte l'anàlisi Òrbita, s'evidencien certes dificultats respecte els resultats esperats, però no els considerem significatius. ")};
+         if (matriu[j,j] == 3.0){cat("tenint en compte l'anàlisi Òrbita, s'evidencien certes febleses respecte els resultats esperats, però no els considerem significatius. ")};
         #if (matriu[j,j] == 3.1){cat("tenint en compte l'anàlisi Òrbita, els resultats són dins els valors esperats. ")};
-        if (matriu[j,j] == 3.2){cat("tenint en compte l'anàlisi Òrbita, s'evidencia un \\textbf{talent} respecte els valors esperats. ")};}
+        if (matriu[j,j] == 3.2){cat("tenint en compte l'anàlisi Òrbita, s'evidencia una \\textbf{fortalesa} respecte els valors esperats. ")};}
 
 cat("
 \\end{itemize}

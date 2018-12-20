@@ -91,7 +91,7 @@ if(prod(diag(matriu))==2.1**nrow(matriu)){
   # fem les memòries per separat:
   if(round(matriu[2,2])==1 & round(matriu[5,5])==1){
     cat("\\item Observem que els resultats en les dues proves de \\textbf{memòria} són substancialment \\textbf{baixos}, 
-                així que creiem que podem estar parlant d'una dificultat específica en aquesta àrea. Per tant, des del 
+                així que creiem que podem estar parlant d'una feblesa en aquesta àrea. Per tant, des del 
                 Projecte Òrbita recomanem l'administració de proves específiques de funcions executives, en concret de proves 
                 de capacitat atencional, memòria a curt termini, així com més proves específiques de memòria de treball i a 
                 llarg termini.
@@ -107,32 +107,32 @@ if(prod(diag(matriu))==2.1**nrow(matriu)){
   }
   else if(round(matriu[5,5])==1){
     cat("\\item Observem que els resultats en la memòria de treball són normals, però en canvi en la 
-                \\textbf{memòria a llarg termini} són baixos, per tant podríem estar parlant d'una dificultat específica en 
+                \\textbf{memòria a llarg termini} són baixos, per tant podríem estar parlant d'una feblesa en 
                 memòria a llarg termini. Per tant, des del Projecte Òrbita recomanem l'administració de proves específiques 
-                de memòria a llarg termini per tal d'aprofundir en aquesta dificultat.
+                de memòria a llarg termini per tal d'aprofundir en aquesta feblesa.
         ", sep="")
     future = TRUE
   }
   else if(round(matriu[2,2])==3 & round(matriu[5,5])==3){
     cat("\\item Observem que els resultats en les dues proves de \\textbf{memòria} són \\textbf{alts}, així que podem estar 
-                parlant d'un talent específic en aquesta àrea. Per tant, des del Projecte Òrbita recomanem l'administració de 
+                parlant d'una fortalesa en aquesta àrea. Per tant, des del Projecte Òrbita recomanem l'administració de 
                 proves de memòria a curt termini, així com més proves específiques de memòria de treball i a llarg termini per 
-                acabar de confirmar aquest talent. 
+                acabar de confirmar aquesta fortalesa. 
         ", sep="")
   }
   
   else if(round(matriu[2,2])==3){
     cat("\\item Observem que els resultats en la \\textbf{memòria de treball} són \\textbf{alts}, així que podem estar 
-                parlant d'un talent específic en aquesta àrea. Per tant, des del Projecte Òrbita recomanem l'administració de 
+                parlant d'una fortalesa en aquesta àrea. Per tant, des del Projecte Òrbita recomanem l'administració de 
                 proves de memòria a curt termini, així com més proves específiques de memòria de treball i també a llarg 
-                termini per acabar de confirmar aquest talent i tornar a comprovar si s'estén també a memòria a llarg termini.
+                termini per acabar de confirmar aquesta fortalesa i tornar a comprovar si s'estén també a memòria a llarg termini.
         ", sep="")}
   
   else if(round(matriu[5,5])==3){
     cat("\\item Observem que els resultats en la \\textbf{memòria a llarg termini} són \\textbf{alts}, així que podem estar 
-                parlant d'un talent específic en aquesta àrea. Per tant, des del Projecte Òrbita recomanem l'administració de 
+                parlant d'una fortalesa en aquesta àrea. Per tant, des del Projecte Òrbita recomanem l'administració de 
                 proves de memòria a curt termini, així com més proves específiques de memòria de treball i també a llarg 
-                termini per acabar de confirmar aquest talent i tornar a comprovar si s'estén també a memòria de treball.
+                termini per acabar de confirmar aquesta fortalesa i tornar a comprovar si s'estén també a memòria de treball.
         ", sep="") }
     
   nums = 1:nrow(matriu)
@@ -146,7 +146,7 @@ if(prod(diag(matriu))==2.1**nrow(matriu)){
     
       if (round(matriu[j,j]) == 1){cat("\\item En ", paraules[[j]][1],sep="")};
       if (matriu[j,j] == 1.0){cat(" hem observat que els resultats són més \\textbf{baixos} que els predits per l'anàlisi Òrbita,
-                                  i per tant podríem estar parlant d'una dificultat específica, i necessitem aprofundir en les 
+                                  i per tant podríem estar parlant d'una feblesa, i necessitem aprofundir en les 
                                   seves causes. És per això que recomanem que s'administrin proves de ", paraules[[j]][2],".
                                   ",sep="");
 futur=TRUE;
@@ -162,7 +162,7 @@ futur=TRUE;
       
       if (matriu[j,j] == 2.0){cat("\\item En el cas de la ", paraules[[j]][1],", tot i observar valors dins la normalitat, 
                                   veiem que els resultats són \\textbf{significativament inferiors} als predits per l'anàlisi 
-                                  Òrbita, i per tant podríem estar parlant d'una possible dificultat específica en aquest àmbit. 
+                                  Òrbita, i per tant podríem estar parlant d'una possible feblesa en aquest àmbit. 
                                   És per això que recomanem que s'administrin proves de ", paraules[[j]][2]," per 
                                   conèixer les causes amb més profunditat.", sep="");
 
@@ -170,7 +170,7 @@ futur=TRUE;};
 
       if (matriu[j,j] == 2.2){cat("\\item En el cas de la ", paraules[[j]][1],", tot i observar valors dins la normalitat, 
                                   veiem que els resultats són \\textbf{significativament superiors} als predits per l'anàlisi 
-                                  Òrbita, i per tant podríem estar parlant d'un talent en aquest àmbit. És per això que són 
+                                  Òrbita, i per tant podríem estar parlant d'una fortalesa en aquest àmbit. És per això que són 
                                   recomanables proves de ", paraules[[j]][3], ".",
                                   sep="")};
       
@@ -189,9 +189,9 @@ futur=TRUE;};
                                   addicionals que s'adaptin al seu ritme d'aprenentatge.
                                   ",sep="")};
     
-      if (matriu[j,j] == 3.2){cat("A més a més, sospitem un talent en ", paraules[[j]][5],". 
+      if (matriu[j,j] == 3.2){cat("A més a més, sospitem una fortalesa en ", paraules[[j]][5],". 
                                   És per això que recomanem l'administració de proves de ", paraules[[j]][3], 
-                                  " per tal de confirmar aquest talent. A banda, concloem que es necessita una atenció 
+                                  " per tal de confirmar aquesta fortalesa. A banda, concloem que es necessita una atenció 
                                   personalitzada en aquest àmbit ja que supera amb escreix el nivell mitjà de classe i per 
                                   tant pot necessitar estratègies addicionals que s'adaptin al seu ritme d'aprenentatge.
                                   ",sep="")};

@@ -92,7 +92,8 @@ heading_classes <- "\\documentclass[a4paper, 12pt, oneside]{book}%{article}
 {0pt}{10pt}{40pt}
 ";
 
-heading_alumnes <- "\\documentclass[a4paper, 12pt, oneside]{book}%{article}
+heading_alumnes <- function(nom){ cat("
+\\documentclass[a4paper, 12pt, oneside]{article}
 \\usepackage{framed}
 \\usepackage[left=3cm,right=3cm,top=2cm]{geometry}
 \\usepackage[sfdefault]{cabin}
@@ -117,6 +118,8 @@ heading_alumnes <- "\\documentclass[a4paper, 12pt, oneside]{book}%{article}
 
 \\definecolor{orbita}{rgb}{0.0235, 0.8275, 0.5921}
 
+\\usepackage{pdfpages} % per poder posar la tapa en pdf
+\\usepackage{tikz} % per pode posar el nom sobre la tapa
 \\usepackage{fancyhdr}
 \\usepackage{graphicx}
 \\pagestyle{fancy}
@@ -124,15 +127,122 @@ heading_alumnes <- "\\documentclass[a4paper, 12pt, oneside]{book}%{article}
 \\lfoot{\\includegraphics[scale=0.3]{../../informe-atom-peu}}
 \\rfoot{\\small \\thepage}
 
-\\setlength\\parindent{0pt}
+%\\setlength\\parindent{0pt}
 \\captionsetup[subfigure]{labelformat=empty}
 \\fancyfootoffset[LO,LE]{2cm}
-
+\\title{Informe de resultats del Test Àtom}
+\\date{}
 \\titleformat{\\chapter}[display]
 {\\normalfont\\huge\\bfseries}{}{0pt}{\\Huge}
 \\titlespacing*{\\chapter}
 {0pt}{10pt}{40pt}
-";
+
+\\begin{document}
+\\includepdf[pages=-,pagecommand={\\begin{tikzpicture}[remember picture,overlay]\\node [xshift = -5.4cm, yshift = 6cm] at (current page.center)  {\\textbf{\\huge{",nom,"}}};\\end{tikzpicture}}]{../../Portada-resultats}
+
+\\maketitle
+
+\\section{Introducció}
+
+El \\textbf{Test Àtom}, desenvolupat pel Projecte Òrbita, és una bateria d’ampli espectre de proves de \\textbf{rendiment escolar, d’habilitats cognitives i d’adaptació emocional}. Es tracta d’una mesura objectiva, integradora i científicament validada amb una mostra de 2095 alumnes d’escoles públiques, privades i concertades de Catalunya durant el curs 2016-2017. 
+
+L’objectiu  del test és conèixer el perfil cognitiu i d’adaptació emocional dels alumnes, així com oferir o recomanar les eines, metodologies o intervencions educatives i emocionals més adequades per cada nen o nena.
+
+Cal considerar que els resultats corresponen a l’avaluació d’un sol dia i en unes condicions determinades i que per tant cal interpretar-les tenint en compte que els resultats es poden veure afectats per factors circumstancials com la motivació, l’atenció a les instruccions i l’estat personal de l’alumne aquell dia. Els resultats poden ser inferiors a la capacitat real dels alumnes si no s'han donat els factors per promoure el seu màxim rendiment. D'altra banda, aquells que han obtingut uns resultats elevats indiquen que, en algunes condicions, encara que no siguin les més habituals, són capaços de mostrar produccions remarcables.
+
+S’ha de tenir en compte, doncs, que els resultats corresponen a una primera visió general, i per tant en cap cas suposen un diagnòstic i sempre es necessitaran d’altres proves per confirmar possibles afectacions o necessitats específiques. En l’informe de resultats es suggereixen futurs tests que es poden necessitar en cada cas. 
+
+\\section{Conceptes de l’informe}
+
+A continuació descrivim els conceptes clau que apareixen en l’informe per descriure els resultats dels nens i nenes:
+
+\\begin{itemize}
+\\item \\textbf{Alt rendiment}: habilitat significativament elevada comparada amb la mitjana de la població.
+\\item \\textbf{Baix rendiment}: habilitat significativament inferior comparada amb la mitjana de la població.
+\\item \\textbf{Fortalesa}: habilitat significativament elevada comparada amb el propi perfil de capacitats.
+\\item \\textbf{Feblesa}: habilitat significativament inferior comparada amb el propi perfil de capacitats.
+\\end{itemize}
+
+\\section{Àrees avaluades}
+
+El Test Àtom avalua la capacitat i l’execució de l’alumne en 6 o 7 àrees cognitives:
+
+\\begin{itemize}
+\\item \\textbf{Lectura (L)}: avalua la capacitat de descodificació i comprensió lectora dels alumnes.
+\\item \\textbf{Memòria de Treball (MT)}: avalua l’habilitat per mantenir una informació a la memòria sense interferència d’altres processos de manipulació d’informació.
+\\item \\textbf{Velocitat de Processament (VP)}: avalua l’agilitat que mostra la persona en explorar, ordenar i discriminar informació visual simple.
+\\item \\textbf{Fluïdesa matemàtica (FM)}: avalua el procés d’automatització de les operacions numèriques bàsiques i l’habilitat per resoldre-les correctament.
+\\item \\textbf{Memòria a llarg termini (MLT)}: avalua la capacitat d’evocació d’informació presentada i processada amb anterioritat.
+\\item \\textbf{Raonament (R)}: avalua la destresa per inferir patrons lògics i deduir la seva continuïtat. 
+\\item \\textbf{Càlcul (C)} (només a 5è i 6è de primària): avalua la capacitat de raonament quantitatiu a través d’operacions matemàtiques no automatitzades.
+\\end{itemize}
+
+\\section{Interpretació de l’informe}
+
+L’informe del Test Àtom descriu el \\textbf{perfil de cada alumne} en habilitats cognitives i adaptació emocional, amb l’objectiu de comprendre les seves fortaleses i febleses i la seva comparació amb la població general. Consta de la informació referent a 4 aspectes: la \\textbf{valoració cognitiva} i de \\textbf{rendiment escolar}, l’índex d’\\textbf{estil de resposta}, la \\textbf{valoració adaptativa} i les \\textbf{orientacions personals i educatives}.
+
+\\subsection{Valoració cognitiva i de rendiment escolar}
+
+Podem observar dos gràfics corresponents als resultats de l’alumne: el \\textbf{resultat observat} (comparant el rendiment de l'alumne amb el barem general de la població de la seva edat) i el \\textbf{resultat esperat} (predit segons el Mètode Òrbita d'anàlisi estadístic).
+
+\\subsection{Interpretació del resultat observat o experimental}
+
+En el primer gràfic es mostren els \\textbf{resultats observats o experimentals}, aquells \\textbf{obtinguts pel nen o la nena durant la realització de les diferents sub-proves}.
+
+El codi de colors és el següent:
+
+\\begin{itemize}
+\\item Taronja: rendiment per sota del 30\\% de la població (equivalent a un baix rendiment en la prova).
+\\item Verd: rendiment dins la normalitat.
+\\item Blau: rendiment per sobre del 85\\% de la població (equivalent a un alt rendiment en la prova). 
+\\end{itemize}
+
+\\subsection{Interpretació del resultat esperat o predit}
+
+En el segon gràfic mostrem els \\textbf{resultats predits o esperats}, que es basen en el Mètode Òrbita d’anàlisi estadístic. Aquest \\textbf{compara cada perfil amb el conjunt de perfils cognitius i d’adaptació emocional} de més de 2000 alumnes, i.e., es compara el resultat esperat per l’alumne a cadascuna de les proves amb el seu resultat obtingut. La diferència entre el valor esperat i els resultats obtinguts per l’alumne ens indica dificultats (en cas que els resultats predits siguin superiors als obtinguts) o potencialitats (en cas que els resultats predits siguin inferiors als obtinguts).
+
+El codi de colors per aquests resultats és el següent:
+
+\\begin{itemize}
+\\item Vermell: el valor predit és significativament més alt que el mesurat (detectem una dificultat específica en aquella àrea).
+\\item Gris: el valor predit és similar al mesurat.
+\\item Blau: el valor predit és significativament més baix que el mesurat (detectem una fortalesa o potencialitat en aquella àrea).
+\\end{itemize}
+
+\\section{Índex d’estil de resposta}
+
+Aporta informació sobre si el patró de resposta del subjecte durant la prova és impulsiu o reflexiu i permet matisar les inferències sobre el seu rendiment, situant cada alumne en un punt intermedi en el contínuum reflexivitat-impulsivitat.
+
+Entenem com a \\textbf{reflexivitat} la tendència a respondre de forma lenta però exacta (alta latència de resposta i baix nombre d’errors), mentre que la \\textbf{impulsivitat} reflecteix un perfil que respon de forma ràpida però inexacta (baixa latència de resposta i elevat nombre d’errors).
+
+Considerem que un estil de resposta tendent als extrems de reflexivitat i impulsivitat poden limitar l’eficiència de l’alumne i interferir en el seu rendiment habitual.
+
+Aquesta informació només es mostra en cas que el valor observat pugui haver afectat els resultats en les altres àrees. 
+
+\\section{Valoració adaptativa}
+
+Proporciona un resultat de la \\textbf{percepció d’adaptació personal que té el nen o nena}, considerant les àrees més rellevants del seu dia a dia: personal, escolar, social i familiar. En el cas de Cicle Inicial es plantegen 5 preguntes que avaluen la percepció d’adaptació en els diversos àmbits associant la pregunta a una cara que representa l’estat emocional (cara plorosa, cara trista, cara contenta, cara molt contenta). En el cas de Cicle Mitjà i Cicle Superior es considera un qüestionari de 16 preguntes sobre la percepció d’adaptació a cada àmbit amb opcions de resposta: mai,alguna vegada, moltes vegades, sempre.
+
+En el cas que detectem que l’alumne no es sent ben adaptat en alguna àrea obtindrem un gràfic que mostra el grau de desadaptació de l’individu. La longitud de les barres dels diferents àmbits indica la severitat de la inadaptació en aquella àrea i es divideix en 3 nivells: lleu, moderat i greu.
+
+\\section{Orientacions personals i educatives}
+
+Els resultats d’aquestes avaluacions ens indiquen en quines àrees generals detectem \\emph{necessitats específiques d’aprenentatge}. 
+
+Segons els resultats, es configura una segona fase d’identificació personalitzada adaptada a les característiques de cada perfil. Per a cada nen o nena es suggereixen quin tipus de proves administrar a partir d’ara i quins passos a seguir en un futur considerant les necessitats detectades en aquest primer cribratge.
+
+S’ofereix aquesta informació per donar l’oportunitat de continuar explorant el perfil cognitiu dels nens i nenes d’una forma raonada i útil enfocada a millorar el rendiment escolar i el desenvolupament personal.
+
+Aquestes orientacions estan basades en el coneixement científic actual sobre habilitats cognitives, funcions executives, desenvolupament emocional i habilitats socials i adaptatives. 
+
+\\section{Fonaments}
+
+El Test Àtom és resultat d’investigació en cognició, psicologia infantil i intel·ligència artificial desenvolupada a la Universitat de Barcelona (UB) i la Universitat Pompeu Fabra (UPF), amb col·laboracions a la Universitats de Girona (UdG) i la Universitat Rovira i Virgili (URV). 
+
+La vostra escola us pot proporcionar documentació proporcionada pel Projecte Òrbita sobre les teories que recolzen i configuren la base científica del Test Àtom.
+")}
+
+
 
 #####
 

@@ -151,18 +151,15 @@ informe_general = function(nom_carpeta_escola, tipus = "classe"){
       
     for(i in 1:length(punts[,1]))
       {
+      nom = as.character(names(matriu[i]))
+      
         if (tipus == "individual"){
           sink(file(paste(getwd(), "/informes/", escola[2],"/", curs_classe[cl],"/",noms_fitxers_tex[i],".tex", sep =""), 
                     open = "wt", encoding = "latin1"));
-          cat(heading_alumnes);
-          cat("\\begin{document}")
-          
-          ################
-          ### Aquí s'hi haurà d'afegir la introducció i tapa i tot això
-          ################
+          heading_alumnes(nom)
         }
       
-        nom = as.character(names(matriu[i]))
+        
         individual_head(nom, classe, escola[1][1]);
         informe_individual(i, curs, punts[llista_columnes[[curs[2]]]], matriu, indeximp[i], escola, tipus)
         
