@@ -1,7 +1,6 @@
 Sys.setlocale(category="LC_ALL", locale = "Catalan")
 require(stringr)
 
-
 # Aquest fitxer s'haurà de reorganitzar, per ara hi ha coses de manipulacions de noms i com transformar els excels en 
 # csv bonics per fer els informes
 
@@ -22,14 +21,33 @@ formatejar_noms = function(columna_noms){
 }
 ####
 
+# Capitalitzem la primera lletra dels noms perquè quedin sempre ben escrits encara que a l'excel no ho estiguin
+
+# FIXME: cognoms tipus "de la rosa" queden amb tot en majúscules "De La Rosa"
+
+capitalitzar <- function(x){
+  first <- toupper(substr(x, start=1, stop=1)) 
+  rest <- tolower(substr(x, start=2, stop=nchar(x)))   
+  tot = paste0(first, rest)
+  return(gsub("-(.)", "-\\U\\1", tot, perl=TRUE)) # Per les lletres de després d'un guió
+}
+
+capitalizar_noms = function(columna){
+  columna = str_split_fixed(columna, " ", 3)
+  cap_noms = apply(columna, 2, capitalitzar)
+  noms = trimws(paste(cap_noms[,1], cap_noms[,2], cap_noms[,3], " "), "both")
+  return(noms)
+}
+
+
 # Agafem tots els noms i filtrarem més endavant; només en el gràfic de la classe conjunta
 
-ajuntar_noms = function(tres_columnes_noms){
-  noms_nens = paste0(tres_columnes_noms[,1], # els ifelse són per si hi ha noms buits
+tractar_i_ajuntar_noms = function(tres_columnes_noms){
+  noms_nens = paste0(capitalizar_noms(tres_columnes_noms[,1]), # els ifelse són per si hi ha noms buits
                      " ", 
-                     ifelse(!is.na(tres_columnes_noms[,2]),tres_columnes_noms[,2],""), 
+                     ifelse(!is.na(tres_columnes_noms[,2]),capitalizar_noms(tres_columnes_noms[,2]),""), 
                      " ",
-                     ifelse(!is.na(tres_columnes_noms[,3]),tres_columnes_noms[,3],""))
+                     ifelse(!is.na(tres_columnes_noms[,3]),capitalizar_noms(tres_columnes_noms[,3]),""))
   return(noms_nens)
 }
 
@@ -70,8 +88,8 @@ pretractar_excels <-function(path, nom_carpeta,limit){
     fitxer = fitxer[-1,]
     cols = unlist(columnes[cursos[i]], use.names = F)
     cols = c(cols, 8) # afegim els comentaris, que els posem al final
-    df = cbind.data.frame(ajuntar_noms(as.data.frame(fitxer[,4:6])), fitxer[,cols])
-    write.table(df, paste0("dades/",nom_carpeta, "/", noms_fitxers[i],".csv"), 
+    df = cbind.data.frame(tractar_i_ajuntar_noms(as.data.frame(fitxer[,4:6])), fitxer[,cols])
+    write.table(df, paste0("dades/", nom_carpeta, "/", noms_fitxers[i],".csv"), 
                 sep = ",",
                 row.names=F, 
                 col.names = F,
