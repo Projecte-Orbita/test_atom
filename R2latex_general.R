@@ -1,6 +1,6 @@
 Sys.setlocale(category="LC_ALL", locale = "Catalan")
 
-informe_general = function(nom_carpeta_escola, tipus = "classe"){
+informe_general = function(nom_carpeta_escola, tipus = "classe", nom_escola){
   
   print("> Inicialitzant")
   
@@ -18,7 +18,7 @@ informe_general = function(nom_carpeta_escola, tipus = "classe"){
   source('./manipulacions_dades.R', encoding = "UTF-8")
   
   # creem el vector d'escola, amb una entrada pel nom i l'altra per les carpetes
-  escola = c(nom_carpeta_escola, gsub(" ", "_", nom_carpeta_escola))
+  escola = c(nom_escola, gsub(" ", "_", nom_carpeta_escola))
   
   #####
   # agafem la info de la carpeta d'on treurem les dades (i que abans es passava dins la funció)

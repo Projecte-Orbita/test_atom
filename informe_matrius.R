@@ -76,7 +76,7 @@ inpulsivitat_reflectivitat <- function(indeximp, index){
     cat("
       
       \\begin{center}
-      \\Large{Índex de reflectivitat - compulsivitat} \\\\ 
+      \\Large{Índex de reflexivitat - impulsivitat} \\\\ 
       \\end{center}
       
       ");

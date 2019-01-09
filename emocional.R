@@ -139,6 +139,7 @@ creacio_grafics_emocional = function(punts, curs, escola){
     
     if(curs[2] == 1 | curs[2] == 2){
       dades = unname(unlist(punts[i, c(14:18)]))
+      dades[is.na(dades)]=0
       valors = c(max(0,3-dades[1]), 
                  max(0,3-dades[2]),
                  max(0,3-dades[3]), 
@@ -149,6 +150,7 @@ creacio_grafics_emocional = function(punts, curs, escola){
     
     else if(curs[2] == 3 | curs[2] == 4){
       dades = unname(unlist(punts[i, c(18:33)]))
+      dades[is.na(dades)]=0
       
       pre_valors = c(max(3-dades[1],0),        # m'agrada com sóc
                      max(dades[2]-2,0),        # estic trist
@@ -176,7 +178,7 @@ creacio_grafics_emocional = function(punts, curs, escola){
     }
     else if(curs[2] == 5 | curs[2] == 6){
       dades = unname(unlist(punts[i, c(24:39)]))
-      
+      dades[is.na(dades)]=0
       pre_valors = c(if(dades[1]==1) 3 else {if(dades[1]==2) 1 else 0},        # m'agrada com sóc
                      if(dades[2]==4) 3 else {if(dades[2]==3) 1 else 0},        # estic trist
                      if(dades[3]==1) 1 else 0,        # crec que sé fer moltes coses

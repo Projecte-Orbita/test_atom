@@ -35,7 +35,12 @@ capitalitzar <- function(x){
 capitalizar_noms = function(columna){
   columna = str_split_fixed(columna, " ", 3)
   cap_noms = apply(columna, 2, capitalitzar)
+  if(nrow(columna)==1){
+    noms =  trimws(paste(cap_noms[1], cap_noms[2], cap_noms[3], " "), "both")
+  }
+  else{
   noms = trimws(paste(cap_noms[,1], cap_noms[,2], cap_noms[,3], " "), "both")
+  }
   return(noms)
 }
 
@@ -52,7 +57,7 @@ tractar_i_ajuntar_noms = function(tres_columnes_noms){
 }
 
 
-pretractar_excels <-function(path, nom_carpeta,limit){
+pretractar_excels <-function(path, nom_carpeta,limit=1){
   
   # TODO: capitalitzar els noms quan estan tots en majúscules
   
