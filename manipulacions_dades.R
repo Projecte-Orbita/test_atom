@@ -69,7 +69,7 @@ pretractar_excels <-function(path, nom_carpeta,limit=1){
   noms_fitxers = paste0(cursos, numeros_classe)
   classes = sapply(classes, as.data.frame)
   # mirem quins tenen dades:  
-  numero_nens_per_classe = sapply(classes, function(x) length(x$Nom))
+  numero_nens_per_classe = sapply(classes, function(x) length(x$Nom[x$Nom!=""]))
   
   # posem un filtre pels valors que no tenen dades o en tenen poques, perquè aniran a part:
   
