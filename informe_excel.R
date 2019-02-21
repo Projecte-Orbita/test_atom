@@ -1,4 +1,7 @@
 Sys.setlocale(category="LC_ALL", locale = "Catalan")
+source('manipulacions_dades.R', encoding = "UTF-8")
+source('R2latex_general.R', encoding = "UTF-8")
+
 
 informe_des_dexcel = function(path_excel, nom_escola, tipus = "classe"){
   source('R2latex_general.R', encoding = "UTF-8")
