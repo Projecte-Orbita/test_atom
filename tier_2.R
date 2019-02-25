@@ -151,7 +151,7 @@ if(prod(diag(matriu))==2.1**nrow(matriu)){
                                   ",sep="");
 futur=TRUE;
 };
-      if (matriu[j,j] == 1.1){cat(" L'anàlisi Òrbita indica que tenim un \\textbf{baix rendiment} en aquesta àrea
+      if (matriu[j,j] == 1.1){cat(" l'anàlisi Òrbita indica que tenim un \\textbf{baix rendiment} en aquesta àrea
                                     i recomana administrar més proves de ", paraules[[j]][2],
                                   " per conèixer les causes amb més profunditat. A banda, concloem que es necessita una atenció 
                                   personalitzada en aquest àmbit ja que pot no seguir amb normalitat el ritme de classe. 
