@@ -17,6 +17,6 @@ informe_des_dexcel = function(path_excel, nom_escola, tipus = "classe"){
   
 }
 
-informe_des_dexcel('dades/Correccions Tecnos 2018-19.xlsx', 'Escola Tecnos', 'classe')
-# informe_des_dexcel('dades/Correccions Tecnos 2018-19.xlsx', 'Escola Tecnos', 'individual')
+#informe_des_dexcel('dades/Correccions Tecnos 2018-19.xlsx', 'Escola Tecnos', 'classe')
+#informe_des_dexcel('dades/Correccions Tecnos 2018-19.xlsx', 'Escola Tecnos', 'individual')
 

@@ -141,7 +141,7 @@ creacio_grafics_emocional = function(punts, curs, escola){
     nom = as.character(punts[i,1])
     
     if(curs[2] == 1 | curs[2] == 2){
-      dades = unname(unlist(punts[i, c(14:18)]))
+      dades = as.numeric(as.vector(t(punts[i, c(14:18)])))
       dades[is.na(dades)]=4  # Els no respostos és com si estessin bé.
                              # poseu a 1 i no volem que no ho estiguin.
       valors = c(if(dades[1]==1) 3 else {if(dades[1]==2) 1 else 0},
