@@ -673,7 +673,7 @@ informe_individual_alumnes_sol <- function(index, curs, punts, matrius, indeximp
   if(futur_em == TRUE){cat("Es constaten alteracions emocionals que poden haver interferit en l'execució cognitiva i de rendiment exposada anteriorment. Per tant recomanem que es procedeixi a aprofundir en les causes d'aquestes alteracions emocionals abans de continuar l'exploració del perfil cognitiu.\\\\ ") 
   }else{cat("No es constata interferència de l'estat emocional en els resultats obtinguts. \\\\")};
   
-  if(futur_tier == TRUE){cat("Els resultats obtinguts ens permeten determinar que ", names(matrius)[index], " pot beneficiar-se de mesures metodològiques destinades a abordar les àrees prèviament comentades. ");
+  if(futur_tier == TRUE){cat("Els resultats obtinguts permeten determinar que ", names(matrius)[index], " pot beneficiar-se de mesures metodològiques destinades a abordar les àrees prèviament comentades. ");
   }
   
       }

@@ -77,11 +77,11 @@ informe_emocional <- function(index, emocional){
       
       if (!is.na(ambits[[(i-1)/4+1]][[3]][[j]][1]) && !is.na(emocional_nou[i+j]) 
           && emocional_nou[i+j] == ambits[[(i-1)/4+1]][[3]][[j]][1])
-        {greu <- c(greu, list(paraula(ambits[[(i-1)/4+1]][[3]][[j]][1]), j));}
+      {greu <- c(greu, list(paraula(ambits[[(i-1)/4+1]][[3]][[j]][1]), j));}
       
       else if (!is.na(ambits[[(i-1)/4+1]][[3]][[j]][2]) && !is.na(emocional_nou[i+j]) 
                && emocional_nou[i+j]== ambits[[(i-1)/4+1]][[3]][[j]][2])
-        {lleu <- c(lleu, list(paraula(ambits[[(i-1)/4+1]][[3]][[j]][2]), j));}}
+      {lleu <- c(lleu, list(paraula(ambits[[(i-1)/4+1]][[3]][[j]][2]), j));}}
     
     if(length(greu) != 0 | length(lleu) != 0)
     {cat("
@@ -95,7 +95,7 @@ informe_emocional <- function(index, emocional){
                               as.character(emocional_nou[1]), " ha indicat que ", sep = "");               
       if(length(greu) != 2){sapply(1:(floor(length(greu)/2)-1), 
                                    function (x) cat(greu[[2*x-1]], 
-                          ambits[[(i-1)/4+1]][[2]][as.numeric(greu[[2*x]])], ", ", sep = ""));}
+                                                    ambits[[(i-1)/4+1]][[2]][as.numeric(greu[[2*x]])], ", ", sep = ""));}
       
       cat(if(length(greu) != 2)"i ", greu[[as.numeric(length(greu)-1)]], 
           ambits[[(i-1)/4+1]][[2]][as.numeric(greu[[length(greu)]])], ". ", sep = ""); 
@@ -107,7 +107,7 @@ informe_emocional <- function(index, emocional){
                               as.character(emocional_nou[1]), " ha indicat que ", sep = "");               
       if(length(lleu) != 2){sapply(1:(floor(length(lleu)/2)-1), 
                                    function (x) cat(lleu[[2*x-1]], 
-                          ambits[[(i-1)/4+1]][[2]][as.numeric(lleu[[2*x]])], ", ", sep = ""));}
+                                                    ambits[[(i-1)/4+1]][[2]][as.numeric(lleu[[2*x]])], ", ", sep = ""));}
       
       cat(if(length(lleu) != 2)"i ", lleu[[as.numeric(length(lleu)-1)]], 
           ambits[[(i-1)/4+1]][[2]][as.numeric(lleu[[length(lleu)]])], ". ", sep = ""); 
@@ -139,35 +139,36 @@ creacio_grafics_emocional = function(punts, curs, escola){
     
     if(curs[2] == 1 | curs[2] == 2){
       dades = unname(unlist(punts[i, c(14:18)]))
-      dades[is.na(dades)]=0
-      valors = c(max(0,3-dades[1]), 
-                 max(0,3-dades[2]),
-                 max(0,3-dades[3]), 
-                 ifelse(dades[4] == 1 | dades[5] == 1, 2, 
-                        ifelse(dades[4] == 2 | dades[5] == 2, 1, 0))
-      )
+      dades[is.na(dades)]=4  # Els no respostos és com si estessin bé.
+                             # poseu a 1 i no volem que no ho estiguin.
+      valors = c(if(dades[1]==1) 3 else {if(dades[1]==2) 1 else 0},
+                 if(dades[2]==1) 3 else {if(dades[2]==2) 1 else 0},
+                 if(dades[3]==1) 3 else {if(dades[3]==2) 1 else 0},
+                 if(dades[4]==1) 3 else {if(dades[4]==2) 1 else 0} + 
+                   if(dades[5]==1) 3 else {if(dades[5]==2) 1 else 0}
+                 )
     }
     
     else if(curs[2] == 3 | curs[2] == 4){
       dades = unname(unlist(punts[i, c(18:33)]))
       dades[is.na(dades)]=0
       
-      pre_valors = c(max(3-dades[1],0),        # m'agrada com sóc
-                     max(dades[2]-2,0),        # estic trist
-                     max(2-dades[3],0),        # crec que sé fer moltes coses
-                     max(dades[4]-2,0),        # m'enfado i em barallo
-                     min(max(3-dades[5],0),1), # m'agrada anar a l'escola
-                     min(max(dades[6]-2,0),1), # m'avorreixo a classe
-                     max(2-dades[7],0),        # trec bones notes
-                     max(2-dades[8],0),        # estudio i m'esforço
-                     max(3-dades[9],0),        # em cauen bé els meus companys
-                     max(dades[10]-2,0),       # els altres em molesten
-                     max(3-dades[11],0),       # m'agrada jugar amb els altres
-                     max(dades[12]-2,0),       # em costa fer amics
-                     max(3-dades[13],0),       # estic a gust a casa
-                     max(dades[14]-2,0),       # hi ha crits i discussions a casa
-                     min(max(3-dades[15],0),1), # estic d'acord amb les normes de casa
-                     min(max(4-dades[16],0),2)  # estimo els meus pares
+      pre_valors = c(if(dades[1]==1) 3 else {if(dades[1]==2) 1 else 0},        # m'agrada com sóc
+                     if(dades[2]==4) 3 else {if(dades[2]==3) 1 else 0},        # estic trist
+                     if(dades[3]==1) 1 else 0,        # crec que sé fer moltes coses
+                     if(dades[4]==4) 3 else {if(dades[4]==3) 1 else 0},        # m'enfado i em barallo
+                     if(dades[5]==1) 1 else {if(dades[5]==2) 1 else 0}, # m'agrada anar a l'escola
+                     if(dades[6]==3) 1 else {if(dades[6]==4) 1 else 0}, # m'avorreixo a classe
+                     if(dades[7]==1) 1 else 0,        # trec bones notes
+                     if(dades[8]==1) 1 else 0,        # estudio i m'esforço
+                     if(dades[9]==1) 3 else {if(dades[9]==2) 1 else 0},        # em cauen bé els meus companys
+                     if(dades[10]==4) 3 else {if(dades[10]==3) 1 else 0},       # els altres em molesten
+                     if(dades[11]==1) 3 else {if(dades[11]==2) 1 else 0},       # m'agrada jugar amb els altres
+                     if(dades[12]==4) 3 else {if(dades[12]==3) 1 else 0},       # em costa fer amics
+                     if(dades[13]==1) 3 else {if(dades[13]==2) 1 else 0},       # estic a gust a casa
+                     if(dades[14]==4) 3 else {if(dades[14]==3) 1 else 0},       # hi ha crits i discussions a casa
+                     if(dades[15]==1) 1 else {if(dades[15]==2) 1 else 0}, # estic d'acord amb les normes de casa
+                     if(dades[16]==1 | dades[16]==2) 3 else {if(dades[16]==3) 1 else 0}  # estimo els meus pares
       )
       valors = c()
       

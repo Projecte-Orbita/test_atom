@@ -185,7 +185,7 @@ futur=TRUE;};
                                   És per això que recomanem l'administració de proves de ", paraules[[j]][3], 
                                   " per tal d'aprofundir en les habilitats relacionades amb ", paraules[[j]][4], 
                                   ". A banda, concloem que es necessita una atenció personalitzada en aquest àmbit ja que 
-                                  supera amb escreix el nivell mitjà de classe i per tant pot necessitar estratègies 
+                                  supera molt notablement el nivell mitjà del seu grup d'edat i per tant pot necessitar estratègies 
                                   addicionals que s'adaptin al seu ritme d'aprenentatge.
                                   ",sep="")};
     
