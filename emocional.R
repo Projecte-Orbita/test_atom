@@ -4,6 +4,7 @@ Sys.setlocale(category="LC_ALL", locale = "Catalan")
 # petits:
 
 informe_emocional_petits <- function(index, emocional){  
+  # TODO: s'ha d'arreglar perquè no es repeteixin els noms dels nens si tenen més d'una cosa (com en l'altre emocional, on està correcte)
   
   futur=FALSE;
   
@@ -14,7 +15,7 @@ informe_emocional_petits <- function(index, emocional){
     par = 0;
     if (!is.na(emocional[index,i]) && emocional[index,i]==1){
       cat("En/na ", as.character(emocional[index,1]), " mostra un \\emph{risc greu} de desadaptació en l'\\textbf{àmbit} ", ambit[i], " ja que ha indicat que ", frase[i], " molt trist.
-          ", sep="")
+          \\\\", sep="")
       par=par+1;
       futur=TRUE;
     }
@@ -23,12 +24,14 @@ informe_emocional_petits <- function(index, emocional){
   for (i in 2:(ncol(emocional))){
     if (par > 1){
       if (!is.na(emocional[index,i]) && emocional[index,i]==2){
-        cat("A més, també mostra un \\emph{risc moderat} de desadaptació en l'\\textbf{àmbit} ", ambit[i], " ja que ha indicat que ", frase[i], " trist.", sep="");
+        cat("A més, també mostra un \\emph{risc moderat} de desadaptació en l'\\textbf{àmbit} ", ambit[i], " ja que ha indicat que ", frase[i], " trist.
+            \\\\", sep="");
         futur=TRUE;
       }
     }
     else {if (!is.na(emocional[index,i]) && emocional[index,i]==2){
-      cat("En/na ", as.character(emocional[index,1]), " mostra un \\emph{risc moderat} de desadaptació en l'\\textbf{àmbit} ", ambit[i], " ja que ha indicat que ", frase[i], " trist.", sep="");
+      cat("En/na ", as.character(emocional[index,1]), " mostra un \\emph{risc moderat} de desadaptació en l'\\textbf{àmbit} ", ambit[i], " ja que ha indicat que ", frase[i], " trist.
+          \\\\", sep="");
       futur=TRUE;
     }
     }
