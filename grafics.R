@@ -212,7 +212,7 @@ grafic_emocional = function(index, curs, df_emocional, escola, nom){
   if (curs[2] == 1 | curs[2] == 2){
     limy = c(0,3)
     paleta = brewer.pal(3, "YlOrRd")
-    names(paleta) = seq(0,2) 
+    names(paleta) = seq(1,3) 
   }
   else {limy = c(0,7)
   

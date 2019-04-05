@@ -144,8 +144,8 @@ creacio_grafics_emocional = function(punts, curs, escola){
       valors = c(if(dades[1]==1) 3 else {if(dades[1]==2) 1 else 0},
                  if(dades[2]==1) 3 else {if(dades[2]==2) 1 else 0},
                  if(dades[3]==1) 3 else {if(dades[3]==2) 1 else 0},
-                 if(dades[4]==1) 3 else {if(dades[4]==2) 1 else 0} + 
-                   if(dades[5]==1) 3 else {if(dades[5]==2) 1 else 0}
+                 min(if(dades[4]==1) 3 else {if(dades[4]==2) 1 else 0} + 
+                   if(dades[5]==1) 3 else {if(dades[5]==2) 1 else 0}, 3)
                  )
     }
     
