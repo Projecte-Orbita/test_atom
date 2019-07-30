@@ -179,7 +179,7 @@ informe_per_classes = function(nom_carpeta_escola){
 
     # Creem els gràfics d'emocional 
 
-    creacio_grafics_emocional(punts, curs, escola)
+    creacio_grafics_adaptatiu(punts, curs, escola)
     
     
     # Creem els gràfics i els informes individuals
@@ -343,7 +343,7 @@ informe_per_alumnes = function(nom_carpeta_escola){
     
     # creem els gràfics emocionals
     
-    creacio_grafics_emocional(punts, curs, escola)
+    creacio_grafics_adaptatiu(punts, curs, escola)
     
     #####
     # Aquí comença el loop que va alumne per alumne:

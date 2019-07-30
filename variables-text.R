@@ -26,6 +26,8 @@ heading <- "\\documentclass[a4paper, 12pt, oneside]{book}%{article}
                 %en Windows canvieu-ho per: \\usepackage[ansinew]{inputenc}
 \\usepackage[catalan]{babel}
 
+\\newenvironment{normalize}{\\leftmargin}{\\par}
+
 \\definecolor{orbita}{rgb}{0.0235, 0.8275, 0.5921}
 
 \\usepackage{fancyhdr}
@@ -73,6 +75,8 @@ heading_classes <- "\\documentclass[a4paper, 12pt, oneside]{book}%{article}
 %en Windows canvieu-ho per: \\usepackage[ansinew]{inputenc}
 \\usepackage[catalan]{babel}
 
+\\newenvironment{normalize}{\\leftskip-\\leftmargin}{\\par}
+
 \\definecolor{orbita}{rgb}{0.0235, 0.8275, 0.5921}
 
 \\usepackage{fancyhdr}
@@ -115,6 +119,8 @@ heading_alumnes <- function(nom){ cat("
 %els accents de forma normal en Linux
 %en Windows canvieu-ho per: \\usepackage[ansinew]{inputenc}
 \\usepackage[catalan]{babel}
+
+\\newenvironment{normalize}{\\leftskip-\\leftmargin}{\\par}
 
 \\definecolor{orbita}{rgb}{0.0235, 0.8275, 0.5921}
 
@@ -489,7 +495,7 @@ cat("
 
 #######
 
-if(curs[2] > 2){futur_em <- informe_emocional(index, punts);}
+if(curs[2] > 2){futur_em <- informe_adaptatiu(index, punts);}
 else{futur_em <- informe_emocional_petits(index, punts)};
 
 cat("
@@ -587,7 +593,7 @@ cat("
   
   #######
   
-  if(curs[2] > 2){futur_em <- informe_emocional(index, punts);}
+  if(curs[2] > 2){futur_em <- informe_adaptatiu(index, punts);}
   else{futur_em <- informe_emocional_petits(index, punts)};
   
   cat("
@@ -657,7 +663,7 @@ informe_individual_alumnes_sol <- function(index, curs, punts, matrius, indeximp
       
       ");
   
-  if(curs[2] > 2){futur_em <- informe_emocional(index, punts);}
+  if(curs[2] > 2){futur_em <- informe_adaptatiu(index, punts);}
   else{futur_em <- informe_emocional_petits(index, punts)};
   
   cat("

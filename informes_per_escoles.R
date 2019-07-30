@@ -9,6 +9,7 @@ crear_informe_escola <- function(cursos, classes, escola){
   source('./tier_2.R', encoding = "UTF-8");             # escriu la part de tier 2 de làtex
   source('./informe_matrius.R', encoding = "UTF-8");   
   source('./emocional.R', encoding = "UTF-8");
+  source('./adaptatiu.R', encoding = "UTF-8")
   source('./barems.R', encoding = "UTF-8");
   source('./errors.R', encoding = "UTF-8");
   source('./compensacions.R', encoding = "UTF-8");
