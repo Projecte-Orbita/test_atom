@@ -95,7 +95,7 @@ informe_general = function(nom_carpeta_escola, tipus = "classe", nom_escola){
     nom_fitxer <- noms_fitxers[cl];
     
     # Importem les dades de la classe on siguem:
-    punts <- read.csv(paste("dades/", escola[2],"/", nom_fitxer, sep = ""), header = FALSE, encoding = "latin1");
+    punts <- read.csv(paste0("dades/", escola[2],"/", nom_fitxer), header = FALSE, encoding = "latin1");
     
     # Creem els directoris on posarem les figures i els informes d'aquella classe:
     dir.create(paste(getwd(), "/figures/", escola[2], "/", curs[1], sep ="" ));
