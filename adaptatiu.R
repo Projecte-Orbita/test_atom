@@ -6,9 +6,25 @@ Sys.setlocale(category="LC_ALL", locale = "Catalan")
 
 
 informe_adaptatiu <- function(index, emocional){  
-  #
+  
+  # Aquesta funció crea la part escrita dels informes emocionals
+  # 
+  # Arguments: index és l'índex de l'alumne 
+  # emocional: df amb els noms a la primera columna i només els valors d'adaptatiu a les altres
+  # 
+  # Retorna: futur: boolean que indica si al final de l'informe s'ha d'escriure si els resultats
+  # adaptatius han pogut influir en els altres
+  
+  
   futur=FALSE;
   lleus=0;
+  
+  # En les properes línies fem un petit truc a causa de que hi ha preguntes que no tenen exactament
+  # el comportament greu, lleu, correcte, correcte, si no que, per exemple, poden tenir que dues preguntes
+  # són un problema lleu o dues un problema greu. Per solventar això, i com a solució ràpida, dupliquem 
+  # aquestes preguntes i els assignem la gravetat a mà una a una. 
+  # Veiem que això passa en la 9, 10, 21 i 22
+  # TODO: fer això d'una forma més clara
   
   emocional_nou <- as.character(emocional[index,1]);
   cc=c(1:9,9,10,10:21,21,22,22);
@@ -65,14 +81,21 @@ informe_adaptatiu <- function(index, emocional){
   ambits <- list(autoimatge, clinica, escolar, social, familiar);
   
   for(i in c(1,5,9,15,19)){
+    # El loop és sobre la primera pregunta de cada bloc
     
     greu <- NULL;
     lleu <- NULL;
-    nb_pregs <- NULL;
+    nb_pregs <- NULL;  # Quantes preguntes hi ha al bloc; pot ser 4 o 6 segons les que hi hagi repetides
     
     if(i != 19 | i != 11){nb_pregs <- seq(1,4,1)} else {nb_pregs <- seq(1,6,1)};
     
     for(j in nb_pregs){  
+      
+      # Per cada una de les preguntes al bloc mirem si està resposta [primera part de l'if] i si en la 
+      # resposta en qüestió li tenim assignat algun risc (lleu o greu) [segona part de l'if]. A més, per
+      # distingir si és lleu o greu, mirem que el valor i la gravetat (lleu o greu per separat) siguin la
+      # mateixa [tercera part de l'if]
+      # TODO: fer això més clar
       
       if (!is.na(ambits[[(i-1)/4+1]][[3]][[j]][1]) && !is.na(emocional_nou[i+j]) 
           && emocional_nou[i+j] == ambits[[(i-1)/4+1]][[3]][[j]][1])
@@ -83,12 +106,19 @@ informe_adaptatiu <- function(index, emocional){
       {lleu <- c(lleu, list(paraula(ambits[[(i-1)/4+1]][[3]][[j]][2]), j));}}
     
     if(length(greu) != 0 | length(lleu) != 0)
+      
+      # Comencem a escriure
+    
     {cat("
          
          \\textbf{\\`{A}mbit} ", ambits[[(i-1)/4+1]][[1]], ": 
          \\begin{itemize}
          ", sep = "");
       afectat <- afectat + 1}
+    
+    # Aquesta part és una mica més complexa del que podria semblar per aconseguir que les frases siguin
+    # connexes, és a dir, que digui que li passa això, i això altre, i això altre.
+    # TODO: fer que no posi "El/la [nom]" cada vegada per cada ítem.
     
     if(length(greu) != 0){cat("\\item Factors de \\emph{risc greu}: El/la ", 
                               as.character(emocional_nou[1]), " ha indicat que ", sep = "");               
@@ -98,7 +128,7 @@ informe_adaptatiu <- function(index, emocional){
       
       cat(if(length(greu) != 2)"i ", greu[[as.numeric(length(greu)-1)]], 
           ambits[[(i-1)/4+1]][[2]][as.numeric(greu[[length(greu)]])], ". ", sep = ""); 
-      futur = TRUE;
+      futur = TRUE;  # 
     }
     
     
@@ -120,6 +150,9 @@ informe_adaptatiu <- function(index, emocional){
           \\end{itemize}")
     
     if (length(greu) == 0 && length(lleu)/2 > 2)
+      
+      # Petita lògica que explica que molts riscs lleus són un risc greu
+      
       cat("
     Donat que hi ha 3 o més factors afectats de forma lleu en aquest àmbit, considerem que l'hem de tractar com un \\emph{risc greu}.
     \\newline
@@ -133,6 +166,15 @@ informe_adaptatiu <- function(index, emocional){
 }
 
 creacio_grafics_adaptatiu = function(punts, curs, escola){
+  
+  # Aquesta prepara les dades per cridar la funció que crea els gràfics
+  # 
+  # Arguments: punts: totes les dades de tota la classe
+  #            curs: curs
+  #            escola: escola
+  #            
+  # Retorna: res; només imprimeix el gràfic en un pdf
+  
   for(i in 1:length(punts[,1])){
     
     nom = as.character(punts[i,1])
@@ -165,6 +207,10 @@ creacio_grafics_adaptatiu = function(punts, curs, escola){
       }
     
       dades[is.na(dades)]=0
+      
+      # Aquests prevalors computen la gravetat de les respostes per cada àrea per després passar-ho
+      # al gràfic.
+      # TODO: aquesta lògica està duplicada en la cració del text; s'hauria d'unificar
       
       pre_valors = c(
         # 1. Autoimatge i autoconcepte
@@ -211,14 +257,20 @@ creacio_grafics_adaptatiu = function(punts, curs, escola){
       
     }
     
-    arees = c("Autoimatge i autoconcepte", "Simptomatologia clínica", "Satisfacció escolar", 
-              "Satisfacció social", "Satisfacció familiar")
+    arees = c("Autoimatge i autoconcepte", 
+              "Simptomatologia clínica", 
+              "Satisfacció escolar", 
+              "Satisfacció social", 
+              "Satisfacció familiar")
     
     df_emocional = as.data.frame(cbind(arees, valors))
     
     valors_nets = valors
-    valors_nets[is.na(valors)]=0 # Aquesta línia i l'anterior són per tractar missings
+    valors_nets[is.na(valors)]=0 
+    
+    # Aquesta línia i l'anterior són per tractar missings
     # TODO: arreglar-ho més amunt i millor
+    
     if (sum(valors_nets)==0) next
     
     grafic_emocional(i, curs, df_emocional, escola, nom)

@@ -10,7 +10,7 @@ informe_general = function(nom_carpeta_escola, tipus = "classe", nom_escola){
   source('./inicialitzadors.R', encoding = "UTF-8")     # funcions d'ajuda d'informes
   source('./tier_2.R', encoding = "UTF-8");             # escriu la part de tier 2 de làtex
   source('./informe_matrius.R', encoding = "UTF-8");   
-  source('./emocional.R', encoding = "UTF-8");
+  # source('./emocional.R', encoding = "UTF-8");  # necessari per CI, però aviat anirà fora
   source('./adaptatiu.R', encoding = "UTF-8")
   source('./barems.R', encoding = "UTF-8");
   source('./errors.R', encoding = "UTF-8");
