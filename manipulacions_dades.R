@@ -97,7 +97,7 @@ pretractar_excels <-function(path, nom_carpeta,limit=1){
     df = cbind.data.frame(tractar_i_ajuntar_noms(as.data.frame(fitxer[,4:6])), fitxer[,cols])
     
     df = df[-1, ]  # traiem la primera fila (la segona de l'excel), amb indicacions de correctes i incorrectes i aquestes coses
-    
+
     write.table(df, paste0("dades/", nom_carpeta, "/", noms_fitxers[i],".csv"), 
                 sep = ",",
                 row.names=F, 
