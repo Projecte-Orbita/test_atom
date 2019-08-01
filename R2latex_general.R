@@ -10,7 +10,8 @@ informe_general = function(nom_carpeta_escola, tipus = "classe", nom_escola){
   source('./inicialitzadors.R', encoding = "UTF-8")     # funcions d'ajuda d'informes
   source('./tier_2.R', encoding = "UTF-8");             # escriu la part de tier 2 de làtex
   source('./informe_matrius.R', encoding = "UTF-8");   
-  source('./emocional.R', encoding = "UTF-8");
+  # source('./emocional.R', encoding = "UTF-8");  # necessari per CI, però aviat anirà fora
+  source('./adaptatiu.R', encoding = "UTF-8")
   source('./barems.R', encoding = "UTF-8");
   source('./errors.R', encoding = "UTF-8");
   source('./compensacions.R', encoding = "UTF-8");
@@ -67,7 +68,7 @@ informe_general = function(nom_carpeta_escola, tipus = "classe", nom_escola){
   }
   
   # definim les columnes que voldrem importar
-  columnes = list(1:13,1:13,1:17,1:17,1:23,1:23)
+  columnes = list(1:13,1:13,1:21,1:21,1:23,1:23)
   names(columnes) = c(1:6)
   
   #####
@@ -114,9 +115,9 @@ informe_general = function(nom_carpeta_escola, tipus = "classe", nom_escola){
     # Definim algunes variables:
     indeximp <- indeximps[[1]]; # això segurament s'hauria de netejar en algun moment
     matriu <- matrius[[1]];
-    llista_columnes = list(c(1,14:18,19), c(1,14:18,19), 
-                           c(1,18:33,34), c(1,18:33,34),
-                           c(1,24:39,40), c(1,24:39,40))
+    llista_columnes = list(c(1,14:19), c(1,14:19), 
+                           c(1,18:38), c(1,18:38),
+                           c(1,24:44), c(1,24:44))
     names(llista_columnes) = c(1,2,3,4,5,6)
     
     ################
@@ -141,7 +142,7 @@ informe_general = function(nom_carpeta_escola, tipus = "classe", nom_escola){
     }
     
     # creem els gràfics emocionals
-    creacio_grafics_emocional(punts, curs, escola)
+    creacio_grafics_adaptatiu(punts, curs, escola)
     
     if (tipus == "individual"){
       noms_fitxers_tex = gsub(" ", "_", punts[,1]); # trec els espais entre noms perquè no doni problemes amb el latex

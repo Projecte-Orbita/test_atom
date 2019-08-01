@@ -220,7 +220,7 @@ grafic_emocional = function(index, curs, df_emocional, escola, nom){
   names(paleta) = seq(1,9) 
   }
   
-  ggplot(df_emocional, aes(x = factor(arees, levels = arees[c(4,3,2,1)]), 
+  ggplot(df_emocional, aes(x = factor(arees, levels = arees[c(5,4,3,2,1)]), 
                            y = as.numeric(as.character(valors)))) + 
     geom_bar(stat="identity", aes(fill = df_emocional$valors)) + 
  #   scale_fill_gradientn(colours = paleta[]) + 
