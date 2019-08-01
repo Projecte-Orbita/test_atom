@@ -1,8 +1,15 @@
 # Poso aquí les funcions de l'adaptatiu emocional, que són la nova versió del que fins ara anomenàvem emocional,
 # però que canvio de nom perquè no es confongui amb històries de teoria de la ment i tal
 
-
 Sys.setlocale(category="LC_ALL", locale = "Catalan")
+
+
+paraula <- function(num){
+  if(num == 1){return("mai ")};
+  if(num == 2){return("poques vegades ")};
+  if(num == 3){return("moltes vegades ")};
+  if(num == 4){return("sempre ")}
+  if(num == 5){return("moltes vegades (i no sempre) ")}}
 
 
 informe_adaptatiu <- function(index, emocional){  
@@ -149,7 +156,7 @@ informe_adaptatiu <- function(index, emocional){
       cat("
           \\end{itemize}")
     
-    if (length(greu) == 0 && length(lleu)/2 > 2)
+    if (length(greu) == 0 && length(lleu)/2 > 1)
       
       # Petita lògica que explica que molts riscs lleus són un risc greu
       

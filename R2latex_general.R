@@ -1,31 +1,43 @@
 Sys.setlocale(category="LC_ALL", locale = "Catalan")
+source('./informes.R', encoding = "UTF-8");           # fa els càlculs i els gràfics
+source('./variables-text.R', encoding = "UTF-8");     # fa el latex amb la info d'informes
+source('./text-intro.R', encoding = "UTF-8");         # text de la introducció
+source('./inicialitzadors.R', encoding = "UTF-8")     # funcions d'ajuda d'informes
+source('./tier_2.R', encoding = "UTF-8");             # escriu la part de tier 2 de làtex
+source('./informe_matrius.R', encoding = "UTF-8");    # Escriu les valoracions de la part cognitiva
+# source('./emocional.R', encoding = "UTF-8");  # necessari per CI, però aviat anirà fora
+source('./adaptatiu.R', encoding = "UTF-8")           # Crea els gràfics i escriu la valoració adaptativa
+source('./barems.R', encoding = "UTF-8");             # Carrega i calcula els barems
+source('./errors.R', encoding = "UTF-8");             # Resta els errors dels encerts
+source('./compensacions.R', encoding = "UTF-8");      # Calcula el perfil teòric i el compara amb el real
+source('./grafics.R', encoding = "UTF-8");            # Gràfics
+source('./manipulacions_dades.R', encoding = "UTF-8") # Crea els csv a partir dels excels
 
-informe_general = function(nom_carpeta_escola, tipus = "classe", nom_escola){
+
+informe_general = function(nom_escola, path_llista, tipus = "classe"){
+  
+  # Aquesta és la funció principal que general els informes, tant col·lectius com individuals
+  # 
+  # Arguments: nom_escola: nom de l'escola, que s'impirimà en els informes
+  #            tipus: classe o individual
+  # TODO: fer un tipus  "tot" que es faci els dos a la vegada
   
   print("> Inicialitzant")
   
-  source('./informes.R', encoding = "UTF-8");           # fa els càlculs i els gràfics
-  source('./variables-text.R', encoding = "UTF-8");     # fa el latex amb la info d'informes
-  source('./text-intro.R', encoding = "UTF-8");         # text de la introducció
-  source('./inicialitzadors.R', encoding = "UTF-8")     # funcions d'ajuda d'informes
-  source('./tier_2.R', encoding = "UTF-8");             # escriu la part de tier 2 de làtex
-  source('./informe_matrius.R', encoding = "UTF-8");   
-  # source('./emocional.R', encoding = "UTF-8");  # necessari per CI, però aviat anirà fora
-  source('./adaptatiu.R', encoding = "UTF-8")
-  source('./barems.R', encoding = "UTF-8");
-  source('./errors.R', encoding = "UTF-8");
-  source('./compensacions.R', encoding = "UTF-8");
-  source('./grafics.R', encoding = "UTF-8");
-  source('./manipulacions_dades.R', encoding = "UTF-8")
+  # Creem les carpetes on treballarem
+  
+  dir.create(path_llista$figures);
+  dir.create(path_llista$informes);
   
   # creem el vector d'escola, amb una entrada pel nom i l'altra per les carpetes
-  escola = c(nom_escola, gsub(" ", "_", nom_carpeta_escola))
+  # TODO: això no cal, treure-ho
+  escola = c(nom_escola, "temp")
   
   #####
-  # agafem la info de la carpeta d'on treurem les dades (i que abans es passava dins la funció)
+  # agafem la info de la carpeta d'on treurem les dades
   #####
   
-  noms_fitxers = as.vector(list.files(paste0('dades/', escola[2])))
+  noms_fitxers = as.vector(list.files(path_llista$dades))
   num_curs = substr(noms_fitxers, 1, 1)
   curs_classe = substr(noms_fitxers, 1, 2)
   noms_classes = substr(noms_fitxers, 2, 2)
@@ -51,19 +63,14 @@ informe_general = function(nom_carpeta_escola, tipus = "classe", nom_escola){
   # aquí acaba la reconstrucció dels arguments que abans es passaven a mà
   #####
   
-  # agafem el directori on som i creem les carpetes pertintents on posarem les imatges i els informes
-  
-  wd <- getwd();
-  dir.create(paste(getwd(), "/figures/", escola[2], sep ="" ));
-  dir.create(paste(getwd(), "/informes/", escola[2], sep ="" ));
-  
   print("> Preparant barems"); # comentem com va el tema
   
   # importem els barems i els netegem
   
   barems = list()
   for (i in 1:6){
-    prebarems = read.csv(paste0('./barems/prebarems',i,'.csv'), header = FALSE, encoding = "UTF-8")
+    fitxer = file.path(path_llista$barems, paste0('prebarems', i, '.csv'))
+    prebarems = read.csv(fitxer, header = FALSE, encoding = "UTF-8")
     barems[[i]] = preparar_barems(prebarems)
   }
   
@@ -80,8 +87,9 @@ informe_general = function(nom_carpeta_escola, tipus = "classe", nom_escola){
     print(paste0("> Creant els informes per la classe ", classes[cl]))
     
     if (tipus == "classe"){
-      sink(file(paste(getwd(), "/informes/", escola[2],"/informe_", curs_classe[cl], ".tex", sep =""), 
-                open = "wt", encoding = "latin1"));#-", #escola[2], sep = ""));
+      sink(file(file.path(path_llista$informes, 
+                     paste0("informe_", curs_classe[cl], ".tex")), 
+                open = "wt", encoding = "latin1"))
       
       cat(heading_classes);
       cat("\\begin{document}")
@@ -96,13 +104,14 @@ informe_general = function(nom_carpeta_escola, tipus = "classe", nom_escola){
     nom_fitxer <- noms_fitxers[cl];
     
     # Importem les dades de la classe on siguem:
-    punts <- read.csv(paste0("dades/", escola[2],"/", nom_fitxer), header = FALSE, encoding = "latin1");
+    punts <- read.csv(file.path(path_llista$dades, nom_fitxer), 
+                      header = FALSE, encoding = "latin1")
     
     # Creem els directoris on posarem les figures i els informes d'aquella classe:
-    dir.create(paste(getwd(), "/figures/", escola[2], "/", curs[1], sep ="" ));
+    dir.create(file.path(path_llista$figures, curs[1]))
     
     if (tipus == "individual"){
-    dir.create(paste(getwd(), "/informes/", escola[2],"/", curs_classe[cl], sep ="" ));
+    dir.create(file.path(path_llista$informes, curs_classe[cl]))
     }
     
     #####
@@ -155,7 +164,7 @@ informe_general = function(nom_carpeta_escola, tipus = "classe", nom_escola){
       nom = as.character(names(matriu[i]))
       
         if (tipus == "individual"){
-          sink(file(paste(getwd(), "/informes/", escola[2],"/", curs_classe[cl],"/",noms_fitxers_tex[i],".tex", sep =""), 
+          sink(file(file.path(path_llista$informes, curs_classe[cl], paste0(noms_fitxers_tex[i],".tex")), 
                     open = "wt", encoding = "latin1"));
           heading_alumnes(nom)
         }
