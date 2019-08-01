@@ -5,7 +5,7 @@ informe_excel = function(path_excel, nom_escola, tipus = "classe"){
   source('R2latex_general.R', encoding = "UTF-8")
   source('manipulacions_dades.R', encoding = "UTF-8")
   
-  unlink('temp', recursive = T)
+  unlink('temp', recursive = T, force = T)
   
   wd <- getwd();
   

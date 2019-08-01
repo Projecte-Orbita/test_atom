@@ -67,6 +67,8 @@ pretractar_excels <-function(path,limit=1){
   # TODO: capitalitzar els noms quan estan tots en majúscules
   
   noms = excel_sheets(path = path)
+  # FIXME: read_excel escup una info (que no és un warning) sobre noms amb problemes, però no vol dir
+  # res; el que passa, però, és que no el sé treure...
   classes = lapply(excel_sheets(path), read_excel, path = path)
   cursos = sapply(strsplit(noms, ""), head, 1)
   numeros_classe = sapply(strsplit(noms, ""), tail, 1)
@@ -74,13 +76,14 @@ pretractar_excels <-function(path,limit=1){
   for (class in classes){
     class = as.data.frame(class)
   }
+  
   # mirem quins tenen dades:  
-  #numero_nens_per_classe = sapply(classes, function(x) length(x$Nom[x$Nom!=""]))
+  numero_nens_per_classe = sapply(classes, function(x) length(x$Nom[x$Nom!=""]))
   
   # posem un filtre pels valors que no tenen dades o en tenen poques, perquè aniran a part:
   
-  #classes_bones = which(numero_nens_per_classe>limit+1)
-  classes_bones = 1:length(classes)
+  classes_bones = which(numero_nens_per_classe>limit+1)
+  #classes_bones = 1:length(classes)
   # Formategem els sheets per tenir-los de la nostra manera:
 
   # s'han de triar les columnes, que no són les mateixes per tots els cursos
@@ -96,7 +99,7 @@ pretractar_excels <-function(path,limit=1){
   
   for (i in classes_bones){
     fitxer = classes[[i]]
-    #fitxer = fitxer[-1,]
+    
     cols = unlist(columnes[cursos[i]], use.names = F)
     cols = c(cols, 8) # afegim els comentaris, que els posem al final
     df = cbind.data.frame(tractar_i_ajuntar_noms(as.data.frame(fitxer[,4:6])), fitxer[,cols])

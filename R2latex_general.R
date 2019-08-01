@@ -74,7 +74,7 @@ informe_general = function(nom_escola, path_llista, tipus = "classe"){
     barems[[i]] = preparar_barems(prebarems)
   }
   
-  # definim les columnes que voldrem importar
+  # definim les columnes que voldrem importar per cada curs
   columnes = list(1:13,1:13,1:21,1:21,1:23,1:23)
   names(columnes) = c(1:6)
   
@@ -87,13 +87,16 @@ informe_general = function(nom_escola, path_llista, tipus = "classe"){
     print(paste0("> Creant els informes per la classe ", classes[cl]))
     
     if (tipus == "classe"){
+      
+      # Obrim el fitxer i escrivim la introducció
+      
       sink(file(file.path(path_llista$informes, 
-                     paste0("informe_", curs_classe[cl], ".tex")), 
+                          paste0("informe_", curs_classe[cl], ".tex")), 
                 open = "wt", encoding = "latin1"))
       
-      cat(heading_classes);
+      cat(heading_classes)  # Introducció (variables-text, línia 55)
       cat("\\begin{document}")
-      titol_classes(escola, classes[cl])
+      titol_classes(escola, classes[cl])  # Intro classe (variables-text, línia 255)
     }
     
     # Definim algunes variables
@@ -111,17 +114,35 @@ informe_general = function(nom_escola, path_llista, tipus = "classe"){
     dir.create(file.path(path_llista$figures, curs[1]))
     
     if (tipus == "individual"){
-    dir.create(file.path(path_llista$informes, curs_classe[cl]))
+      dir.create(file.path(path_llista$informes, curs_classe[cl]))
     }
     
     #####
     ### Aquí hi van els càlculs grans de l'informe:
     ####
-    curs_num = as.numeric(curs[[2]])
-    matrius <- c(matrius, list(informe(punts[,columnes[[curs_num]]], curs, barems[[curs_num]], escola)))
-    indeximps <- c(indeximps, list(errors(punts[,columnes[[curs_num]][-1]])))
     
-    # Definim algunes variables:
+    curs_num = as.numeric(curs[[2]])
+    
+    # Aquí hi ha la funció principal de càlculs: 
+    
+    colors = calculs_previs(punts[,columnes[[curs_num]]], curs, barems[[curs_num]], escola)
+    matrius <- c(matrius, list(colors))
+    
+    # La d'errors:
+    
+    colerrors = errors(punts[,columnes[[curs_num]][-1]])
+    indeximps <- c(indeximps, list(colerrors))
+    
+    # I la d'emocional:
+    creacio_grafics_adaptatiu(punts, curs, escola)
+    
+    #### Aquí acaben els càlculs previs
+    
+    ################
+    ### Comencem a imprimir l'informe
+    ################
+    
+    # Definim algunes variables de cara a imprimir:
     indeximp <- indeximps[[1]]; # això segurament s'hauria de netejar en algun moment
     matriu <- matrius[[1]];
     llista_columnes = list(c(1,14:19), c(1,14:19), 
@@ -129,16 +150,12 @@ informe_general = function(nom_escola, path_llista, tipus = "classe"){
                            c(1,24:44), c(1,24:44))
     names(llista_columnes) = c(1,2,3,4,5,6)
     
-    ################
-    ### Comencem a imprimir l'informe
-    ################
-    
     if(tipus == "classe"){
       
       group_head_classes(classe, escola[1]);
       
-      # Aquí introduïm els gràfics col·lectius, cada funció escriu a latex el gràfic universal
-      # i intra-classe de cada matèria
+      # Aquí introduïm els gràfics col·lectius, cada funció escriu el tros de latex que importa
+      #  els gràfics en qüestió
       
       grafics_collectius_per_materia(lectura, curs, escola);
       grafics_collectius_per_materia(mt, curs, escola);
@@ -150,43 +167,39 @@ informe_general = function(nom_escola, path_llista, tipus = "classe"){
       #}
     }
     
-    # creem els gràfics emocionals
-    creacio_grafics_adaptatiu(punts, curs, escola)
-    
     if (tipus == "individual"){
       noms_fitxers_tex = gsub(" ", "_", punts[,1]); # trec els espais entre noms perquè no doni problemes amb el latex
       # només en el nom del fitxer, que si no segueix donant problemes
     }
     
-      
+    
     for(i in 1:length(punts[,1]))
-      {
+    {
       nom = as.character(names(matriu[i]))
       
-        if (tipus == "individual"){
-          sink(file(file.path(path_llista$informes, curs_classe[cl], paste0(noms_fitxers_tex[i],".tex")), 
-                    open = "wt", encoding = "latin1"));
-          heading_alumnes(nom)
-        }
+      if (tipus == "individual"){
+        sink(file(file.path(path_llista$informes, curs_classe[cl], paste0(noms_fitxers_tex[i],".tex")), 
+                  open = "wt", encoding = "latin1"));
+        heading_alumnes(nom)
+      }
       
-        
-        individual_head(nom, classe, escola[1][1]);
-        informe_individual(i, curs, punts[llista_columnes[[curs[2]]]], matriu, indeximp[i], escola, tipus)
-        
-        if (tipus == "classe"){
+      individual_head(nom, classe, escola[1][1]);
+      informe_individual(i, curs, punts[llista_columnes[[curs[2]]]], matriu, indeximp[i], escola, tipus)
+      
+      if (tipus == "classe"){
         cat("\\newpage");
-        }
-        
-        else if (tipus == "individual"){
-          cat("\n\n\\end{document}");
-          sink();
-        }
+      }
+      
+      else if (tipus == "individual"){
+        cat("\n\n\\end{document}");
+        sink();
+      }
     }
     
     if (tipus == "classe"){
       cat("\n\n\\end{document}")
       sink()
-      }
+    }
   }
 }
 
