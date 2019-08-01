@@ -1,20 +1,20 @@
 Sys.setlocale(category="LC_ALL", locale = "Catalan")
+source('./informes.R', encoding = "UTF-8");           # fa els càlculs i els gràfics
+source('./variables-text.R', encoding = "UTF-8");     # fa el latex amb la info d'informes
+source('./text-intro.R', encoding = "UTF-8");         # text de la introducció
+source('./inicialitzadors.R', encoding = "UTF-8")     # funcions d'ajuda d'informes
+source('./tier_2.R', encoding = "UTF-8");             # escriu la part de tier 2 de làtex
+source('./informe_matrius.R', encoding = "UTF-8");   
+source('./emocional.R', encoding = "UTF-8");
+source('./adaptatiu.R', encoding = "UTF-8")
+source('./barems.R', encoding = "UTF-8");
+source('./errors.R', encoding = "UTF-8");
+source('./compensacions.R', encoding = "UTF-8");
+source('./grafics.R', encoding = "UTF-8");
+source('./manipulacions_dades.R', encoding = "UTF-8")
+
 
 crear_informe_escola <- function(cursos, classes, escola){
-  
-  source('./informes.R', encoding = "UTF-8");           # fa els càlculs i els gràfics
-  source('./variables-text.R', encoding = "UTF-8");     # fa el latex amb la info d'informes
-  source('./text-intro.R', encoding = "UTF-8");         # text de la introducció
-  source('./inicialitzadors.R', encoding = "UTF-8")     # funcions d'ajuda d'informes
-  source('./tier_2.R', encoding = "UTF-8");             # escriu la part de tier 2 de làtex
-  source('./informe_matrius.R', encoding = "UTF-8");   
-  source('./emocional.R', encoding = "UTF-8");
-  source('./adaptatiu.R', encoding = "UTF-8")
-  source('./barems.R', encoding = "UTF-8");
-  source('./errors.R', encoding = "UTF-8");
-  source('./compensacions.R', encoding = "UTF-8");
-  source('./grafics.R', encoding = "UTF-8");
-  source('./manipulacions_dades.R', encoding = "UTF-8")
   
   # get current directory and create missing directories if needed:
   wd <- getwd();

@@ -34,7 +34,7 @@ heading <- "\\documentclass[a4paper, 12pt, oneside]{book}%{article}
 \\usepackage{graphicx}
 \\pagestyle{fancy}
 \\fancyhf{}  
-\\lfoot{\\includegraphics[scale=0.3]{../../informe-atom-peu}}
+\\lfoot{\\includegraphics[scale=0.3]{../../imatges/informe-atom-peu}}
 \\rfoot{\\small \\thepage}
 
 \\setlength\\parindent{0pt}
@@ -83,7 +83,7 @@ heading_classes <- "\\documentclass[a4paper, 12pt, oneside]{book}%{article}
 \\usepackage{graphicx}
 \\pagestyle{fancy}
 \\fancyhf{}  
-\\lfoot{\\includegraphics[scale=0.3]{../../informe-atom-peu}}
+\\lfoot{\\includegraphics[scale=0.3]{../../imatges/informe-atom-peu}}
 \\rfoot{\\small \\thepage}
 
 \\setlength\\parindent{0pt}
@@ -130,7 +130,7 @@ heading_alumnes <- function(nom){ cat("
 \\usepackage{graphicx}
 \\pagestyle{fancy}
 \\fancyhf{}  
-\\lfoot{\\includegraphics[scale=0.3]{../../informe-atom-peu}}
+\\lfoot{\\includegraphics[scale=0.3]{../../imatges/informe-atom-peu}}
 \\rfoot{\\small \\thepage}
 
 %\\setlength\\parindent{0pt}
@@ -144,7 +144,7 @@ heading_alumnes <- function(nom){ cat("
 {0pt}{10pt}{40pt}
 
 \\begin{document}
-\\includepdf[pages=-,pagecommand={\\begin{tikzpicture}[remember picture,overlay]\\node [xshift = 0cm, yshift = 4.5cm] at (current page.center)  {\\textbf{\\huge{",nom,"}}};\\end{tikzpicture}}]{../../Portada-resultats}
+\\includepdf[pages=-,pagecommand={\\begin{tikzpicture}[remember picture,overlay]\\node [xshift = 0cm, yshift = 4.5cm] at (current page.center)  {\\textbf{\\huge{",nom,"}}};\\end{tikzpicture}}]{../../imatges/Portada-resultats}
 
 \\maketitle
 
@@ -268,7 +268,7 @@ titol_classes <- function(escola, classe){
   \\HRule \\\\[1.5cm]
   
   \\vspace{5cm}
-  \\includegraphics[scale=0.3]{logo_orbita.png} % Include a department/university logo - this will require the graphicx package
+  \\includegraphics[scale=0.3]{../../imatges/logo_orbita.png} % Include a department/university logo - this will require the graphicx package
   \\vfill % Fill the rest of the page with whitespace
   
   \\end{titlepage}"));

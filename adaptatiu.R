@@ -1,8 +1,53 @@
 # Poso aquí les funcions de l'adaptatiu emocional, que són la nova versió del que fins ara anomenàvem emocional,
 # però que canvio de nom perquè no es confongui amb històries de teoria de la ment i tal
 
-
 Sys.setlocale(category="LC_ALL", locale = "Catalan")
+
+
+paraula <- function(num){
+  if(num == 1){return("mai ")};
+  if(num == 2){return("poques vegades ")};
+  if(num == 3){return("moltes vegades ")};
+  if(num == 4){return("sempre ")}
+  if(num == 5){return("moltes vegades (i no sempre) ")}}
+
+
+informe_adaptatiu_petits <- function(index, emocional){  
+  # TODO: s'ha d'arreglar perquè no es repeteixin els noms dels nens si tenen més d'una cosa (com en l'altre emocional, on està correcte)
+  
+  futur=FALSE;
+  
+  ambit = c("", "\\textbf{personal}", "\\textbf{escolar}", "\\textbf{social}", "\\textbf{clima domèstic}", "\\textbf{familiar}");
+  frase = c("", "està", "a l'escola està", "al pati està", "a casa seva està", "amb la seva família està")
+  
+  for (i in 2:(ncol(emocional))){
+    par = 0;
+    if (!is.na(emocional[index,i]) && emocional[index,i]==1){
+      cat("En/na ", as.character(emocional[index,1]), " mostra un \\emph{risc greu} de desadaptació en l'\\textbf{àmbit} ", ambit[i], " ja que respon que ", frase[i], " molt malament.
+          \\\\", sep="")
+      par=par+1;
+      futur=TRUE;
+    }
+  }
+  
+  for (i in 2:(ncol(emocional))){
+    if (par > 1){
+      if (!is.na(emocional[index,i]) && emocional[index,i]==2){
+        cat("A més, també mostra un \\emph{risc moderat} de desadaptació en l'\\textbf{àmbit} ", ambit[i], " ja que respon que ", frase[i], " malament.
+            \\\\", sep="");
+        futur=TRUE;
+      }
+    }
+    else {if (!is.na(emocional[index,i]) && emocional[index,i]==2){
+      cat("En/na ", as.character(emocional[index,1]), " mostra un \\emph{risc moderat} de desadaptació en l'\\textbf{àmbit} ", ambit[i], " ja que ha indicat que ", frase[i], " trist.
+          \\\\", sep="");
+      futur=TRUE;
+    }
+    }
+  }
+  if(futur == FALSE){cat("No es constaten factors de risc de desadaptació emocional.")};
+  return(futur);
+}
 
 
 informe_adaptatiu <- function(index, emocional){  
@@ -25,9 +70,11 @@ informe_adaptatiu <- function(index, emocional){
   # aquestes preguntes i els assignem la gravetat a mà una a una. 
   # Veiem que això passa en la 9, 10, 21 i 22
   # TODO: fer això d'una forma més clara
+  # Update: ara mateix això no és necessari perquè totes les preguntes són iguals a nivell de lleus i 
+  # greus, però com que pot canviar en un futur ho deixo així
   
   emocional_nou <- as.character(emocional[index,1]);
-  cc=c(1:9,9,10,10:21,21,22,22);
+  cc=c(1:22);  # aquí repetiríem els índex de les preguntes diferents
   
   for (i in cc){
     emocional_nou = c(emocional_nou, emocional[index,i+1])
@@ -50,12 +97,15 @@ informe_adaptatiu <- function(index, emocional){
   
   escolar <- list("\\textbf{escolar}", 
                   c("li agrada anar a l'escola", 
-                    "li agrada anar a l'escola", 
-                    "s'avorreix a classe", 
                     "s'avorreix a classe", 
                     "treu bones notes", 
-                    "estudia i s'esforça"), 
-                  list(c(NA,1), c(NA,2), c(NA,4), c(NA,3), c(NA,1), c(NA,1)));
+                    "estudia i s'esforça"),
+                  list(c(1,2), c(4,3), c(1,2), c(1,2)))
+                  
+                  
+                  # list(c(NA,1), c(NA,2), c(NA,4), c(NA,3), c(NA,1), c(NA,1)))  # ho deixo com a exemple de casos
+                  # on hi ha alguna pregunta diferent
+  
   
   
   social <- list("\\textbf{social}", 
@@ -69,12 +119,9 @@ informe_adaptatiu <- function(index, emocional){
                  c("està a gust a casa", 
                    "hi ha crits i discussions a casa", 
                    "està d'acord amb les normes de casa", 
-                   "està d'acord amb les normes de casa", 
-                   "se sent bé amb la seva família", 
                    "se sent bé amb la seva família"), 
-                 list(c(1,2), c(4,3), c(NA,2), c(NA,1), c(1,5), c(2,NA)));
-  
-  #c(12,NA) c(12,3)
+                 list(c(1,2), c(4,3),c(1,2), c(4,3)))
+                 # list(c(1,2), c(4,3), c(NA,2), c(NA,1), c(1,5), c(2,NA)));
   
   afectat <- 0
   
@@ -111,7 +158,7 @@ informe_adaptatiu <- function(index, emocional){
     
     {cat("
          
-         \\textbf{\\`{A}mbit} ", ambits[[(i-1)/4+1]][[1]], ": 
+         \\textbf{Àmbit} ", ambits[[(i-1)/4+1]][[1]], ": 
          \\begin{itemize}
          ", sep = "");
       afectat <- afectat + 1}
@@ -121,7 +168,7 @@ informe_adaptatiu <- function(index, emocional){
     # TODO: fer que no posi "El/la [nom]" cada vegada per cada ítem.
     
     if(length(greu) != 0){cat("\\item Factors de \\emph{risc greu}: El/la ", 
-                              as.character(emocional_nou[1]), " ha indicat que ", sep = "");               
+                              as.character(emocional_nou[1]), " respon que ", sep = "");               
       if(length(greu) != 2){sapply(1:(floor(length(greu)/2)-1), 
                                    function (x) cat(greu[[2*x-1]], 
                                                     ambits[[(i-1)/4+1]][[2]][as.numeric(greu[[2*x]])], ", ", sep = ""));}
@@ -133,7 +180,7 @@ informe_adaptatiu <- function(index, emocional){
     
     
     if(length(lleu) != 0){cat("\\item Factors de \\emph{risc lleu}: El/la ", 
-                              as.character(emocional_nou[1]), " ha indicat que ", sep = "");               
+                              as.character(emocional_nou[1]), " respon que ", sep = "");               
       if(length(lleu) != 2){sapply(1:(floor(length(lleu)/2)-1), 
                                    function (x) cat(lleu[[2*x-1]], 
                                                     ambits[[(i-1)/4+1]][[2]][as.numeric(lleu[[2*x]])], ", ", sep = ""));}
@@ -149,7 +196,7 @@ informe_adaptatiu <- function(index, emocional){
       cat("
           \\end{itemize}")
     
-    if (length(greu) == 0 && length(lleu)/2 > 2)
+    if (length(greu) == 0 && length(lleu)/2 > 1)
       
       # Petita lògica que explica que molts riscs lleus són un risc greu
       
@@ -181,17 +228,20 @@ creacio_grafics_adaptatiu = function(punts, curs, escola){
     
     if(curs[2] == 1 | curs[2] == 2){
       
-      # TODO: Primer i segon, encara no estan implementats
-      
       dades = as.numeric(as.vector(t(punts[i, c(14:18)])))
       dades[is.na(dades)]=4  # Els no respostos és com si estessin bé.
       # poseu a 1 i no volem que no ho estiguin.
       valors = c(if(dades[1]==1) 3 else {if(dades[1]==2) 1 else 0},
                  if(dades[2]==1) 3 else {if(dades[2]==2) 1 else 0},
                  if(dades[3]==1) 3 else {if(dades[3]==2) 1 else 0},
-                 min(if(dades[4]==1) 3 else {if(dades[4]==2) 1 else 0} + 
-                       if(dades[5]==1) 3 else {if(dades[5]==2) 1 else 0}, 3)
-      )
+                 if(dades[3]==1) 3 else {if(dades[3]==2) 1 else 0},
+                 if(dades[3]==1) 3 else {if(dades[3]==2) 1 else 0})
+      
+      arees = c("Satisfacció personal", 
+                "Satisfacció escolar", 
+                "Satisfacció social", 
+                "Satisfacció clima domèstic",
+                "Satisfacció familiar")
     }
     
     else {
@@ -205,6 +255,12 @@ creacio_grafics_adaptatiu = function(punts, curs, escola){
         print("No entenc el curs. Abortant.")
         break
       }
+      
+      arees = c("Autoimatge i autoconcepte", 
+                "Simptomatologia clínica", 
+                "Satisfacció escolar", 
+                "Satisfacció social", 
+                "Satisfacció familiar")
     
       dades[is.na(dades)]=0
       
@@ -254,14 +310,9 @@ creacio_grafics_adaptatiu = function(punts, curs, escola){
       for (j in 1:5){
         valors[j] = sum(pre_valors[((j-1)*4 + 1):(j*4)])
       }
-      
+     
+       
     }
-    
-    arees = c("Autoimatge i autoconcepte", 
-              "Simptomatologia clínica", 
-              "Satisfacció escolar", 
-              "Satisfacció social", 
-              "Satisfacció familiar")
     
     df_emocional = as.data.frame(cbind(arees, valors))
     
