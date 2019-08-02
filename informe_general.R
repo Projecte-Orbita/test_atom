@@ -1,18 +1,26 @@
 Sys.setlocale(category="LC_ALL", locale = "Catalan")
 
-source('barems/barems.R', encoding = "UTF-8");             # Carrega i calcula els barems
+config = config::get()  # Importem la configuració
+encoding_ = config$encoding
+encoding1_ = config$encoding1
+temp_ = config::get(value = "temp", config = "directoris")
 
-source('calculs/inicialitzadors.R', encoding = "UTF-8")     # funcions d'ajuda d'informes
-source('calculs/errors.R', encoding = "UTF-8");             # Resta els errors dels encerts
-source('calculs/compensacions.R', encoding = "UTF-8");      # Calcula el perfil teòric i el compara amb el real
-source('calculs/adaptatiu.R', encoding = "UTF-8")           # Crea els gràfics i escriu la valoració adaptativa
+wd = getwd()
 
-source('grafics/grafics.R', encoding = "UTF-8");            # Gràfics
 
-source('escriure/informes.R', encoding = "UTF-8");           # fa els càlculs i els gràfics
-source('escriure/variables-text.R', encoding = "UTF-8");     # fa el latex amb la info d'informes
-source('escriure/tier_2.R', encoding = "UTF-8");             # escriu la part de tier 2 de làtex
-source('escriure/informe_matrius.R', encoding = "UTF-8");    # Escriu les valoracions de la part cognitiva
+source(file.path(wd, 'barems', 'barems.R'), encoding = encoding_)             # Carrega i calcula els barems
+
+source(file.path(wd, 'calculs', 'inicialitzadors.R'), encoding = encoding_)   # funcions d'ajuda d'informes
+source(file.path(wd, 'calculs', 'errors.R'), encoding = encoding_)            # Resta els errors dels encerts
+source(file.path(wd, 'calculs', 'compensacions.R'), encoding = encoding_)     # Calcula el perfil teòric i el compara amb el real
+source(file.path(wd, 'calculs', 'adaptatiu.R'), encoding = encoding_)         # Crea els gràfics i escriu la valoració adaptativa
+source(file.path(wd, 'calculs', 'calculs_previs.R'), encoding = encoding_);        # fa els càlculs i els gràfics
+
+source(file.path(wd, 'grafics', 'grafics.R'), encoding = encoding_)           # Gràfics
+
+source(file.path(wd, 'escriure', 'variables-text.R'), encoding = encoding_);  # fa el latex amb la info d'informes
+source(file.path(wd, 'escriure', 'tier_2.R'), encoding = encoding_);          # escriu la part de tier 2 de làtex
+source(file.path(wd, 'escriure', 'informe_matrius.R'), encoding = encoding_);  # Escriu les valoracions de la part cognitiva
 
 
 informe_general = function(nom_escola, path_llista, tipus = "classe"){
@@ -30,10 +38,6 @@ informe_general = function(nom_escola, path_llista, tipus = "classe"){
   dir.create(path_llista$figures);
   dir.create(path_llista$informes);
   
-  # creem el vector d'escola, amb una entrada pel nom i l'altra per les carpetes
-  # TODO: això ja no cal, s'hauria de treure
-  escola = c(nom_escola, "temp")
-  
   #####
   # Agafem la info de la carpeta d'on treurem les dades i preparem algunes variables
   #####
@@ -42,7 +46,7 @@ informe_general = function(nom_escola, path_llista, tipus = "classe"){
   num_curs = substr(noms_fitxers, 1, 1)
   curs_classe = substr(noms_fitxers, 1, 2)
   noms_classes = substr(noms_fitxers, 2, 2)
-  escola_curs_classe = paste0(escola[2], "-", curs_classe)
+  escola_curs_classe = paste0(temp_, "-", curs_classe)
   
   cursos = list()
   for (i in 1:length(noms_fitxers)){
@@ -67,7 +71,7 @@ informe_general = function(nom_escola, path_llista, tipus = "classe"){
   barems = list()
   for (i in 1:6){
     fitxer = file.path(path_llista$barems, paste0('prebarems', i, '.csv'))
-    prebarems = read.csv(fitxer, header = FALSE, encoding = "UTF-8")
+    prebarems = read.csv(fitxer, header = FALSE, encoding = encoding_)
     barems[[i]] = preparar_barems(prebarems)
   }
   
@@ -76,7 +80,10 @@ informe_general = function(nom_escola, path_llista, tipus = "classe"){
   cols_ci = 13
   cols_cm = 21
   cols_cs = 23
-  columnes = list(1:cols_ci, 1:cols_ci, 1:cols_cm, 1:cols_cm, 1:cols_cs, 1:cols_cs)
+  columnes = list(1:cols_ci, 1:cols_ci, 
+                  1:cols_cm, 1:cols_cm, 
+                  1:cols_cs, 1:cols_cs)
+  
   names(columnes) = 1:6
   
   #####
@@ -96,7 +103,7 @@ informe_general = function(nom_escola, path_llista, tipus = "classe"){
     
     # Importem les dades de la classe on siguem:
     punts <- read.csv(file.path(path_llista$dades, nom_fitxer), 
-                      header = FALSE, encoding = "latin1")
+                      header = FALSE, encoding = encoding1_)
     
     # Creem els directoris on posarem les figures i els informes d'aquella classe:
     dir.create(file.path(path_llista$figures, curs[1]))
@@ -113,7 +120,7 @@ informe_general = function(nom_escola, path_llista, tipus = "classe"){
     
     # Aquí hi ha la funció principal de càlculs: 
     
-    colors = calculs_previs(punts[,columnes[[curs_num]]], curs, barems[[curs_num]], escola)
+    colors = calculs_previs(punts[,columnes[[curs_num]]], curs, barems[[curs_num]])
     matrius <- c(matrius, list(colors))
     
     # La d'errors:
@@ -122,7 +129,7 @@ informe_general = function(nom_escola, path_llista, tipus = "classe"){
     indeximps <- c(indeximps, list(colerrors))
     
     # I la d'emocional:
-    creacio_grafics_adaptatiu(punts, curs, escola)
+    creacio_grafics_adaptatiu(punts, curs)
     
     #### Aquí acaben els càlculs previs
     
@@ -147,26 +154,26 @@ informe_general = function(nom_escola, path_llista, tipus = "classe"){
       
       sink(file(file.path(path_llista$informes, 
                           paste0("informe_", curs_classe[cl], ".tex")), 
-                open = "wt", encoding = "latin1"))
+                open = "wt", encoding = encoding1_))
       
       cat(heading_classes)  # Introducció (variables-text, línia 55)
       cat("\\begin{document}")
-      titol_classes(escola, classes[cl])  # Intro classe (variables-text, línia 255)
+      titol_classes(nom_escola, classes[cl])  # Intro classe (variables-text, línia 255)
     
       # Escrivim la intro de classes
       
-      group_head_classes(classe, escola[1]);
+      group_head_classes(classe, nom_escola);
       
       # Aquí introduïm els gràfics col·lectius, cada funció escriu el tros de latex que importa
       #  els gràfics en qüestió
       
-      grafics_collectius_per_materia(lectura, curs, escola);
-      grafics_collectius_per_materia(mt, curs, escola);
-      grafics_collectius_per_materia(vp, curs, escola);
-      grafics_collectius_per_materia(fm, curs, escola);
-      grafics_collectius_per_materia(mlt, curs, escola);
-      grafics_collectius_per_materia(r, curs, escola);
-      if(curs[2] == 5 | curs[2] == 6){grafics_collectius_per_materia(c, curs, escola);}
+      grafics_collectius_per_materia(lectura, curs);
+      grafics_collectius_per_materia(mt, curs);
+      grafics_collectius_per_materia(vp, curs);
+      grafics_collectius_per_materia(fm, curs);
+      grafics_collectius_per_materia(mlt, curs);
+      grafics_collectius_per_materia(r, curs);
+      if(curs[2] == 5 | curs[2] == 6){grafics_collectius_per_materia(c, curs);}
       #}
     }
     
@@ -182,12 +189,12 @@ informe_general = function(nom_escola, path_llista, tipus = "classe"){
       
       if (tipus == "individual"){
         sink(file(file.path(path_llista$informes, curs_classe[cl], paste0(noms_fitxers_tex[i],".tex")), 
-                  open = "wt", encoding = "latin1"));
+                  open = "wt", encoding = encoding1_));
         heading_alumnes(nom)
       }
       
-      individual_head(nom, classe, escola[1][1]);
-      informe_individual(i, curs, punts[llista_columnes[[curs[2]]]], matriu, indeximp[i], escola, tipus)
+      individual_head(nom, classe, nom_escola);
+      informe_individual(i, curs, punts[llista_columnes[[curs[2]]]], matriu, indeximp[i], tipus)
       
       if (tipus == "classe"){
         cat("\\newpage");

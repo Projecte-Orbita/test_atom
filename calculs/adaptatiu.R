@@ -212,13 +212,12 @@ informe_adaptatiu <- function(index, emocional){
   return(futur);
 }
 
-creacio_grafics_adaptatiu = function(punts, curs, escola){
+creacio_grafics_adaptatiu = function(punts, curs){
   
   # Aquesta prepara les dades per cridar la funció que crea els gràfics
   # 
   # Arguments: punts: totes les dades de tota la classe
   #            curs: curs
-  #            escola: escola
   #            
   # Retorna: res; només imprimeix el gràfic en un pdf
   
@@ -324,7 +323,7 @@ creacio_grafics_adaptatiu = function(punts, curs, escola){
     
     if (sum(valors_nets)==0) next
     
-    grafic_emocional(i, curs, df_emocional, escola, nom)
+    grafic_emocional(i, curs, df_emocional, nom)
     
   }
 }

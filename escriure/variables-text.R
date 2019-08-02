@@ -1,5 +1,14 @@
 Sys.setlocale(category="LC_ALL", locale = "Catalan")
 
+config = config::get()  # Importem la configuració
+encoding_ = config$encoding
+directoris = config::get(config = "directoris")
+temp_ = directoris$temp
+figures_ = directoris$figures
+dades_ = directoris$dades
+informes_ = directoris$informes
+barems_ = directoris$barems
+fitxers_barems_ = directoris$fitxers
 
 wd = getwd()
 
@@ -258,7 +267,7 @@ La vostra escola us pot proporcionar documentació proporcionada pel Projecte Ò
 
 #####
 
-titol_classes <- function(escola, classe){
+titol_classes <- function(nom_escola, classe){
   
   wd = getwd()
   
@@ -270,7 +279,7 @@ titol_classes <- function(escola, classe){
   \\vspace*{3cm}
   
   \\textsc{\\LARGE Informe Test Àtom}\\\\[1.5cm] % Name of your university/college
-  \\textsc{\\Large ", escola[1], "}\\\\[0.5cm] % Major heading such as course name
+  \\textsc{\\Large ", nom_escola, "}\\\\[0.5cm] % Major heading such as course name
   
   \\HRule \\\\[0.4cm]
   { \\huge \\bfseries ", classe, "}\\\\[0.4cm] % Title of your document
@@ -370,24 +379,27 @@ classe_grup_head <- function(nom_classe){cat("
 Nota: a tots els gr\\`{a}fics la mitjana corresponent est\\`{a} indicada amb una ratlla horitzontal. \\\\",
  sep = "")};
 
-grafics_collectius_per_materia <- function(prova, curs, escola){
+grafics_collectius_per_materia <- function(prova, curs){
 
-wd = getwd()
+path_norm_ = file.path(wd, temp_, figures_, curs[1], paste0(prova[3], "-", curs[2], "-norm"))
+path_intra_ = file.path(wd, temp_, figures_, curs[1], paste0(prova[3], "-", curs[2], "-norm_intra"))
 
 cat("
 %\\textbf{", prova[1], "}
 \\begin{figure}[H]
 \\centering
-\\includegraphics[width=13cm]{", wd, "/temp/figures/", curs[1], "/", prova[3], "-", curs[2], "-norm}
+\\includegraphics[width=13cm]{", path_norm_, "}
 \\end{figure}",
 
+
+    
 if(1==0){cat(observacions-1)},
 "%La prova no \\'{e}s v\\`{a}lida pel Josep ja que no va seguir b\\'{e} les instruccions de la tasca. \\
 %La Nerea no va passar p\\`{a}gina, de manera que els seus resultats reals podrien ser superiors als evidenciats en aquesta tasca. \\\\
 
 \\begin{figure}[H]
 \\centering
-\\includegraphics[width=13cm]{", wd, "/temp/figures/", curs[1], "/", prova[3], "-", curs[2], "-norm_intra}
+\\includegraphics[width=13cm]{", path_intra_, "}
 \\end{figure}",
  
 sep = "")};
@@ -418,12 +430,12 @@ group_head_classes <- function(classe, escola){
       
       ", sep = "")}
 
-individual_head <- function(nom, classe, escola){
+individual_head <- function(nom, classe, nom_escola){
 cat("
 \\newpage
 
 \\begin{framed}
-\\textbf{", nom, "} \\hfill \\textbf{Classe ", classe, "} \\hfill \\textbf{", escola, "}
+\\textbf{", nom, "} \\hfill \\textbf{Classe ", classe, "} \\hfill \\textbf{", nom_escola, "}
 \\end{framed}
 
 ", sep = "")}
@@ -441,8 +453,9 @@ individual_sol_head <- function(nom, nom_curs){
 
 individual_antic <- function(index, curs, punts, matrius, indeximp, escola){
 
-wd = getwd()
-  
+path_norm_ = file.path(wd, temp_, figures_, curs[1], paste0(index, "-norm"))
+path_comp_ = file.path(wd, temp_, figures_, curs[1], paste0(index, "-comp"))
+
 cat("
 \\vspace{1.2cm}
 
@@ -451,11 +464,11 @@ cat("
 \\captionsetup[subfigure]{labelformat=empty}
 \\begin{subfigure}{.5\\textwidth}
 \\centering
-\\includegraphics[width=7.5cm]{", wd, "/temp/figures/", curs[1], "/", index, "-norm}
+\\includegraphics[width=7.5cm]{", path_norm_, "}
 \\end{subfigure}
 \\begin{subfigure}{.5\\textwidth}
 \\centering
-\\includegraphics[width=7.5cm]{", wd, "/temp/figures/", curs[1], "/", index, "-comp}
+\\includegraphics[width=7.5cm]{", path_comp_, "}
 \\end{subfigure}
 %\\caption*{En el gràfic de l'esquerra veiem els resultats \\emph{mesurats} i a la dreta els \\emph{esperats}. Si hi ha resultats en vermell al gràfic de la dreta és perquè mesurem aquella habilitat més \\emph{baixa} que la predida, i per tant parlem d'una possible \\emph{dificultat específica}. En canvi, si estan en blau és perquè són més \\emph{alts} dels predits i per tant parlem d'un possible \\emph{talent}.}
 \\caption*{Al Gràfic 1 veiem els resultats obtinguts per l'alumne en comparació amb el barem universal de referència. El color verd indica que l'alumne es troba dins la mitjana estadística, mentre que el taronja indica que es troba significativament per sota d'aquesta (indicant una possible dificultat específica) i el blau que es troba a la franja superior (informant d'un possible talent). Al Gràfic 2 observem els resultats esperats per l'alumne segons la seva velocitat de processament, segons els resultats obtinguts a partir de l'Índex de Rapidesa mitjançant el Mètode Òrbita d'anàlisi estadístic. El color gris indica que no hi ha discrepància entre la puntuació obtinguda i la esperada, mentre que el vermell significa que el rendiment en aquesta habilitat és inferior a l'esperat (i per tant parlem d'un punt feble en el seu perfil intern) mentre que el blau informa d'una habilitat superior a la predita (i parlaríem d'un punt fort en el seu perfil intern).}
@@ -496,13 +509,13 @@ cat("
 ########
 
 # aquí hi ha d'anar el gràfic d'emocional (si cal)
-destfile = paste0( wd, "/temp/figures/", curs[1],  "/emocional-", index, ".pdf")
+destfile = file.path( wd, temp_, figures_, curs[1],  paste0("emocional-", index, ".pdf"))
 if (file.exists(destfile)){
 
 cat("
     \\begin{figure}[H]
     \\centering
-    \\includegraphics[width=7.5cm]{", wd, "/temp/figures/", curs[1], "/emocional-", index, ".pdf}
+    \\includegraphics[width=7.5cm]{",destfile, "}
     \\end{figure}", sep = ""
     )
 }
@@ -531,9 +544,10 @@ if(futur_tier == TRUE){cat("Els resultats obtinguts ens permeten determinar que 
 }
 
 
-informe_individual <- function(index, curs, punts, matrius, indeximp, escola, tipus){
+informe_individual <- function(index, curs, punts, matrius, indeximp, tipus){
   
-  wd = getwd()
+  path_norm_ = file.path(wd, temp_, figures_, curs[1], paste0(index, "-norm"))
+  path_comp_ = file.path(wd, temp_, figures_, curs[1], paste0(index, "-comp"))
   
   cat("
       \\begin{center}
@@ -548,11 +562,11 @@ informe_individual <- function(index, curs, punts, matrius, indeximp, escola, ti
       \\captionsetup[subfigure]{labelformat=empty}
       \\begin{subfigure}{.5\\textwidth}
       \\centering
-      \\includegraphics[width=7.5cm]{", wd,"/temp/figures/", curs[1], "/", index, "-norm}
+      \\includegraphics[width=7.5cm]{",path_norm_, "}
       \\end{subfigure}
       \\begin{subfigure}{.5\\textwidth}
       \\centering
-      \\includegraphics[width=7.5cm]{", wd,"/temp/figures/", curs[1], "/", index, "-comp}
+      \\includegraphics[width=7.5cm]{", path_comp_, "}
       \\end{subfigure}
       %\\caption*{En el gràfic de l'esquerra veiem els resultats \\emph{mesurats} i a la dreta els \\emph{esperats}. Si hi ha resultats en vermell al gràfic de la dreta és perquè mesurem aquella habilitat més \\emph{baixa} que la predida, i per tant parlem d'una possible \\emph{dificultat específica}. En canvi, si estan en blau és perquè són més \\emph{alts} dels predits i per tant parlem d'un possible \\emph{talent}.}
       \\caption*{\\emph{Trobareu informació sobre els gràfics al document d'introducció dels informes.}}
@@ -568,13 +582,13 @@ informe_individual <- function(index, curs, punts, matrius, indeximp, escola, ti
   
   
   # aquí hi ha d'anar el gràfic d'emocional (si cal)
-  destfile = paste0(wd, "/temp/figures/", curs[1],  "/emocional-", index, ".pdf")
+  destfile = file.path(wd, temp_, figures_, curs[1],  paste0("emocional-", index, ".pdf"))
   if (file.exists(destfile)){
 
       cat("
         \\begin{figure}[H]
         \\centering
-        \\includegraphics[width=7.5cm]{", wd,"/temp/figures/", curs[1], "/emocional-", index, ".pdf}
+        \\includegraphics[width=7.5cm]{", destfile, "}
         \\end{figure}", sep = ""
       )
     

@@ -17,7 +17,7 @@ coef=c(alpha, beta, gamma, delta, eta, phi, chi);
 # Funció que fa els informes
 #####
 
-calculs_previs <- function(puntso, curs, barems, escola){
+calculs_previs <- function(puntso, curs, barems){
   
   for(i in 2:ncol(puntso)){
     puntso[,i]=as.numeric(as.character(puntso[,i]));
@@ -58,8 +58,8 @@ calculs_previs <- function(puntso, curs, barems, escola){
   punts1 <- melt(punts[melt_punts1], id.var = "Noms");
   punts2 <- melt(punts[melt_punts2], id.var = "Noms");
   punts <- data.frame(punts1, punts2[c("variable", "value")]);
-  grafics_classe(punts, curs, 'norm', escola);
-  grafics_nens(punts, curs[1], 'norm', escola);
+  grafics_classe(punts, curs, tipus='norm');
+  grafics_nens(punts, curs[1], tipus='norm');
   
   # gràfics compensats globals
   
@@ -92,7 +92,7 @@ calculs_previs <- function(puntso, curs, barems, escola){
   cpunts1 <- melt(difs[melt_punts1], id.var = "Noms");
   cpunts2 <- melt(difs[melt_punts2], id.var = "Noms");
   cpunts <- data.frame(cpunts1, cpunts2[c("variable", "value")]);
-  grafics_nens(cpunts, curs[1], 'comp', escola);
+  grafics_nens(cpunts, curs[1], 'comp');
   
   #gràfics normals intraclasse:
   
@@ -109,12 +109,12 @@ calculs_previs <- function(puntso, curs, barems, escola){
   ipunts1 <- melt(ipunts[melt_punts1], id.var = "Noms");
   ipunts2 <- melt(ipunts[melt_punts2], id.var = "Noms");
   ipunts <- data.frame(ipunts1, ipunts2[c("variable", "value")]);
-  grafics_classe(ipunts, curs,'norm_intra', escola);
+  grafics_classe(ipunts, curs,'norm_intra');
   
   return(matriu(colnorm, colpred));
 }
 
-informe_individual_intern <- function(puntso, curs, barems, escola){
+informe_individual_intern <- function(puntso, curs, barems){
   
   for(i in 2:ncol(puntso)){
     puntso[,i]=as.numeric(as.character(puntso[,i]));
@@ -151,8 +151,7 @@ informe_individual_intern <- function(puntso, curs, barems, escola){
   punts1 <- melt(punts[melt_punts1], id.var = "Noms");
   punts2 <- melt(punts[melt_punts2], id.var = "Noms");
   punts <- data.frame(punts1, punts2[c("variable", "value")]);
-#  grafics_classe(punts, curs, 'norm', escola);
-  grafics_nens_individual(punts, curs[1], 'norm', escola);
+  grafics_nens_individual(punts, curs[1], 'norm');
   
   # gràfics compensats globals
   
@@ -180,7 +179,7 @@ informe_individual_intern <- function(puntso, curs, barems, escola){
   cpunts1 <- melt(difs[melt_punts1], id.var = "Noms");
   cpunts2 <- melt(difs[melt_punts2], id.var = "Noms");
   cpunts <- data.frame(cpunts1, cpunts2[c("variable", "value")]);
-  grafics_nens_individual(cpunts, curs[1], 'comp', escola);
+  grafics_nens_individual(cpunts, curs[1], 'comp');
   
   return(matriu(colnorm, colpred));
 }

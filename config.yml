@@ -1,5 +1,13 @@
 default:
   encoding: "UTF-8"
+  encoding1: "latin1"
   individuals: TRUE
   aprofitar: FALSE
-  
+
+directoris:  
+  temp: "temp"
+  figures: "figures"
+  dades: "dades"
+  informes: "informes"
+  barems: "barems"
+  fitxers: "fitxers"

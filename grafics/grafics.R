@@ -4,30 +4,40 @@ require(ggplot2)
 require(RColorBrewer)
 require(stringr)
 
+directoris = config::get(config = "directoris")  # Importem la configuració
+temp_ = directoris$temp
+figures_ = directoris$figures
+
+wd = getwd()
 
 ## Gràfics de classes:
 
-grafics_classe <- function(punts, curs, tipus, escola){
+grafics_classe <- function(punts, curs, tipus){
   
   punts$Noms = factor(punts$Noms, levels= unique(punts$Noms))
   
-  grafic_base(punts = punts, curs = curs[1], titol = "Lectura",tipus, nom_plot = paste0("lectura-", curs[2],"-",tipus), escola, 1);
-  grafic_base(punts = punts, curs = curs[1],  titol = "Memòria de Treball",tipus, nom_plot = paste0("mtp-", curs[2],"-",tipus),escola, 2); 
-  grafic_base(punts = punts, curs = curs[1],  titol = "Velocitat de Processament",tipus, nom_plot = paste0("vp-", curs[2],"-",tipus),escola,3);
-  grafic_base(punts = punts, curs = curs[1],  titol = "Fluïdesa Matemàtica",tipus, nom_plot = paste0("fluidesa-", curs[2],"-",tipus),escola,4);
-  grafic_base(punts = punts, curs = curs[1], titol = "Memòria a Llarg Termini",tipus, nom_plot = paste0("mltp-", curs[2],"-",tipus),escola,5);
-  grafic_base(punts = punts, curs = curs[1],  titol = "Raonament",tipus, nom_plot = paste0("raonament-", curs[2],"-",tipus),escola,6);
+  grafic_base(punts = punts, curs = curs[1], 
+              titol = "Lectura", tipus, nom_plot = paste0("lectura-", curs[2],"-",tipus), 1)
+  grafic_base(punts = punts, curs = curs[1],  
+              titol = "Memòria de Treball",tipus, nom_plot = paste0("mtp-", curs[2],"-",tipus), 2) 
+  grafic_base(punts = punts, curs = curs[1],  
+              titol = "Velocitat de Processament",tipus, nom_plot = paste0("vp-", curs[2],"-",tipus), 3)
+  grafic_base(punts = punts, curs = curs[1],  
+              titol = "Fluïdesa Matemàtica",tipus, nom_plot = paste0("fluidesa-", curs[2],"-",tipus), 4)
+  grafic_base(punts = punts, curs = curs[1], 
+              titol = "Memòria a Llarg Termini",tipus, nom_plot = paste0("mltp-", curs[2],"-",tipus), 5)
+  grafic_base(punts = punts, curs = curs[1],  
+              titol = "Raonament",tipus, nom_plot = paste0("raonament-", curs[2],"-",tipus), 6)
   if (curs[2] == 5 | curs[2] == 6){
-    grafic_base(punts = punts, curs = curs[1],  titol = "Càlcul",tipus, nom_plot = paste0("calcul-", curs[2],"-", tipus), escola,7);
+    grafic_base(punts = punts, curs = curs[1],  
+                titol = "Càlcul",tipus, nom_plot = paste0("calcul-", curs[2],"-", tipus), 7)
   }
 }
 
-grafic_base <- function(punts, curs, titol, tipus, nom_plot, escola, i){
+grafic_base <- function(punts, curs, titol, tipus, nom_plot, i){
   
   myColors <- c("#56B4E9", "#009E73", "#E69F00");
   otherColors <- c("#D55E00", "#999999", "#0072B2");
-
-  
   
   if (tipus=='norm'| tipus == 'norm_intra'){
     colors <- myColors;
@@ -61,13 +71,13 @@ grafic_base <- function(punts, curs, titol, tipus, nom_plot, escola, i){
     scale_fill_manual(name='value.1', values=colors) + 
     geom_hline(yintercept=0.5) + 
     ylim(0, 1) + 
-    ggsave(file = paste("temp/figures/", curs, "/", nom_plot, ".pdf", sep = ""), 
+    ggsave(file = file.path(wd, temp_, figures_, curs, paste0(nom_plot, ".pdf")), 
            dpi = 600, width = 8, height = 6, units = "in") 
 }
 
 ## Gràfics helpers d'individuals
 
-ggpbar <- function(nens, punts, curs, tipus, escola){
+ggpbar <- function(nens, punts, curs, tipus){
   
   myColors <- c("#56B4E9", "#009E73", "#E69F00");
   otherColors <- c("#D55E00", "#999999", "#0072B2");
@@ -106,11 +116,11 @@ ggpbar <- function(nens, punts, curs, tipus, escola){
     scale_fill_manual(name = 'value.1', values = colors) + 
     geom_hline(yintercept=0.5) + 
     ylim(0, 1) +
-    ggsave(file = paste("temp/figures/", curs, "/", nens,"-", tipus, ".pdf", sep = ""), 
-           dpi = 600, width = 8, height = 9, units = "in");
+    ggsave(file = file.path(wd, temp_, figures_, curs, paste0(nens, "-", tipus, ".pdf")), 
+           dpi = 600, width = 8, height = 9, units = "in")
 }
 
-ggpbar_individual <- function(nens, punts, curs, tipus, escola){
+ggpbar_individual <- function(nens, punts, curs, tipus){
   
   myColors <- c("#56B4E9", "#009E73", "#E69F00");
   otherColors <- c("#D55E00", "#999999", "#0072B2");
@@ -146,21 +156,22 @@ ggpbar_individual <- function(nens, punts, curs, tipus, escola){
     scale_fill_manual(name = 'value.1', values = colors) + 
     geom_hline(yintercept=0.5) + 
     ylim(0, 1) +
-    ggsave(file = paste0( "temp/figures/informes_individuals/", punts[nens,1],"/", tipus, ".pdf"), 
+    ggsave(file = file.path(wd, temp_, figures_, "informes_individuals",  
+                            paste0(punts[nens,1], "-", tipus, ".pdf")), 
            dpi = 600, width = 8, height = 9, units = "in");
 }
 
 ## Gràfics d'individuals
 
-grafics_nens <- function(punts, curs, tipus, escola){
+grafics_nens <- function(punts, curs, tipus){
   
   for(i in seq(1,length(unique(punts$Noms)),1)){
-    ggpbar(i, punts, curs[1], tipus, escola);
+    ggpbar(i, punts, curs[1], tipus);
   }
   
 }
 
-grafics_nens_individual <- function(punts, curs, tipus, escola){
+grafics_nens_individual <- function(punts, curs, tipus){
   
   myColors <- c("#56B4E9", "#009E73", "#E69F00");
   otherColors <- c("#D55E00", "#999999", "#0072B2");
@@ -196,14 +207,14 @@ grafics_nens_individual <- function(punts, curs, tipus, escola){
     scale_fill_manual(name = 'value.1', values = colors) + 
     geom_hline(yintercept=0.5) + 
     ylim(0, 1) +
-    ggsave(file = paste0("temp/figures/informes_individuals/", punts[1,1],"/", tipus, ".pdf"), 
+    ggsave(file = file.path(temp_, figures_, "informes_individuals", punts[1,1], paste0(tipus, ".pdf")), 
            dpi = 600, width = 8, height = 9, units = "in");
   
 }
 
 ## gràfics per la part emocional
 
-grafic_emocional = function(index, curs, df_emocional, escola, nom){
+grafic_emocional = function(index, curs, df_emocional, nom){
   # emocional és una matriu amb 7 columes: noms dels nens, les 5 pregunes d'emocional i 
   # una altra columna buida al final que no sé què hi fa, suposo que ve amb les dades
 
@@ -238,7 +249,7 @@ grafic_emocional = function(index, curs, df_emocional, escola, nom){
     xlab("Àrea") +
     labs(title = "Riscs emocionals") 
  #        subtitle = nom) +
-    ggsave(file = paste("temp/figures/",  curs[1], "/emocional-", index, ".pdf", sep = ""), 
+    ggsave(file = file.path(temp_, figures_,curs[1], paste0("emocional-", index, ".pdf")), 
            dpi = 600, width = 8, height = 6, units = "in") 
 }
 
