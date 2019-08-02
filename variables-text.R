@@ -26,13 +26,15 @@ heading <- "\\documentclass[a4paper, 12pt, oneside]{book}%{article}
                 %en Windows canvieu-ho per: \\usepackage[ansinew]{inputenc}
 \\usepackage[catalan]{babel}
 
+\\newenvironment{normalize}{\\leftmargin}{\\par}
+
 \\definecolor{orbita}{rgb}{0.0235, 0.8275, 0.5921}
 
 \\usepackage{fancyhdr}
 \\usepackage{graphicx}
 \\pagestyle{fancy}
 \\fancyhf{}  
-\\lfoot{\\includegraphics[scale=0.3]{../../informe-atom-peu}}
+\\lfoot{\\includegraphics[scale=0.3]{../../imatges/informe-atom-peu}}
 \\rfoot{\\small \\thepage}
 
 \\setlength\\parindent{0pt}
@@ -73,13 +75,15 @@ heading_classes <- "\\documentclass[a4paper, 12pt, oneside]{book}%{article}
 %en Windows canvieu-ho per: \\usepackage[ansinew]{inputenc}
 \\usepackage[catalan]{babel}
 
+\\newenvironment{normalize}{\\leftskip-\\leftmargin}{\\par}
+
 \\definecolor{orbita}{rgb}{0.0235, 0.8275, 0.5921}
 
 \\usepackage{fancyhdr}
 \\usepackage{graphicx}
 \\pagestyle{fancy}
 \\fancyhf{}  
-\\lfoot{\\includegraphics[scale=0.3]{../../informe-atom-peu}}
+\\lfoot{\\includegraphics[scale=0.3]{../../imatges/informe-atom-peu}}
 \\rfoot{\\small \\thepage}
 
 \\setlength\\parindent{0pt}
@@ -116,6 +120,8 @@ heading_alumnes <- function(nom){ cat("
 %en Windows canvieu-ho per: \\usepackage[ansinew]{inputenc}
 \\usepackage[catalan]{babel}
 
+\\newenvironment{normalize}{\\leftskip-\\leftmargin}{\\par}
+
 \\definecolor{orbita}{rgb}{0.0235, 0.8275, 0.5921}
 
 \\usepackage{pdfpages} % per poder posar la tapa en pdf
@@ -124,7 +130,7 @@ heading_alumnes <- function(nom){ cat("
 \\usepackage{graphicx}
 \\pagestyle{fancy}
 \\fancyhf{}  
-\\lfoot{\\includegraphics[scale=0.3]{../../informe-atom-peu}}
+\\lfoot{\\includegraphics[scale=0.3]{../../imatges/informe-atom-peu}}
 \\rfoot{\\small \\thepage}
 
 %\\setlength\\parindent{0pt}
@@ -138,7 +144,7 @@ heading_alumnes <- function(nom){ cat("
 {0pt}{10pt}{40pt}
 
 \\begin{document}
-\\includepdf[pages=-,pagecommand={\\begin{tikzpicture}[remember picture,overlay]\\node [xshift = 0cm, yshift = 4.5cm] at (current page.center)  {\\textbf{\\huge{",nom,"}}};\\end{tikzpicture}}]{../../Portada-resultats}
+\\includepdf[pages=-,pagecommand={\\begin{tikzpicture}[remember picture,overlay]\\node [xshift = 0cm, yshift = 4.5cm] at (current page.center)  {\\textbf{\\huge{",nom,"}}};\\end{tikzpicture}}]{../../imatges/Portada-resultats}
 
 \\maketitle
 
@@ -262,7 +268,7 @@ titol_classes <- function(escola, classe){
   \\HRule \\\\[1.5cm]
   
   \\vspace{5cm}
-  \\includegraphics[scale=0.3]{logo_orbita.png} % Include a department/university logo - this will require the graphicx package
+  \\includegraphics[scale=0.3]{../../imatges/logo_orbita.png} % Include a department/university logo - this will require the graphicx package
   \\vfill % Fill the rest of the page with whitespace
   
   \\end{titlepage}"));
@@ -489,7 +495,7 @@ cat("
 
 #######
 
-if(curs[2] > 2){futur_em <- informe_emocional(index, punts);}
+if(curs[2] > 2){futur_em <- informe_adaptatiu(index, punts);}
 else{futur_em <- informe_emocional_petits(index, punts)};
 
 cat("
@@ -587,7 +593,7 @@ cat("
   
   #######
   
-  if(curs[2] > 2){futur_em <- informe_emocional(index, punts);}
+  if(curs[2] > 2){futur_em <- informe_adaptatiu(index, punts);}
   else{futur_em <- informe_emocional_petits(index, punts)};
   
   cat("
@@ -657,7 +663,7 @@ informe_individual_alumnes_sol <- function(index, curs, punts, matrius, indeximp
       
       ");
   
-  if(curs[2] > 2){futur_em <- informe_emocional(index, punts);}
+  if(curs[2] > 2){futur_em <- informe_adaptatiu(index, punts);}
   else{futur_em <- informe_emocional_petits(index, punts)};
   
   cat("

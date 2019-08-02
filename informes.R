@@ -17,7 +17,7 @@ coef=c(alpha, beta, gamma, delta, eta, phi, chi);
 # Funció que fa els informes
 #####
 
-informe <- function(puntso, curs, barems, escola){
+calculs_previs <- function(puntso, curs, barems, escola){
   
   for(i in 2:ncol(puntso)){
     puntso[,i]=as.numeric(as.character(puntso[,i]));

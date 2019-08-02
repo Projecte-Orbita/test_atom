@@ -9,7 +9,11 @@ En concret, els fitxers que implementen l'anàlisi estadístic són els anomenat
 
 Si trobeu errors en aquest codi o necessiteu més informació sobre els informes si us plau contacteu-nos a info\@projecteorbita.cat.
 
-TODO:
+## Utilització
+
+El fitxer principal és informe_excel, que crea els .tex dels informes directament des de l'excel de correccions. Té l'argument "path", que indica la ruta de l'excel, "nom_escola", que és el nom que s'imprimirà en els infromes i l'argument "individual" i "col·lectiu" per triar si volem els informes per nen o per classe.
+
+## TODOs:
 
 - Separar codi i text: s'ha de crear un diccionari amb les diferents parts del text lligades amb el que s'ha de dir per cada alumne
 - Ordernar les funcions

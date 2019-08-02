@@ -1,25 +1,22 @@
 Sys.setlocale(category="LC_ALL", locale = "Catalan")
+source('./informes.R', encoding = "UTF-8");           # fa els càlculs i els gràfics
+source('./variables-text.R', encoding = "UTF-8");     # fa el latex amb la info d'informes
+source('./text-intro.R', encoding = "UTF-8");         # text de la introducció
+source('./inicialitzadors.R', encoding = "UTF-8")     # funcions d'ajuda d'informes
+source('./tier_2.R', encoding = "UTF-8");             # escriu la part de tier 2 de làtex
+source('./informe_matrius.R', encoding = "UTF-8");   
+source('./emocional.R', encoding = "UTF-8");
+source('./barems.R', encoding = "UTF-8");
+source('./errors.R', encoding = "UTF-8");
+source('./compensacions.R', encoding = "UTF-8");
+source('./grafics.R', encoding = "UTF-8");
+source('./manipulacions_dades.R', encoding = "UTF-8")
 
-# Els informes per escoles ja no crec que els utilitzem, així que els trasllado a 
-# un altre fitxer (informes_per_escoles.R)
+# Majoritàriament obsolet
+# Aquest fitxer no s'acostuma a utilitzar; potser per si hem de fer l'informe per un nen 
+# en concret, però ja tot es fa a R2latex_general.R
 
 informe_per_classes = function(nom_carpeta_escola){
-  
-  print("> Carregant llibreries")
-  
-  source('./informes.R', encoding = "UTF-8");           # fa els càlculs i els gràfics
-  source('./variables-text.R', encoding = "UTF-8");     # fa el latex amb la info d'informes
-  source('./text-intro.R', encoding = "UTF-8");         # text de la introducció
-  source('./inicialitzadors.R', encoding = "UTF-8")     # funcions d'ajuda d'informes
-  source('./tier_2.R', encoding = "UTF-8");             # escriu la part de tier 2 de làtex
-  source('./informe_matrius.R', encoding = "UTF-8");   
-  source('./emocional.R', encoding = "UTF-8");
-  source('./barems.R', encoding = "UTF-8");
-  source('./errors.R', encoding = "UTF-8");
-  source('./compensacions.R', encoding = "UTF-8");
-  source('./grafics.R', encoding = "UTF-8");
-  source('./manipulacions_dades.R', encoding = "UTF-8")
-  
   
   #############################
   ##### Inicialització: preparem dades, carreguem fitxers, etc.
@@ -179,7 +176,7 @@ informe_per_classes = function(nom_carpeta_escola){
 
     # Creem els gràfics d'emocional 
 
-    creacio_grafics_emocional(punts, curs, escola)
+    creacio_grafics_adaptatiu(punts, curs, escola)
     
     
     # Creem els gràfics i els informes individuals
@@ -343,7 +340,7 @@ informe_per_alumnes = function(nom_carpeta_escola){
     
     # creem els gràfics emocionals
     
-    creacio_grafics_emocional(punts, curs, escola)
+    creacio_grafics_adaptatiu(punts, curs, escola)
     
     #####
     # Aquí comença el loop que va alumne per alumne:

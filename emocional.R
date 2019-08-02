@@ -42,7 +42,9 @@ informe_emocional_petits <- function(index, emocional){
 
 
 informe_emocional <- function(index, emocional){  
-  #
+  
+  # Obsolet en la segona versió, vegeu informe_adaptatiu a adaptatiu.R
+  
   futur=FALSE;
   lleus=0;
   
@@ -136,10 +138,13 @@ paraula <- function(num){
   if(num == 5){return("moltes vegades (i no sempre) ")}}
 
 creacio_grafics_emocional = function(punts, curs, escola){
+  
+  # Obsolet en la segona versió, vegeu creacio_grafics_adaptatiu a adaptatiu.R
+  
   for(i in 1:length(punts[,1])){
-    
+
     nom = as.character(punts[i,1])
-    
+
     if(curs[2] == 1 | curs[2] == 2){
       dades = as.numeric(as.vector(t(punts[i, c(14:18)])))
       dades[is.na(dades)]=4  # Els no respostos és com si estessin bé.
@@ -147,15 +152,15 @@ creacio_grafics_emocional = function(punts, curs, escola){
       valors = c(if(dades[1]==1) 3 else {if(dades[1]==2) 1 else 0},
                  if(dades[2]==1) 3 else {if(dades[2]==2) 1 else 0},
                  if(dades[3]==1) 3 else {if(dades[3]==2) 1 else 0},
-                 min(if(dades[4]==1) 3 else {if(dades[4]==2) 1 else 0} + 
+                 min(if(dades[4]==1) 3 else {if(dades[4]==2) 1 else 0} +
                    if(dades[5]==1) 3 else {if(dades[5]==2) 1 else 0}, 3)
                  )
     }
-    
+
     else if(curs[2] == 3 | curs[2] == 4){
       dades = unname(unlist(punts[i, c(18:33)]))
       dades[is.na(dades)]=0
-      
+
       pre_valors = c(if(dades[1]==1) 3 else {if(dades[1]==2) 1 else 0},        # m'agrada com sóc
                      if(dades[2]==4) 3 else {if(dades[2]==3) 1 else 0},        # estic trist
                      if(dades[3]==1) 1 else 0,        # crec que sé fer moltes coses
@@ -174,11 +179,11 @@ creacio_grafics_emocional = function(punts, curs, escola){
                      if(dades[16]==1 | dades[16]==2) 3 else {if(dades[16]==3) 1 else 0}  # estimo els meus pares
       )
       valors = c()
-      
+
       for (j in 1:4){
         valors[j] = sum(pre_valors[((j-1)*4 + 1):(j*4)])
       }
-      
+
     }
     else if(curs[2] == 5 | curs[2] == 6){
       dades = unname(unlist(punts[i, c(24:39)]))
@@ -201,21 +206,21 @@ creacio_grafics_emocional = function(punts, curs, escola){
                      if(dades[16]==1 | dades[16]==2) 3 else {if(dades[16]==3) 1 else 0}  # estimo els meus pares
       )
       valors = c()
-      
+
       for (j in 1:4){
         valors[j] = sum(pre_valors[((j-1)*4 + 1):(j*4)])
       }
     }
-    
+
     arees = c("Personal", "Escolar", "Social", "Familiar")
     df_emocional = as.data.frame(cbind(arees, valors))
-    
+
     valors_nets = valors
     valors_nets[is.na(valors)]=0 # Aquesta línia i l'anterior són per tractar missings
     # TODO: arreglar-ho més amunt i millor
     if (sum(valors_nets)==0) next
-    
+
     grafic_emocional(i, curs, df_emocional, escola, nom)
-    
+
   }
 }
