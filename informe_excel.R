@@ -1,5 +1,5 @@
 Sys.setlocale(category="LC_ALL", locale = "Catalan")
-source("R2latex_general.R", encoding = "UTF-8")
+source("informe_general.R", encoding = "UTF-8")
 source("utils/manipulacions_dades.R", encoding = "UTF-8")
 
 informe_excel = function(path_excel, nom_escola, tipus = "classe"){

@@ -31,11 +31,11 @@ informe_general = function(nom_escola, path_llista, tipus = "classe"){
   dir.create(path_llista$informes);
   
   # creem el vector d'escola, amb una entrada pel nom i l'altra per les carpetes
-  # TODO: això no cal, treure-ho
+  # TODO: això ja no cal, s'hauria de treure
   escola = c(nom_escola, "temp")
   
   #####
-  # agafem la info de la carpeta d'on treurem les dades
+  # Agafem la info de la carpeta d'on treurem les dades i preparem algunes variables
   #####
   
   noms_fitxers = as.vector(list.files(path_llista$dades))
@@ -60,10 +60,6 @@ informe_general = function(nom_escola, path_llista, tipus = "classe"){
     classes[i] = paste(noms_cursos[num_curs[i]], noms_classes[i])
   }
   
-  #####
-  # aquí acaba la reconstrucció dels arguments que abans es passaven a mà
-  #####
-  
   print("> Preparant barems"); # comentem com va el tema
   
   # importem els barems i els netegem
@@ -76,8 +72,12 @@ informe_general = function(nom_escola, path_llista, tipus = "classe"){
   }
   
   # definim les columnes que voldrem importar per cada curs
-  columnes = list(1:13,1:13,1:21,1:21,1:23,1:23)
-  names(columnes) = c(1:6)
+  
+  cols_ci = 13
+  cols_cm = 21
+  cols_cs = 23
+  columnes = list(1:cols_ci, 1:cols_ci, 1:cols_cm, 1:cols_cm, 1:cols_cs, 1:cols_cs)
+  names(columnes) = 1:6
   
   #####
   # Aquí comença el loop que va classe per classe:
@@ -85,20 +85,7 @@ informe_general = function(nom_escola, path_llista, tipus = "classe"){
   
   for (cl in 1:length(curs_classe)){
     
-    print(paste0("> Creant els informes per la classe ", classes[cl]))
-    
-    if (tipus == "classe"){
-      
-      # Obrim el fitxer i escrivim la introducció
-      
-      sink(file(file.path(path_llista$informes, 
-                          paste0("informe_", curs_classe[cl], ".tex")), 
-                open = "wt", encoding = "latin1"))
-      
-      cat(heading_classes)  # Introducció (variables-text, línia 55)
-      cat("\\begin{document}")
-      titol_classes(escola, classes[cl])  # Intro classe (variables-text, línia 255)
-    }
+    print(paste0("> Analitzant els resultats de la classe ", classes[cl]))
     
     # Definim algunes variables
     matrius <- NULL;
@@ -143,6 +130,8 @@ informe_general = function(nom_escola, path_llista, tipus = "classe"){
     ### Comencem a imprimir l'informe
     ################
     
+    print(paste0("> Imprimint els resultats de la classe ", classes[cl]))
+    
     # Definim algunes variables de cara a imprimir:
     indeximp <- indeximps[[1]]; # això segurament s'hauria de netejar en algun moment
     matriu <- matrius[[1]];
@@ -151,7 +140,20 @@ informe_general = function(nom_escola, path_llista, tipus = "classe"){
                            c(1,24:44), c(1,24:44))
     names(llista_columnes) = c(1,2,3,4,5,6)
     
-    if(tipus == "classe"){
+    
+    # Obrim el fitxer i escrivim la introducció general
+    
+    if (tipus == "classe"){
+      
+      sink(file(file.path(path_llista$informes, 
+                          paste0("informe_", curs_classe[cl], ".tex")), 
+                open = "wt", encoding = "latin1"))
+      
+      cat(heading_classes)  # Introducció (variables-text, línia 55)
+      cat("\\begin{document}")
+      titol_classes(escola, classes[cl])  # Intro classe (variables-text, línia 255)
+    
+      # Escrivim la intro de classes
       
       group_head_classes(classe, escola[1]);
       
