@@ -17,5 +17,4 @@ El fitxer principal és informe_excel, que crea els .tex dels informes directame
 
 - Separar codi i text: s'ha de crear un diccionari amb les diferents parts del text lligades amb el que s'ha de dir per cada alumne
 - Ordernar les funcions
-- Eliminar funcions obsoletes
 - Automatitzar l'actualització dels barems
