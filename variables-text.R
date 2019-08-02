@@ -181,7 +181,7 @@ El Test Àtom avalua la capacitat i l’execució de l’alumne en 6 o 7 àrees 
 
 L’informe del Test Àtom descriu el \\textbf{perfil de cada alumne} en habilitats cognitives i adaptació emocional, amb l’objectiu de comprendre les seves fortaleses i febleses i la seva comparació amb la població general. Consta de la informació referent a 4 aspectes: la \\textbf{valoració cognitiva} i de \\textbf{rendiment escolar}, l’índex d’\\textbf{estil de resposta}, la \\textbf{valoració adaptativa} i les \\textbf{orientacions personals i educatives}.
 
-\\subsection{Valoració cognitiva i de rendiment escolar}
+\\subsection{Interpretació dels resultats cognitius i de rendiment escolar}
 
 Podem observar dos gràfics corresponents als resultats de l’alumne: el \\textbf{resultat observat} (comparant el rendiment de l'alumne amb el barem general de la població de la seva edat) i el \\textbf{resultat esperat} (predit segons el Mètode Òrbita d'anàlisi estadístic).
 
@@ -219,7 +219,7 @@ Considerem que un estil de resposta tendent als extrems de reflexivitat i impuls
 
 Aquesta informació només es mostra en cas que el valor observat pugui haver afectat els resultats en les altres àrees. 
 
-\\section{Valoració adaptativa}
+\\section{Interpretació dels resultats d'adaptació social}
 
 Proporciona un resultat de la \\textbf{percepció d’adaptació personal que té el nen o nena}, considerant les àrees més rellevants del seu dia a dia: personal, escolar, social i familiar. En el cas de Cicle Inicial es plantegen 5 preguntes que avaluen la percepció d’adaptació en els diversos àmbits associant la pregunta a una cara que representa l’estat emocional (cara plorosa, cara trista, cara contenta, cara molt contenta). En el cas de Cicle Mitjà i Cicle Superior es considera un qüestionari de 16 preguntes sobre la percepció d’adaptació a cada àmbit amb opcions de resposta: mai,alguna vegada, moltes vegades, sempre.
 
@@ -451,7 +451,7 @@ cat("
 cat("
 \\newpage
 \\begin{center}
-\\Large{\\textbf{Valoració Cognitiva i de Rendiment}} \\\\ 
+\\Large{\\textbf{Interpretació dels resultats cognitius i de rendiment}} \\\\ 
 \\end{center}
 ", sep = "");
 
@@ -635,7 +635,7 @@ informe_individual_alumnes_sol <- function(index, curs, punts, matrius, indeximp
   
   cat("
       \\begin{center}
-      \\Large{\\textbf{Valoració Cognitiva i de Rendiment}} \\\\ 
+      \\Large{\\textbf{Interpretació dels resultats cognitius i de rendiment}} \\\\ 
       \\end{center}
       ", sep = "");
   

@@ -27,11 +27,11 @@ Cada informe consta de la informació  referent a 4 aspectes:
 
 
 \\begin{enumerate}
-\\item Valoració  cognitiva i de rendiment escolar: Informa sobre la capacitat i l'execució  de l'alumne en 6 o 7 àrees cognitives: Lectura, Memòria de Treball, Velocitat de Processament, Fluïdesa Matemàtica, Memòria a Llarg Termini, Raonament, (Càlcul).
+\\item Interpretació dels resultats  cognitius i de rendiment escolar: Informa sobre la capacitat i l'execució  de l'alumne en 6 o 7 àrees cognitives: Lectura, Memòria de Treball, Velocitat de Processament, Fluïdesa Matemàtica, Memòria a Llarg Termini, Raonament, (Càlcul).
 
 \\item Índex d'estil de resposta (Reflexivitat-Impulsivitat): Aporta informació  sobre si el patró  de resposta del subjecte és impulsiu o reflexiu i permet matisar les inferències sobre el seu rendiment, situant cada alumne en un punt intermig en el continuum reflexivitat-impulsivitat.
 
-\\item Valoració  adaptativa: Percepció  subjectiva de l'alumne sobre la seva adaptació  a nivell Personal, Social, Escolar i Familiar.
+\\item Interpretació dels resultats d'adaptació social: Percepció  subjectiva de l'alumne sobre la seva adaptació  a nivell Personal, Social, Escolar i Familiar.
 
 \\item Orientacions personals i educatives: Recomanacions en funció  de la informació  obtinguda sobre l'abordatge de les dificultats i potencialitats constatades.
 \\end{enumerate}
