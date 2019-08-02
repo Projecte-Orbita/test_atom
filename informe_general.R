@@ -35,8 +35,9 @@ informe_general = function(nom_escola, path_llista, tipus = "classe"){
   
   # Creem les carpetes on treballarem
   
-  dir.create(path_llista$figures);
-  dir.create(path_llista$informes);
+  dir.create(path_llista$figures)
+  dir.create(path_llista$informes)
+  dir.create(path_llista$resultats)
   
   #####
   # Agafem la info de la carpeta d'on treurem les dades i preparem algunes variables
@@ -128,8 +129,8 @@ informe_general = function(nom_escola, path_llista, tipus = "classe"){
     colerrors = errors(punts[,columnes[[curs_num]][-1]])
     indeximps <- c(indeximps, list(colerrors))
     
-    # I la d'emocional:
-    creacio_grafics_adaptatiu(punts, curs)
+    # I la d'adaptació:
+    calculs_adaptatiu(punts, curs)
     
     #### Aquí acaben els càlculs previs
     

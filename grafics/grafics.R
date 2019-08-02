@@ -212,9 +212,9 @@ grafics_nens_individual <- function(punts, curs, tipus){
   
 }
 
-## gràfics per la part emocional
+## gràfics per la part adaptativa
 
-grafic_emocional = function(index, curs, df_emocional, nom){
+grafic_adaptatiu = function(index, curs, df_emocional, nom){
   # emocional és una matriu amb 7 columes: noms dels nens, les 5 pregunes d'emocional i 
   # una altra columna buida al final que no sé què hi fa, suposo que ve amb les dades
 

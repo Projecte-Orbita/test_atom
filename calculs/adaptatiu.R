@@ -1,52 +1,53 @@
 # Poso aquí les funcions de l'adaptatiu emocional, que són la nova versió del que fins ara anomenàvem emocional,
 # però que canvio de nom perquè no es confongui amb històries de teoria de la ment i tal
 
-Sys.setlocale(category="LC_ALL", locale = "Catalan")
+Sys.setlocale(category = "LC_ALL", locale = "Catalan")
+require(jsonlite)
 
 
 paraula <- function(num){
-  if(num == 1){return("mai ")};
-  if(num == 2){return("poques vegades ")};
-  if(num == 3){return("moltes vegades ")};
-  if(num == 4){return("sempre ")}
-  if(num == 5){return("moltes vegades (i no sempre) ")}}
+  if (num == 1) {return("mai ")};
+  if (num == 2) {return("poques vegades ")};
+  if (num == 3) {return("moltes vegades ")};
+  if (num == 4) {return("sempre ")}
+  if (num == 5) {return("moltes vegades (i no sempre) ")}}
 
 
 informe_adaptatiu_petits <- function(index, emocional){  
   # TODO: s'ha d'arreglar perquè no es repeteixin els noms dels nens si tenen més d'una cosa (com en l'altre emocional, on està correcte)
   
-  futur=FALSE;
+  futur = FALSE;
   
   ambit = c("", "\\textbf{personal}", "\\textbf{escolar}", "\\textbf{social}", "\\textbf{clima domèstic}", "\\textbf{familiar}");
   frase = c("", "està", "a l'escola està", "al pati està", "a casa seva està", "amb la seva família està")
   
-  for (i in 2:(ncol(emocional))){
+  for (i in 2:(ncol(emocional))) {
     par = 0;
-    if (!is.na(emocional[index,i]) && emocional[index,i]==1){
+    if (!is.na(emocional[index,i]) && emocional[index,i] == 1) {
       cat("En/na ", as.character(emocional[index,1]), " mostra un \\emph{risc greu} de desadaptació en l'\\textbf{àmbit} ", ambit[i], " ja que respon que ", frase[i], " molt malament.
-          \\\\", sep="")
-      par=par+1;
-      futur=TRUE;
+          \\\\", sep = "")
+      par = par + 1;
+      futur = TRUE;
     }
   }
   
-  for (i in 2:(ncol(emocional))){
-    if (par > 1){
-      if (!is.na(emocional[index,i]) && emocional[index,i]==2){
+  for (i in 2:(ncol(emocional))) {
+    if (par > 1) {
+      if (!is.na(emocional[index,i]) && emocional[index,i] == 2) {
         cat("A més, també mostra un \\emph{risc moderat} de desadaptació en l'\\textbf{àmbit} ", ambit[i], " ja que respon que ", frase[i], " malament.
-            \\\\", sep="");
-        futur=TRUE;
+            \\\\", sep = "");
+        futur = TRUE
       }
     }
-    else {if (!is.na(emocional[index,i]) && emocional[index,i]==2){
+    else {if (!is.na(emocional[index,i]) && emocional[index,i] == 2) {
       cat("En/na ", as.character(emocional[index,1]), " mostra un \\emph{risc moderat} de desadaptació en l'\\textbf{àmbit} ", ambit[i], " ja que ha indicat que ", frase[i], " trist.
-          \\\\", sep="");
-      futur=TRUE;
+          \\\\", sep = "");
+      futur = TRUE;
     }
     }
   }
-  if(futur == FALSE){cat("No es constaten factors de risc de desadaptació emocional.")};
-  return(futur);
+  if (futur == FALSE) {cat("No es constaten factors de risc de desadaptació emocional.")};
+  return(futur)
 }
 
 
@@ -61,8 +62,8 @@ informe_adaptatiu <- function(index, emocional){
   # adaptatius han pogut influir en els altres
   
   
-  futur=FALSE;
-  lleus=0;
+  futur = FALSE
+  lleus = 0
   
   # En les properes línies fem un petit truc a causa de que hi ha preguntes que no tenen exactament
   # el comportament greu, lleu, correcte, correcte, si no que, per exemple, poden tenir que dues preguntes
@@ -196,9 +197,9 @@ informe_adaptatiu <- function(index, emocional){
       cat("
           \\end{itemize}")
     
-    if (length(greu) == 0 && length(lleu)/2 > 1)
-      
-      # Petita lògica que explica que molts riscs lleus són un risc greu
+    # Petita lògica que explica que molts riscs lleus són un risc greu
+    minim_lleus = 1
+    if (length(greu) == 0 && length(lleu)/2 > minim_lleus)
       
       cat("
     Donat que hi ha 2 o més factors afectats de forma lleu en aquest àmbit, considerem que l'hem de tractar com un \\emph{risc greu}.
@@ -208,11 +209,11 @@ informe_adaptatiu <- function(index, emocional){
   
   if(afectat == 0){cat("No es constaten factors de risc de desadaptació emocional.")}
   
-  if(lleus>2){futur=TRUE};
+  if(lleus > minim_lleus){futur=TRUE};
   return(futur);
 }
 
-creacio_grafics_adaptatiu = function(punts, curs){
+calculs_adaptatiu = function(punts, curs){
   
   # Aquesta prepara les dades per cridar la funció que crea els gràfics
   # 
@@ -221,7 +222,9 @@ creacio_grafics_adaptatiu = function(punts, curs){
   #            
   # Retorna: res; només imprimeix el gràfic en un pdf
   
-  for(i in 1:length(punts[,1])){
+  llista_adaptatiu = list()
+  
+  for (i in 1:length(punts[,1])){
     
     nom = as.character(punts[i,1])
     
@@ -313,7 +316,7 @@ creacio_grafics_adaptatiu = function(punts, curs){
        
     }
     
-    df_emocional = as.data.frame(cbind(arees, valors))
+    df_adaptatiu = as.data.frame(cbind(arees, valors))
     
     valors_nets = valors
     valors_nets[is.na(valors)]=0 
@@ -323,7 +326,16 @@ creacio_grafics_adaptatiu = function(punts, curs){
     
     if (sum(valors_nets)==0) next
     
-    grafic_emocional(i, curs, df_emocional, nom)
+    grafic_adaptatiu(i, curs, df_adaptatiu, nom)
     
+    llista = list("df" = df_adaptatiu, "valors" = pre_valors)
+    llista_adaptatiu[[nom]] = llista
   }
+  
+  # Imiprimim els resultats en un json per tenir-los pel tier II
+  # 
+  wd = getwd()
+  con = file(file.path(wd, "temp", "resultats", "adaptatius.json"), open = "w+", encoding = "UTF-8")
+  writeLines(toJSON(llista_adaptatiu), con)
+  close(con)
 }

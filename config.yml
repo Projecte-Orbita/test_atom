@@ -3,7 +3,6 @@ default:
   encoding1: "latin1"
   individuals: TRUE
   aprofitar: FALSE
-
 directoris:  
   temp: "temp"
   figures: "figures"
@@ -11,3 +10,4 @@ directoris:
   informes: "informes"
   barems: "barems"
   fitxers: "fitxers"
+  resultats: "resultats"
