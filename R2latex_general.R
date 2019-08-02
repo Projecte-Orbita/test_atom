@@ -1,17 +1,18 @@
 Sys.setlocale(category="LC_ALL", locale = "Catalan")
-source('./informes.R', encoding = "UTF-8");           # fa els càlculs i els gràfics
-source('./variables-text.R', encoding = "UTF-8");     # fa el latex amb la info d'informes
-source('./text-intro.R', encoding = "UTF-8");         # text de la introducció
-source('./inicialitzadors.R', encoding = "UTF-8")     # funcions d'ajuda d'informes
-source('./tier_2.R', encoding = "UTF-8");             # escriu la part de tier 2 de làtex
-source('./informe_matrius.R', encoding = "UTF-8");    # Escriu les valoracions de la part cognitiva
-# source('./emocional.R', encoding = "UTF-8");  # necessari per CI, però aviat anirà fora
-source('./adaptatiu.R', encoding = "UTF-8")           # Crea els gràfics i escriu la valoració adaptativa
-source('./barems.R', encoding = "UTF-8");             # Carrega i calcula els barems
-source('./errors.R', encoding = "UTF-8");             # Resta els errors dels encerts
-source('./compensacions.R', encoding = "UTF-8");      # Calcula el perfil teòric i el compara amb el real
-source('./grafics.R', encoding = "UTF-8");            # Gràfics
-source('./manipulacions_dades.R', encoding = "UTF-8") # Crea els csv a partir dels excels
+
+source('barems/barems.R', encoding = "UTF-8");             # Carrega i calcula els barems
+
+source('calculs/inicialitzadors.R', encoding = "UTF-8")     # funcions d'ajuda d'informes
+source('calculs/errors.R', encoding = "UTF-8");             # Resta els errors dels encerts
+source('calculs/compensacions.R', encoding = "UTF-8");      # Calcula el perfil teòric i el compara amb el real
+source('calculs/adaptatiu.R', encoding = "UTF-8")           # Crea els gràfics i escriu la valoració adaptativa
+
+source('grafics/grafics.R', encoding = "UTF-8");            # Gràfics
+
+source('escriure/informes.R', encoding = "UTF-8");           # fa els càlculs i els gràfics
+source('escriure/variables-text.R', encoding = "UTF-8");     # fa el latex amb la info d'informes
+source('escriure/tier_2.R', encoding = "UTF-8");             # escriu la part de tier 2 de làtex
+source('escriure/informe_matrius.R', encoding = "UTF-8");    # Escriu les valoracions de la part cognitiva
 
 
 informe_general = function(nom_escola, path_llista, tipus = "classe"){

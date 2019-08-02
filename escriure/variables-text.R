@@ -1,9 +1,11 @@
 Sys.setlocale(category="LC_ALL", locale = "Catalan")
 
 
+wd = getwd()
+
 ##### headings
 
-heading <- "\\documentclass[a4paper, 12pt, oneside]{book}%{article}
+heading <- paste0("\\documentclass[a4paper, 12pt, oneside]{book}%{article}
 \\usepackage{framed}
 \\usepackage[left=3cm,right=3cm,top=2cm]{geometry}
 \\usepackage[sfdefault]{cabin}
@@ -34,7 +36,7 @@ heading <- "\\documentclass[a4paper, 12pt, oneside]{book}%{article}
 \\usepackage{graphicx}
 \\pagestyle{fancy}
 \\fancyhf{}  
-\\lfoot{\\includegraphics[scale=0.3]{../../imatges/informe-atom-peu}}
+\\lfoot{\\includegraphics[scale=0.3]{", wd, "/imatges/informe-atom-peu}}
 \\rfoot{\\small \\thepage}
 
 \\setlength\\parindent{0pt}
@@ -49,10 +51,10 @@ heading <- "\\documentclass[a4paper, 12pt, oneside]{book}%{article}
 
 \\begin{document}
 \\tableofcontents
-";
+")
 
 
-heading_classes <- "\\documentclass[a4paper, 12pt, oneside]{book}%{article}
+heading_classes <- paste0("\\documentclass[a4paper, 12pt, oneside]{book}%{article}
 \\usepackage{framed}
 \\usepackage[left=3cm,right=3cm,top=2cm]{geometry}
 \\usepackage[sfdefault]{cabin}
@@ -83,7 +85,7 @@ heading_classes <- "\\documentclass[a4paper, 12pt, oneside]{book}%{article}
 \\usepackage{graphicx}
 \\pagestyle{fancy}
 \\fancyhf{}  
-\\lfoot{\\includegraphics[scale=0.3]{../../imatges/informe-atom-peu}}
+\\lfoot{\\includegraphics[scale=0.3]{", wd, "/imatges/informe-atom-peu}}
 \\rfoot{\\small \\thepage}
 
 \\setlength\\parindent{0pt}
@@ -94,9 +96,13 @@ heading_classes <- "\\documentclass[a4paper, 12pt, oneside]{book}%{article}
 {\\normalfont\\huge\\bfseries}{}{0pt}{\\Huge}
 \\titlespacing*{\\chapter}
 {0pt}{10pt}{40pt}
-";
+")
 
-heading_alumnes <- function(nom){ cat("
+heading_alumnes <- function(nom){ 
+
+  wd = getwd()
+
+cat("
 \\documentclass[a4paper, 12pt, oneside]{article}
 \\usepackage{framed}
 \\usepackage[left=3cm,right=3cm,top=2cm]{geometry}
@@ -130,7 +136,7 @@ heading_alumnes <- function(nom){ cat("
 \\usepackage{graphicx}
 \\pagestyle{fancy}
 \\fancyhf{}  
-\\lfoot{\\includegraphics[scale=0.3]{../../imatges/informe-atom-peu}}
+\\lfoot{\\includegraphics[scale=0.3]{", wd, "/imatges/informe-atom-peu}}
 \\rfoot{\\small \\thepage}
 
 %\\setlength\\parindent{0pt}
@@ -144,7 +150,7 @@ heading_alumnes <- function(nom){ cat("
 {0pt}{10pt}{40pt}
 
 \\begin{document}
-\\includepdf[pages=-,pagecommand={\\begin{tikzpicture}[remember picture,overlay]\\node [xshift = 0cm, yshift = 4.5cm] at (current page.center)  {\\textbf{\\huge{",nom,"}}};\\end{tikzpicture}}]{../../imatges/Portada-resultats}
+\\includepdf[pages=-,pagecommand={\\begin{tikzpicture}[remember picture,overlay]\\node [xshift = 0cm, yshift = 4.5cm] at (current page.center)  {\\textbf{\\huge{",nom,"}}};\\end{tikzpicture}}]{", wd, "/imatges/Portada-resultats}
 
 \\maketitle
 
@@ -246,13 +252,16 @@ Aquestes orientacions estan basades en el coneixement científic actual sobre ha
 El Test Àtom és resultat d’investigació en cognició, psicologia infantil i intel·ligència artificial desenvolupada a la Universitat de Barcelona (UB) i la Universitat Pompeu Fabra (UPF), amb col·laboracions a la Universitats de Girona (UdG) i la Universitat Rovira i Virgili (URV). 
 
 La vostra escola us pot proporcionar documentació proporcionada pel Projecte Òrbita sobre les teories que recolzen i configuren la base científica del Test Àtom.
-")}
+", sep = "")}
 
 
 
 #####
 
 titol_classes <- function(escola, classe){
+  
+  wd = getwd()
+  
   cat(paste0(
   "\\begin{titlepage}
   \\newcommand{\\HRule}{\\rule{\\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
@@ -268,7 +277,7 @@ titol_classes <- function(escola, classe){
   \\HRule \\\\[1.5cm]
   
   \\vspace{5cm}
-  \\includegraphics[scale=0.3]{../../imatges/logo_orbita.png} % Include a department/university logo - this will require the graphicx package
+  \\includegraphics[scale=0.3]{", wd, "/imatges/logo_orbita.png} % Include a department/university logo - this will require the graphicx package
   \\vfill % Fill the rest of the page with whitespace
   
   \\end{titlepage}"));
@@ -361,11 +370,15 @@ classe_grup_head <- function(nom_classe){cat("
 Nota: a tots els gr\\`{a}fics la mitjana corresponent est\\`{a} indicada amb una ratlla horitzontal. \\\\",
  sep = "")};
 
-grafics_collectius_per_materia <- function(prova, curs, escola){cat("
+grafics_collectius_per_materia <- function(prova, curs, escola){
+
+wd = getwd()
+
+cat("
 %\\textbf{", prova[1], "}
 \\begin{figure}[H]
 \\centering
-\\includegraphics[width=13cm]{../../figures/",escola[2],"/", curs[1], "/", prova[3], "-", curs[2], "-norm}
+\\includegraphics[width=13cm]{", wd, "/temp/figures/", curs[1], "/", prova[3], "-", curs[2], "-norm}
 \\end{figure}",
 
 if(1==0){cat(observacions-1)},
@@ -374,7 +387,7 @@ if(1==0){cat(observacions-1)},
 
 \\begin{figure}[H]
 \\centering
-\\includegraphics[width=13cm]{../../figures/",escola[2],"/", curs[1], "/", prova[3], "-", curs[2], "-norm_intra}
+\\includegraphics[width=13cm]{", wd, "/temp/figures/", curs[1], "/", prova[3], "-", curs[2], "-norm_intra}
 \\end{figure}",
  
 sep = "")};
@@ -428,6 +441,7 @@ individual_sol_head <- function(nom, nom_curs){
 
 individual_antic <- function(index, curs, punts, matrius, indeximp, escola){
 
+wd = getwd()
   
 cat("
 \\vspace{1.2cm}
@@ -437,11 +451,11 @@ cat("
 \\captionsetup[subfigure]{labelformat=empty}
 \\begin{subfigure}{.5\\textwidth}
 \\centering
-\\includegraphics[width=7.5cm]{../../figures/",escola[2],"/", curs[1], "/", index, "-norm}
+\\includegraphics[width=7.5cm]{", wd, "/temp/figures/", curs[1], "/", index, "-norm}
 \\end{subfigure}
 \\begin{subfigure}{.5\\textwidth}
 \\centering
-\\includegraphics[width=7.5cm]{../../figures/",escola[2],"/", curs[1], "/", index, "-comp}
+\\includegraphics[width=7.5cm]{", wd, "/temp/figures/", curs[1], "/", index, "-comp}
 \\end{subfigure}
 %\\caption*{En el gràfic de l'esquerra veiem els resultats \\emph{mesurats} i a la dreta els \\emph{esperats}. Si hi ha resultats en vermell al gràfic de la dreta és perquè mesurem aquella habilitat més \\emph{baixa} que la predida, i per tant parlem d'una possible \\emph{dificultat específica}. En canvi, si estan en blau és perquè són més \\emph{alts} dels predits i per tant parlem d'un possible \\emph{talent}.}
 \\caption*{Al Gràfic 1 veiem els resultats obtinguts per l'alumne en comparació amb el barem universal de referència. El color verd indica que l'alumne es troba dins la mitjana estadística, mentre que el taronja indica que es troba significativament per sota d'aquesta (indicant una possible dificultat específica) i el blau que es troba a la franja superior (informant d'un possible talent). Al Gràfic 2 observem els resultats esperats per l'alumne segons la seva velocitat de processament, segons els resultats obtinguts a partir de l'Índex de Rapidesa mitjançant el Mètode Òrbita d'anàlisi estadístic. El color gris indica que no hi ha discrepància entre la puntuació obtinguda i la esperada, mentre que el vermell significa que el rendiment en aquesta habilitat és inferior a l'esperat (i per tant parlem d'un punt feble en el seu perfil intern) mentre que el blau informa d'una habilitat superior a la predita (i parlaríem d'un punt fort en el seu perfil intern).}
@@ -474,7 +488,7 @@ Es valora que l'estil de resposta fortament tendent a la \\emph{reflexivitat} po
 cat("
 
 \\begin{center}
-\\Large{\\textbf{Valoraci\\'{o} Adaptativa}} \\\\
+\\Large{\\textbf{Interpretació dels reusltats d'adaptació social}} \\\\
 \\end{center}
 
 ");
@@ -482,13 +496,13 @@ cat("
 ########
 
 # aquí hi ha d'anar el gràfic d'emocional (si cal)
-destfile = paste0(getwd(),"/figures/",escola[2],"/", curs[1],  "/emocional-", index, ".pdf")
+destfile = paste0( wd, "/temp/figures/", curs[1],  "/emocional-", index, ".pdf")
 if (file.exists(destfile)){
 
 cat("
     \\begin{figure}[H]
     \\centering
-    \\includegraphics[width=7.5cm]{../../figures/",escola[2],"/", curs[1], "/emocional-", index, ".pdf}
+    \\includegraphics[width=7.5cm]{", wd, "/temp/figures/", curs[1], "/emocional-", index, ".pdf}
     \\end{figure}", sep = ""
     )
 }
@@ -519,9 +533,7 @@ if(futur_tier == TRUE){cat("Els resultats obtinguts ens permeten determinar que 
 
 informe_individual <- function(index, curs, punts, matrius, indeximp, escola, tipus){
   
-  carpetes_enrera = ifelse(tipus=="classe", # depenent de si estem en individual o col·lectiu el fitxer .tex
-                           "../../",        # està dins d'una carpeta per classe o no; per tant a l'hora d'anar
-                           "../../../")     # a buscar les imatges hem d'anar una més enrera
+  wd = getwd()
   
   cat("
       \\begin{center}
@@ -536,11 +548,11 @@ informe_individual <- function(index, curs, punts, matrius, indeximp, escola, ti
       \\captionsetup[subfigure]{labelformat=empty}
       \\begin{subfigure}{.5\\textwidth}
       \\centering
-      \\includegraphics[width=7.5cm]{",carpetes_enrera,"figures/",escola[2],"/", curs[1], "/", index, "-norm}
+      \\includegraphics[width=7.5cm]{", wd,"/temp/figures/", curs[1], "/", index, "-norm}
       \\end{subfigure}
       \\begin{subfigure}{.5\\textwidth}
       \\centering
-      \\includegraphics[width=7.5cm]{",carpetes_enrera,"figures/",escola[2],"/", curs[1], "/", index, "-comp}
+      \\includegraphics[width=7.5cm]{", wd,"/temp/figures/", curs[1], "/", index, "-comp}
       \\end{subfigure}
       %\\caption*{En el gràfic de l'esquerra veiem els resultats \\emph{mesurats} i a la dreta els \\emph{esperats}. Si hi ha resultats en vermell al gràfic de la dreta és perquè mesurem aquella habilitat més \\emph{baixa} que la predida, i per tant parlem d'una possible \\emph{dificultat específica}. En canvi, si estan en blau és perquè són més \\emph{alts} dels predits i per tant parlem d'un possible \\emph{talent}.}
       \\caption*{\\emph{Trobareu informació sobre els gràfics al document d'introducció dels informes.}}
@@ -556,13 +568,13 @@ informe_individual <- function(index, curs, punts, matrius, indeximp, escola, ti
   
   
   # aquí hi ha d'anar el gràfic d'emocional (si cal)
-  destfile = paste0(getwd(),"/figures/",escola[2],"/", curs[1],  "/emocional-", index, ".pdf")
+  destfile = paste0(wd, "/temp/figures/", curs[1],  "/emocional-", index, ".pdf")
   if (file.exists(destfile)){
 
       cat("
         \\begin{figure}[H]
         \\centering
-        \\includegraphics[width=7.5cm]{",carpetes_enrera, "figures/",escola[2],"/", curs[1], "/emocional-", index, ".pdf}
+        \\includegraphics[width=7.5cm]{", wd,"/temp/figures/", curs[1], "/emocional-", index, ".pdf}
         \\end{figure}", sep = ""
       )
     
@@ -571,7 +583,7 @@ informe_individual <- function(index, curs, punts, matrius, indeximp, escola, ti
 cat("
       \\newpage
       \\begin{center}
-      \\Large{\\textbf{Valoraci\\'{o}}} \\\\
+      \\Large{\\textbf{Interpretació dels resultats}} \\\\
       \\Large{Prova cognitiva i de rendiment} \\\\ 
       \\end{center}
       
@@ -658,7 +670,7 @@ informe_individual_alumnes_sol <- function(index, curs, punts, matrius, indeximp
   cat("
       
       \\begin{center}
-      \\Large{\\textbf{Valoraci\\'{o} Adaptativa}} \\\\
+      \\Large{\\textbf{Interpretació dels resultats d'adaptació social}} \\\\
       \\end{center}
       
       ");

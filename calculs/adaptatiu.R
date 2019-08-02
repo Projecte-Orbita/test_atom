@@ -201,7 +201,7 @@ informe_adaptatiu <- function(index, emocional){
       # Petita lògica que explica que molts riscs lleus són un risc greu
       
       cat("
-    Donat que hi ha 3 o més factors afectats de forma lleu en aquest àmbit, considerem que l'hem de tractar com un \\emph{risc greu}.
+    Donat que hi ha 2 o més factors afectats de forma lleu en aquest àmbit, considerem que l'hem de tractar com un \\emph{risc greu}.
     \\newline
 ")
   }

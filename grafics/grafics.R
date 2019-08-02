@@ -61,7 +61,7 @@ grafic_base <- function(punts, curs, titol, tipus, nom_plot, escola, i){
     scale_fill_manual(name='value.1', values=colors) + 
     geom_hline(yintercept=0.5) + 
     ylim(0, 1) + 
-    ggsave(file = paste("figures/", escola[2], "/", curs, "/", nom_plot, ".pdf", sep = ""), 
+    ggsave(file = paste("temp/figures/", curs, "/", nom_plot, ".pdf", sep = ""), 
            dpi = 600, width = 8, height = 6, units = "in") 
 }
 
@@ -106,7 +106,7 @@ ggpbar <- function(nens, punts, curs, tipus, escola){
     scale_fill_manual(name = 'value.1', values = colors) + 
     geom_hline(yintercept=0.5) + 
     ylim(0, 1) +
-    ggsave(file = paste("figures/", escola[2], "/", curs, "/", nens,"-", tipus, ".pdf", sep = ""), 
+    ggsave(file = paste("temp/figures/", curs, "/", nens,"-", tipus, ".pdf", sep = ""), 
            dpi = 600, width = 8, height = 9, units = "in");
 }
 
@@ -146,7 +146,7 @@ ggpbar_individual <- function(nens, punts, curs, tipus, escola){
     scale_fill_manual(name = 'value.1', values = colors) + 
     geom_hline(yintercept=0.5) + 
     ylim(0, 1) +
-    ggsave(file = paste( "/informes_individuals/", punts[nens,1],"/", tipus, ".pdf", sep = ""), 
+    ggsave(file = paste0( "temp/figures/informes_individuals/", punts[nens,1],"/", tipus, ".pdf"), 
            dpi = 600, width = 8, height = 9, units = "in");
 }
 
@@ -196,7 +196,7 @@ grafics_nens_individual <- function(punts, curs, tipus, escola){
     scale_fill_manual(name = 'value.1', values = colors) + 
     geom_hline(yintercept=0.5) + 
     ylim(0, 1) +
-    ggsave(file = paste( "informes_individuals/", punts[1,1],"/", tipus, ".pdf", sep = ""), 
+    ggsave(file = paste0("temp/figures/informes_individuals/", punts[1,1],"/", tipus, ".pdf"), 
            dpi = 600, width = 8, height = 9, units = "in");
   
 }
@@ -238,7 +238,7 @@ grafic_emocional = function(index, curs, df_emocional, escola, nom){
     xlab("Àrea") +
     labs(title = "Riscs emocionals") 
  #        subtitle = nom) +
-    ggsave(file = paste("figures/", escola[2], "/", curs[1], "/emocional-", index, ".pdf", sep = ""), 
+    ggsave(file = paste("temp/figures/",  curs[1], "/emocional-", index, ".pdf", sep = ""), 
            dpi = 600, width = 8, height = 6, units = "in") 
 }
 
