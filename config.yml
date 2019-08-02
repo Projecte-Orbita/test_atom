@@ -1,0 +1,5 @@
+default:
+  encoding: "UTF-8"
+  individuals: TRUE
+  aprofitar: FALSE
+  
