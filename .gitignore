@@ -6,4 +6,5 @@ gaussiana.pdf
 .RData
 .Rhistory
 .Rproj.user
-
+.Rbuildignore
+informes_individuals
