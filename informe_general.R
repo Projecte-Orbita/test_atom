@@ -35,8 +35,9 @@ informe_general = function(nom_escola, path_llista, tipus = "classe"){
   
   # Creem les carpetes on treballarem
   
-  dir.create(path_llista$figures);
-  dir.create(path_llista$informes);
+  dir.create(path_llista$figures)
+  dir.create(path_llista$informes)
+  dir.create(path_llista$taules)
   
   #####
   # Agafem la info de la carpeta d'on treurem les dades i preparem algunes variables
@@ -129,7 +130,7 @@ informe_general = function(nom_escola, path_llista, tipus = "classe"){
     indeximps <- c(indeximps, list(colerrors))
     
     # I la d'emocional:
-    creacio_grafics_adaptatiu(punts, curs)
+    creacio_grafics_adaptatiu(punts, curs, path_llista)
     
     #### Aquí acaben els càlculs previs
     
@@ -182,6 +183,9 @@ informe_general = function(nom_escola, path_llista, tipus = "classe"){
       # només en el nom del fitxer, que si no segueix donant problemes
     }
     
+    # Agafem les indicacions de les orientacions d'aquesta classe:
+    
+    orientacions = fromJSON(readLines(file.path(path_llista$taules, curs[1], "vals_adaptatiu.json")))
     
     for(i in 1:length(punts[,1]))
     {
@@ -194,7 +198,8 @@ informe_general = function(nom_escola, path_llista, tipus = "classe"){
       }
       
       individual_head(nom, classe, nom_escola);
-      informe_individual(i, curs, punts[llista_columnes[[curs[2]]]], matriu, indeximp[i], tipus)
+      informe_individual(i, curs, punts[llista_columnes[[curs[2]]]], 
+                         matriu, indeximp[i], tipus, orientacions[[nom]])
       
       if (tipus == "classe"){
         cat("\\newpage");

@@ -2,7 +2,7 @@
 # però que canvio de nom perquè no es confongui amb històries de teoria de la ment i tal
 
 Sys.setlocale(category="LC_ALL", locale = "Catalan")
-
+require(jsonlite)
 
 paraula <- function(num){
   if(num == 1){return("mai ")};
@@ -212,7 +212,7 @@ informe_adaptatiu <- function(index, emocional){
   return(futur);
 }
 
-creacio_grafics_adaptatiu = function(punts, curs){
+creacio_grafics_adaptatiu = function(punts, curs, path_llista){
   
   # Aquesta prepara les dades per cridar la funció que crea els gràfics
   # 
@@ -220,6 +220,10 @@ creacio_grafics_adaptatiu = function(punts, curs){
   #            curs: curs
   #            
   # Retorna: res; només imprimeix el gràfic en un pdf
+  # Imprimeix: json amb els resultats per ser utilitzat per l'escriptura d'interpretació i orientacons
+  # TODO: separar crear gràfic i el pretractat
+  
+  llista_valoracions = list()
   
   for(i in 1:length(punts[,1])){
     
@@ -312,6 +316,8 @@ creacio_grafics_adaptatiu = function(punts, curs){
      
        
     }
+
+    llista_valoracions[[nom]]
     
     df_emocional = as.data.frame(cbind(arees, valors))
     
@@ -321,9 +327,20 @@ creacio_grafics_adaptatiu = function(punts, curs){
     # Aquesta línia i l'anterior són per tractar missings
     # TODO: arreglar-ho més amunt i millor
     
+    valors_llista = valors_nets
+    names(valors_llista) = make.names(arees)
+    valors_llista = as.list(valors_llista)
+    llista_valoracions[[nom]] = valors_llista
+    
     if (sum(valors_nets)==0) next
     
     grafic_emocional(i, curs, df_emocional, nom)
     
   }
+  
+  dir.create(file.path(path_llista$taules, curs[1]))
+  con = file(file.path(path_llista$taules, curs[1], "vals_adaptatiu.json"), 
+             open = "w+", encoding = "utf8")
+  writeLines(toJSON(llista_valoracions), con)
+  close(con)
 }

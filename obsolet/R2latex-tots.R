@@ -67,17 +67,25 @@ informe_per_classes = function(nom_carpeta_escola){
   print("> Preparant barems");
   
   # importem els barems i els netegem
-  prebarems_1 = read.csv('./barems/prebarems1.csv', header = FALSE, encoding = "UTF-8");
+  wd = getwd()
+  prebarems_1 = read.csv(file.path(wd, 'barems', 'dades_barems', 'prebarems1.csv'), 
+                         header = FALSE, encoding = "UTF-8")
+  prebarems_2 = read.csv(file.path(wd, 'barems', 'dades_barems', 'prebarems2.csv'), 
+                         header = FALSE, encoding = "UTF-8")
+  prebarems_3 = read.csv(file.path(wd, 'barems', 'dades_barems', 'prebarems3.csv'), 
+                         header = FALSE, encoding = "UTF-8")
+  prebarems_4 = read.csv(file.path(wd, 'barems', 'dades_barems', 'prebarems4.csv'), 
+                         header = FALSE, encoding = "UTF-8")
+  prebarems_5 = read.csv(file.path(wd, 'barems', 'dades_barems', 'prebarems5.csv'), 
+                         header = FALSE, encoding = "UTF-8")
+  prebarems_6 = read.csv(file.path(wd, 'barems', 'dades_barems', 'prebarems6.csv'), 
+                         header = FALSE, encoding = "UTF-8")
+  
   barems_1 = preparar_barems(prebarems_1)
-  prebarems_2 = read.csv('./barems/prebarems2.csv', header = FALSE, encoding = "UTF-8");
   barems_2 = preparar_barems(prebarems_2)
-  prebarems_3 = read.csv('./barems/prebarems3.csv', header = FALSE, encoding = "UTF-8");
   barems_3 = preparar_barems(prebarems_3)
-  prebarems_4 = read.csv('./barems/prebarems4.csv', header = FALSE, encoding = "UTF-8");
   barems_4 = preparar_barems(prebarems_4)
-  prebarems_5 = read.csv('./barems/prebarems5.csv', header = FALSE, encoding = "UTF-8");
   barems_5 = preparar_barems(prebarems_5)
-  prebarems_6 = read.csv('./barems/prebarems6.csv', header = FALSE, encoding = "UTF-8");
   barems_6 = preparar_barems(prebarems_6)
   
   
@@ -94,7 +102,7 @@ informe_per_classes = function(nom_carpeta_escola){
     
     print(paste0("> Creant informe per la classe ", classes[cl]))
     
-    sink(file(paste(getwd(), "/informes/", escola[2],"/informe_", curs_classe[cl], ".tex", sep =""), 
+    sink(file(file.path(wd, "informes", escola[2], paste0("informe_", curs_classe[cl], ".tex")), 
             open = "wt", encoding = "latin1"));#-", #escola[2], sep = ""));
   
     cat(heading_classes);
@@ -107,9 +115,10 @@ informe_per_classes = function(nom_carpeta_escola){
     classe <- classes[cl];
     nom_fitxer <- noms_fitxers[cl];
     
-    punts <- read.csv(paste("dades/", escola[2],"/", nom_fitxer, sep = ""), header = FALSE, encoding = "latin1");
+    punts <- read.csv(file.path(wd, 'dades', escola[2], nom_fitxer), 
+                      header = FALSE, encoding = "latin1");
 
-    dir.create(paste(getwd(), "/figures/", escola[2], "/", curs[1], sep ="" ));
+    dir.create(file.path(wd, "figures", escola[2], curs[1]))
     
     ### Inici de l'elaboració dels informes, separat per cursos (ja que els barems són diferents)
     ### TODO: En algun moment es podrien ajuntar
@@ -172,7 +181,8 @@ informe_per_classes = function(nom_carpeta_escola){
         \\section*{Informes individuals}");
     
     # Llegim les dades:
-    punts <- read.csv(paste0("./dades/", escola[2], "/", nom_fitxer), header = FALSE, encoding = "latin1");
+    punts <- read.csv(file.path(wd, 'dades', escola[2], nom_fitxer), 
+                      header = FALSE, encoding = "latin1");
 
     # Creem els gràfics d'emocional 
 
@@ -229,7 +239,7 @@ informe_per_alumnes = function(nom_carpeta_escola){
   # agafem la info de la carpeta d'on treurem les dades (i que abans es passava dins la funció)
   #####
   
-  noms_fitxers = as.vector(list.files(paste0('dades/', escola[2])))
+  noms_fitxers = as.vector(list.files(file.path('dades', escola[2])))
   num_curs = substr(noms_fitxers, 1, 1)
   curs_classe = substr(noms_fitxers, 1, 2)
   noms_classes = substr(noms_fitxers, 2, 2)
@@ -259,24 +269,32 @@ informe_per_alumnes = function(nom_carpeta_escola){
   # i els informes
   
   wd <- getwd();
-  dir.create(paste(getwd(), "/figures/", escola[2], sep ="" ));
-  dir.create(paste(getwd(), "/informes/", escola[2], sep ="" ));
+  dir.create(file.path(wd, "figures", escola[2]))
+  dir.create(file.path(wd, "informes", escola[2]))
   
   print("> Preparant barems"); # comentem com va el tema
   
   # importem els barems i els netegem
   
-  prebarems_1 = read.csv('./barems/prebarems1.csv', header = FALSE, encoding = "UTF-8");
+  wd = getwd()
+  prebarems_1 = read.csv(file.path(wd, 'barems', 'dades_barems', 'prebarems1.csv'), 
+                         header = FALSE, encoding = "UTF-8")
+  prebarems_2 = read.csv(file.path(wd, 'barems', 'dades_barems', 'prebarems2.csv'), 
+                         header = FALSE, encoding = "UTF-8")
+  prebarems_3 = read.csv(file.path(wd, 'barems', 'dades_barems', 'prebarems3.csv'), 
+                         header = FALSE, encoding = "UTF-8")
+  prebarems_4 = read.csv(file.path(wd, 'barems', 'dades_barems', 'prebarems4.csv'), 
+                         header = FALSE, encoding = "UTF-8")
+  prebarems_5 = read.csv(file.path(wd, 'barems', 'dades_barems', 'prebarems5.csv'), 
+                         header = FALSE, encoding = "UTF-8")
+  prebarems_6 = read.csv(file.path(wd, 'barems', 'dades_barems', 'prebarems6.csv'), 
+                         header = FALSE, encoding = "UTF-8")
+  
   barems_1 = preparar_barems(prebarems_1)
-  prebarems_2 = read.csv('./barems/prebarems2.csv', header = FALSE, encoding = "UTF-8");
   barems_2 = preparar_barems(prebarems_2)
-  prebarems_3 = read.csv('./barems/prebarems3.csv', header = FALSE, encoding = "UTF-8");
   barems_3 = preparar_barems(prebarems_3)
-  prebarems_4 = read.csv('./barems/prebarems4.csv', header = FALSE, encoding = "UTF-8");
   barems_4 = preparar_barems(prebarems_4)
-  prebarems_5 = read.csv('./barems/prebarems5.csv', header = FALSE, encoding = "UTF-8");
   barems_5 = preparar_barems(prebarems_5)
-  prebarems_6 = read.csv('./barems/prebarems6.csv', header = FALSE, encoding = "UTF-8");
   barems_6 = preparar_barems(prebarems_6)
   
   #####
@@ -297,12 +315,13 @@ informe_per_alumnes = function(nom_carpeta_escola){
     
     # Importem les dades de la classe on siguem:
     
-    punts <- read.csv(paste("dades/", escola[2],"/", nom_fitxer, sep = ""), header = FALSE, encoding = "latin1");
+    punts <- read.csv(file.path(wd, "dades", escola[2], nom_fitxer), 
+                      header = FALSE, encoding = "latin1");
     
     # Creem els directoris on posarem les figures i els informes d'aquella classe:
     
-    dir.create(paste(getwd(), "/figures/", escola[2], "/", curs[1], sep ="" ));
-    dir.create(paste(getwd(), "/informes/", escola[2],"/", curs_classe[cl], sep ="" ));
+    dir.create(file.path(wd, "figures", escola[2], curs[1]))
+    dir.create(file.path(wd, "informes", escola[2], curs_classe[cl]))
     
     # Calculem:
 
@@ -351,8 +370,8 @@ informe_per_alumnes = function(nom_carpeta_escola){
       # Creem les subcarpetes 
       
       
-      sink(file(paste(getwd(), "/informes/", escola[2],"/", curs_classe[cl],"/",noms_fitxers_tex[i],".tex", sep =""), 
-                open = "wt", encoding = "latin1"));
+      sink(file(file.path(wd, "informes", escola[2], curs_classe[cl], paste0(noms_fitxers_tex[i],".tex")), 
+                open = "wt", encoding = "latin1"))
       
       
       ################
@@ -408,7 +427,7 @@ informe_per_un_nen = function(dades, curs = 1){
   
   nom = gsub(" ", "_", dades[,1])
   
-  dir.create(paste(getwd(), "/informes_individuals/", nom , sep ="" ));
+  dir.create(file.path(wd, "informes_individuals", nom));
   
     print(paste0("> Creant l'informe per en/na ", nom));
     
@@ -426,7 +445,8 @@ informe_per_un_nen = function(dades, curs = 1){
     
     if(curs[2]==1)
     {
-      prebarems = read.csv('./barems/prebarems1.csv', header = FALSE);
+      prebarems = read.csv(file.path(wd, 'barems', 'dades_barems', 'prebarems1.csv'), 
+                           header = FALSE, encoding = "UTF-8")
       barems = preparar_barems(prebarems)
       
       matrius <- c(matrius, list(informe_individual_intern(dades[,1:13], curs, barems, escola)));
@@ -434,7 +454,9 @@ informe_per_un_nen = function(dades, curs = 1){
       nom_curs = "1r de Primària";}
     
     if(curs[2]==2)
-    {prebarems = read.csv('./barems/prebarems2.csv', header = FALSE);
+    {
+    prebarems = read.csv(file.path(wd, 'barems', 'dades_barems', 'prebarems2.csv'), 
+                         header = FALSE, encoding = "UTF-8")
     barems = preparar_barems(prebarems)
       
       matrius <- c(matrius, list(informe_individual_intern(dades[,1:13], curs, barems, escola)));
@@ -442,28 +464,36 @@ informe_per_un_nen = function(dades, curs = 1){
       nom_curs = "2n de Primària";}
     
     if(curs[2]==3)
-    {prebarems = read.csv('./barems/prebarems3.csv', header = FALSE);
+    {
+      prebarems = read.csv(file.path(wd, 'barems', 'dades_barems', 'prebarems3.csv'), 
+                           header = FALSE, encoding = "UTF-8")
     barems = preparar_barems(prebarems)
     matrius <- c(matrius, list(informe_individual_intern(dades[,1:17], curs, barems_3, escola)));
     indeximps <- c(indeximps, list(errors(dades[,2:17])));
     nom_curs = "3r de Primària";}
     
     if(curs[2]==4)
-    {prebarems = read.csv('./barems/prebarems4.csv', header = FALSE);
+    {      
+    prebarems = read.csv(file.path(wd, 'barems', 'dades_barems', 'prebarems4.csv'), 
+                         header = FALSE, encoding = "UTF-8")
     barems = preparar_barems(prebarems)
     matrius <- c(matrius, list(informe_individual_intern(dades[,1:17], curs, barems_4, escola)));
     indeximps <- c(indeximps, list(errors(dades[,2:17])));
     nom_curs = "4rt de Primària";}
     
     if(curs[2]==5)
-    {prebarems = read.csv('./barems/prebarems5.csv', header = FALSE);
+    {
+    prebarems = read.csv(file.path(wd, 'barems', 'dades_barems', 'prebarems5.csv'), 
+                           header = FALSE, encoding = "UTF-8")
     barems = preparar_barems(prebarems)
     matrius <- c(matrius, list(informe_individual_intern(dades[,1:23], curs, barems_5, escola)));
     indeximps <- c(indeximps, list(errors(dades[,2:23])));
     nom_curs = "5è de Primària";}
     
     if(curs[2]==6)
-    {prebarems = read.csv('./barems/prebarems6.csv', header = FALSE);
+    {
+      prebarems = read.csv(file.path(wd, 'barems', 'dades_barems', 'prebarems6.csv'), 
+                           header = FALSE, encoding = "UTF-8")
     barems = preparar_barems(prebarems)
     matrius <- c(matrius, list(informe_individual_intern(dades[,1:23], curs, barems_6, escola)));
     indeximps <- c(indeximps, list(errors(dades[,2:23])));
@@ -478,8 +508,8 @@ informe_per_un_nen = function(dades, curs = 1){
     # Aquí comença l'elaboració de l'informe:
     #####
       
-      sink(file(paste(getwd(), "/informes_individuals/", nom,"/",nom, ".tex", sep =""), 
-                open = "wt", encoding = "latin1"));
+      sink(file(file.path(wd, "informes_individuals", nom, paste0(nom, ".tex")), 
+                open = "wt", encoding = "latin1"))
       
       cat(heading_alumnes);
       cat("\\begin{document}")

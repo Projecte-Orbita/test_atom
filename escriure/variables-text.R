@@ -32,7 +32,7 @@ heading <- paste0("\\documentclass[a4paper, 12pt, oneside]{book}%{article}
 \\usepackage{titlesec}
 \\usepackage[final]{pdfpages}
 \\usepackage[T1]{fontenc}
-\\usepackage[latin1]{inputenc}   %paquet que serveix per poder escriure
+\\usepackage[utf8]{inputenc}   %paquet que serveix per poder escriure
                 %els accents de forma normal en Linux
                 %en Windows canvieu-ho per: \\usepackage[ansinew]{inputenc}
 \\usepackage[catalan]{babel}
@@ -81,7 +81,7 @@ heading_classes <- paste0("\\documentclass[a4paper, 12pt, oneside]{book}%{articl
 \\usepackage{titlesec}
 \\usepackage[final]{pdfpages}
 \\usepackage[T1]{fontenc}
-\\usepackage[latin1]{inputenc}   %paquet que serveix per poder escriure
+\\usepackage[utf8]{inputenc}   %paquet que serveix per poder escriure
 %els accents de forma normal en Linux
 %en Windows canvieu-ho per: \\usepackage[ansinew]{inputenc}
 \\usepackage[catalan]{babel}
@@ -130,7 +130,7 @@ cat("
 \\usepackage{titlesec}
 \\usepackage[final]{pdfpages}
 \\usepackage[T1]{fontenc}
-\\usepackage[latin1]{inputenc}   %paquet que serveix per poder escriure
+\\usepackage[utf8]{inputenc}   %paquet que serveix per poder escriure
 %els accents de forma normal en Linux
 %en Windows canvieu-ho per: \\usepackage[ansinew]{inputenc}
 \\usepackage[catalan]{babel}
@@ -544,7 +544,7 @@ if(futur_tier == TRUE){cat("Els resultats obtinguts ens permeten determinar que 
 }
 
 
-informe_individual <- function(index, curs, punts, matrius, indeximp, tipus){
+informe_individual <- function(index, curs, punts, matrius, indeximp, tipus, orientacions){
   
   path_norm_ = file.path(wd, temp_, figures_, curs[1], paste0(index, "-norm"))
   path_comp_ = file.path(wd, temp_, figures_, curs[1], paste0(index, "-comp"))
@@ -584,17 +584,17 @@ informe_individual <- function(index, curs, punts, matrius, indeximp, tipus){
   # aquí hi ha d'anar el gràfic d'emocional (si cal)
   destfile = file.path(wd, temp_, figures_, curs[1],  paste0("emocional-", index, ".pdf"))
   if (file.exists(destfile)){
-
-      cat("
+    
+    cat("
         \\begin{figure}[H]
         \\centering
         \\includegraphics[width=7.5cm]{", destfile, "}
         \\end{figure}", sep = ""
-      )
+    )
     
   }
   
-cat("
+  cat("
       \\newpage
       \\begin{center}
       \\Large{\\textbf{Interpretació dels resultats}} \\\\
@@ -604,18 +604,18 @@ cat("
       ");
   
   ########
-informe_matrius(matrius[[as.character(names(matrius)[index])]], names(matrius)[index]);
-
-inpulsivitat_reflectivitat(indeximp, index)  ## aquesta funció és a informe_matrius.R
-
-cat("
+  informe_matrius(matrius[[as.character(names(matrius)[index])]], names(matrius)[index]);
+  
+  inpulsivitat_reflectivitat(indeximp, index)  ## aquesta funció és a informe_matrius.R
+  
+  cat("
       
       \\begin{center}
       \\Large{Prova adaptativa} \\\\ 
       \\end{center}
       
       ");
-
+  
   
   #######
   
@@ -628,15 +628,43 @@ cat("
       \\end{center} 
       
       ");
-
-  futur_tier <- informe_tier2(matrius[[index]], names(matrius)[index]);
+  
+  cat("\\subsection*{Orientacions cognitives}")
+  nom = as.character(names(matrius)[index])
+  futur_tier <- informe_tier2(matrius[[index]], nom)
+  
+  # Escrivim les orientacions d'adaptatiu
+  text_orientacions = list()
+  text_orientacions[[1]] = "\\item Cal aprofundir en les àrees que es relacionen amb una alteració en l'autoconcepte i l'autoimatge (acceptació personal, acceptació física i capacitat personal) per tal de determinar el nivell d'afectació i intervenir-hi de forma específica."
+  text_orientacions[[2]] = "\\item Cal aprofundir en les àrees que es relacionen amb una alteració de tipus clínic (gestió de l'ansietat, gestió de la tristesa, gestió de la ràbia i queixes somàtiques) per tal de determinar el nivell d'afectació i intervenir-hi de forma específica."
+  text_orientacions[[3]] = "\\item Cal aprofundir en les àrees que es relacionen amb una alteració en l'adaptació escolar (rebuig escolar, baix rendiment acadèmic, baixa implicació escolar i baixa satisfacció pels continguts) per tal de determinar el nivell d'afectació i intervenir-hi de forma específica."
+  text_orientacions[[4]] = "\\item Cal aprofundir en les àrees que es relacionen amb una alteració en l'adaptació social (dificultats d'integració, violència social, aïllament i manca d'habilitats socials) per tal de determinar el nivell d'afectació i intervenir-hi de forma específica."
+  text_orientacions[[5]] = "\\item Cal aprofundir en les àrees que es relacionen amb una alteració en l'adaptació familiar (ambient domèstic, clima familiar, satisfacció amb la norma, afecte parental) per tal de determinar el nivell d'afectació i intervenir-hi de forma específica."
+  
+  cat("\\subsection*{Orientacions cognitives}")
+  
+  if (sum(unlist(orientacions, use.names=FALSE))>0){
+    cat("\\begin{itemize}")
+    i=1
+    for (element in orientacions){
+      if (element>0){
+        cat(text_orientacions[[i]])
+        i = i + 1
+      }
+   
+    }
+    cat("\\end{itemize}")
+  }
+  
   if(futur_em == TRUE){cat("Es constaten alteracions emocionals que poden haver interferit en l'execució cognitiva i de rendiment exposada anteriorment. Per tant recomanem que es procedeixi a aprofundir en les causes d'aquestes alteracions emocionals abans de continuar l'exploració del perfil cognitiu.\\\\ ") 
   }else{cat("No es constata interferència de l'estat emocional en els resultats obtinguts. \\\\")};
   
-  if(futur_tier == TRUE){cat("\\\\Els resultats obtinguts ens permeten determinar que ", names(matrius)[index], " pot beneficiar-se de mesures metodològiques destinades a abordar les àrees prèviament comentades. ");
+  if(futur_tier == TRUE){cat("\\\\Els resultats obtinguts ens permeten determinar que ", nom, " pot beneficiar-se de mesures metodològiques destinades a abordar les àrees prèviament comentades. ");
   }
   
-  }
+ 
+  
+}
 
 
 informe_individual_alumnes_sol <- function(index, curs, punts, matrius, indeximp, escola){
